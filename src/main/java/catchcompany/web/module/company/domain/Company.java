@@ -16,10 +16,13 @@ public class Company {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column
+	@Column(name = "corp_code")
+	private String corpCode;
+
+	@Column(name = "corp_name")
 	private String name;
 
 	@OneToOne
-	private InvestmentStatus investmentStatus;
+	private InvestedCompany investedCompany;
 
 }
