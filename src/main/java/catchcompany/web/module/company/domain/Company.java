@@ -1,10 +1,14 @@
 package catchcompany.web.module.company.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.NoArgsConstructor;
 
@@ -16,13 +20,20 @@ public class Company {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "corp_code")
-	private String corpCode;
+	@Column(name = "corporation_code")
+	private String corporationCode;
 
-	@Column(name = "corp_name")
+	@Column(name = "corporation_name")
 	private String name;
 
-	@OneToOne
-	private InvestedCompany investedCompany;
+	@Column(name = "invest_company")
+	@OneToMany
+	private List<InvestCompany> investCompany = new ArrayList<>();
 
+	public static Company createCompany(String corporationCode, String name){
+		Company company = new Company();
+		company.corporationCode = corporationCode;
+		company.name = name;
+		return company;
+	}
 }
