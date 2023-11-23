@@ -12,4 +12,20 @@ public enum CorporationClass { // classification
 	public String getType() {
 		return this.type;
 	}
+
+	public static CorporationClass createCorpClass(String type) {
+		if(type.equals("Y")){
+			return CorporationClass.Y;
+		}
+		if(type.equals("K")){
+			return CorporationClass.K;
+		}
+		if(type.equals("N")){
+			return CorporationClass.N;
+		}
+		if(type.equals("E")){
+			return CorporationClass.E;
+		}
+		return null;
+	}
 }

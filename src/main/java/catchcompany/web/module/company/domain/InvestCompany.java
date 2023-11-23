@@ -24,47 +24,46 @@ public class InvestCompany {
 	@ManyToOne
 	private Company company;
 
+	private String investorName; // 투자하는 회사의 이름명
+
 	@Column(name = "corporation_cls")
-	private CorporationClass corpClass;
+	private CorporationClass corpClass; // 상장 구분
 
 	@Column(name = "corporation_code")
-	private String CorporationCode;
+	private String corporationCode; // 투자하는 회사의 코드
 
 	@Column(name = "corporation_name")
-	private String name;
-
-	@Column(name = "share_ratio")
-	private int shareRatio;
+	private String name; // 투자받는 회사명
 
 	@Column(name = "initial_investment_date")
-	private LocalDateTime initialInvestmentDate;
+	private String initialInvestmentDate; // 최초 투자 날짜
 
 	@Column(name = "basic_stock_count")
-	private String basicStockCount;
+	private String basicStockCount; // 기초잔액 - 수량
 
 	@Column(name = "basic_stock_ratio")
-	private String basicStockShareRatio;
+	private String basicStockShareRatio; // 기초잔액 - 지분율
 
 	@Column(name = "basic_stock_evaluation_value")
-	private String basicStockEvaluationValue;
+	private String basicStockEvaluationValue; // 기초잔액 - 장부가액
 
 	@Column(name = "current_stock_count")
-	private String currentStockCount;
+	private String currentStockCount; // 기말 - 수량
 
 	@Column(name = "current_stock_share_ratio")
-	private String currentStockShareRatio;
+	private String currentStockShareRatio; // 기말 - 지분율
 
 	@Column(name = "current_stock_evaluation_value")
-	private String currentStockEvaluationValue;
+	private String currentStockEvaluationValue; // 기말 - 장부가액
 
 	@Column(name = "recent_stock_amount_of_change")
-	private String recentStockAmountOfChange;
+	private String recentStockAmountOfChange; // 증감 - 취득 수량
 
 	@Column(name = "recent_acquisition_amount")
-	private String recentAcquisitionAmount;
+	private String recentAcquisitionAmount; // 증감 - 취득(처분) 총금액
 
 	@Column(name = "recent_evaluation_gains_and_losses")
-	private String recentEvaluationGainsAndLosses;
+	private String recentEvaluationGainsAndLosses; // 증감 - 평가손익
 
 
 }

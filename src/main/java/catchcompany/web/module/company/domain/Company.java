@@ -30,10 +30,14 @@ public class Company {
 	@OneToMany
 	private List<InvestCompany> investCompany = new ArrayList<>();
 
-	public static Company createCompany(String corporationCode, String name){
+	public static Company createCompany(String corporationCode, String name) {
 		Company company = new Company();
 		company.corporationCode = corporationCode;
 		company.name = name;
 		return company;
+	}
+
+	public String getCorporationCode() {
+		return this.corporationCode;
 	}
 }

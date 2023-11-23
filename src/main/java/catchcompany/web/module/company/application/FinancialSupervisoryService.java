@@ -35,32 +35,35 @@ import lombok.RequiredArgsConstructor;
 public class FinancialSupervisoryService {
 
 	private final CompanyRepository companyRepository;
+	private final InvestInfoService investInfoService;
 	@Value("${dart.api-key}")
 	private String apiKey;
 	private static final String DIRECTORY = "C:\\Users\\catch\\";
 	private static final String FILE_NAME = "CORPCODE.xml";
 
 	public void processCompanyInfoToDatabase() {
-		RestTemplate restTemplate = new RestTemplate();
-		UriComponents uriComponents = UriComponentsBuilder
-			.fromHttpUrl("https://opendart.fss.or.kr/api")
-			.pathSegment("corpCode.xml")
-			.queryParam("crtfc_key", apiKey)
-			.build();
+		// RestTemplate restTemplate = new RestTemplate();
+		// UriComponents uriComponents = UriComponentsBuilder
+		// 	.fromHttpUrl("https://opendart.fss.or.kr/api")
+		// 	.pathSegment("corpCode.xml")
+		// 	.queryParam("crtfc_key", apiKey)
+		// 	.build();
+		//
+		// Document document = restTemplate.execute(uriComponents.toUriString(), HttpMethod.GET, null, response -> {
+		// 	ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getBody().readAllBytes());
+		// 	ZipInputStream zipInputStream = new ZipInputStream(byteArrayInputStream);
+		// 	Document tmpDocument = null;
+		// 	try {
+		// 		zipInputStream.getNextEntry();
+		// 		tmpDocument = DocumentBuilderFactory.newDefaultInstance().newDocumentBuilder().parse(zipInputStream);
+		// 	} catch (Exception e) {
+		// 		e.printStackTrace();
+		// 	}
+		// 	return tmpDocument;
+		// });
 
-		Document document = restTemplate.execute(uriComponents.toUriString(), HttpMethod.GET, null, response -> {
-			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getBody().readAllBytes());
-			ZipInputStream zipInputStream = new ZipInputStream(byteArrayInputStream);
-			Document tmpDocument = null;
-			try {
-				zipInputStream.getNextEntry();
-				tmpDocument = DocumentBuilderFactory.newDefaultInstance().newDocumentBuilder().parse(zipInputStream);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return tmpDocument;
-		});
-		processXmlToDatabase(document);
+		investInfoService.processCompanyInvestInfoToDatabase(null);
+		// processXmlToDatabase(document);
 	}
 
 	public void processXmlToDatabase(Document document) {
@@ -71,9 +74,10 @@ public class FinancialSupervisoryService {
 		stream.parallel().forEach(i -> {
 			Node nNode = nList.item(i);
 			Element eElement = (Element)nNode;
-			companyRepository.save(Company.createCompany(
+			Company company = companyRepository.save(Company.createCompany(
 				getTagValue("corp_code", eElement),
 				getTagValue("corp_name", eElement)));
+			investInfoService.processCompanyInvestInfoToDatabase(company);
 		});
 	}
 
