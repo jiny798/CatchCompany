@@ -2,6 +2,7 @@ package catchcompany.web.module.security;
 
 import static org.springframework.security.config.Customizer.*;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -23,16 +24,17 @@ public class SecurityConfig {
 			)
 			.formLogin(login -> login    // form 방식 로그인 사용
 				.defaultSuccessUrl("/view/home", true)    // 성공 시 dashboard로
-				.loginProcessingUrl("/login")	// [B] submit 받을 url
-				.usernameParameter("id")	// [C] submit할 아이디
-				.passwordParameter("password")	// [D] submit할 비밀번호
+				.loginProcessingUrl("/login")    // [B] submit 받을 url
+				.usernameParameter("id")    // [C] submit할 아이디
+				.passwordParameter("password")    // [D] submit할 비밀번호
 				.permitAll()
 			)
-			.logout(withDefaults());
+			.logout(withDefaults())
+			.csrf(csrf -> csrf.disable());
 
+		// https://docs.spring.io/spring-security/reference/features/exploits/headers.html#headers-xss-protection
 		return http.build();
 	}
 
 
-	
 }

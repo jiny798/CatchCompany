@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -26,14 +25,18 @@ public class Company {
 	@Column(name = "corporation_name")
 	private String name;
 
+	@Column(name = "stock_code")
+	private String stockCode;
+
 	@Column(name = "invest_company")
 	@OneToMany
-	private List<InvestCompany> investCompany = new ArrayList<>();
+	private List<CompanyInvestInfo> companyInvestInfo = new ArrayList<>();
 
-	public static Company createCompany(String corporationCode, String name) {
+	public static Company createCompany(String corporationCode, String name, String stockCode) {
 		Company company = new Company();
-		company.corporationCode = corporationCode;
-		company.name = name;
+		company.corporationCode = corporationCode.trim();
+		company.name = name.trim();
+		company.stockCode = stockCode.trim();
 		return company;
 	}
 

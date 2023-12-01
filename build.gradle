@@ -41,6 +41,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security:'
 	testImplementation 'org.springframework.security:spring-security-test:'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.1.RELEASE'
+
+	//thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	//XSS filter
+	implementation 'com.navercorp.lucy:lucy-xss:1.6.3'
 }
 
 tasks.named('test') {

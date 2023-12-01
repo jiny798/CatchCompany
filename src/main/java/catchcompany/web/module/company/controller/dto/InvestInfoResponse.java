@@ -1,4 +1,4 @@
-package catchcompany.web.module.company.application.dto;
+package catchcompany.web.module.company.controller.dto;
 
 import java.util.List;
 

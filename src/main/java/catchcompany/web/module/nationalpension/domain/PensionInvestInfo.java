@@ -1,4 +1,4 @@
-package catchcompany.web.module.institution.domain;
+package catchcompany.web.module.nationalpension.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
-public class InvestInfo {
+public class PensionInvestInfo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
