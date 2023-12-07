@@ -9,10 +9,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-@Entity
+@Entity @Getter
 public class Company {
 
 	@Id
@@ -29,7 +30,7 @@ public class Company {
 	private String stockCode;
 
 	@Column(name = "invest_company")
-	@OneToMany
+	@OneToMany(mappedBy = "company")
 	private List<CompanyInvestInfo> companyInvestInfo = new ArrayList<>();
 
 	public static Company createCompany(String corporationCode, String name, String stockCode) {

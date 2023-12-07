@@ -29,8 +29,6 @@ public class CompanyInfoApiService {
 	private final CompanyInvestInfoService companyInvestInfoService;
 	@Value("${dart.api-key}")
 	private String apiKey;
-	private static final String DIRECTORY = "C:\\Users\\catch\\";
-	private static final String FILE_NAME = "CORPCODE.xml";
 
 	public void processCompanyInfoToDatabase() {
 		RestTemplate restTemplate = new RestTemplate();

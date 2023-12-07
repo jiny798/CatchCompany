@@ -13,11 +13,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/national-pension")
 public class PensionApiController {
 	private final PensionApiService pensionApiService;
-	@Value("${dart.api-key}")
-	private String apiKey;
 
 	@PostMapping("/invest")
-	public void processInvestInfoSave() {
+	public String processInvestInfoSave() {
 		pensionApiService.processInvestInfoSave();
+		return "home";
 	}
 }

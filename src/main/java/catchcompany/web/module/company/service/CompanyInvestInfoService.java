@@ -34,12 +34,12 @@ public class CompanyInvestInfoService {
 			FileInputStream file = new FileInputStream("C:\\Users\\file\\BusinessReport.xls");
 			HSSFWorkbook workbook = new HSSFWorkbook(file);
 			HSSFSheet sheet = workbook.getSheetAt(0); //첫번째 시트탭
-			int rows = sheet.getPhysicalNumberOfRows(); // 행의 수, 세로 길이를 모두 불러온다
-			IntStream stream = IntStream.range(0,rows);
-			stream.parallel().forEach( rowIndex -> {
-				List<String> rowInfoList = new ArrayList<>();
-				//행을읽는다
-				HSSFRow row = sheet.getRow(rowIndex);
+			int rows = sheet.getPhysicalNumberOfRows(); // 행의 길이를 모두 불러온다
+			log.info("행의 길이 {}", rows);
+			IntStream stream = IntStream.range(0, rows);
+			stream.parallel().forEach(rowIndex -> {
+				List<String> recordInfoList = new ArrayList<>();
+				HSSFRow row = sheet.getRow(rowIndex); //행 읽기
 				if (row != null) {
 					int cells = row.getPhysicalNumberOfCells();
 					for (int colIndex = 0; colIndex <= cells; colIndex++) {
@@ -69,46 +69,49 @@ public class CompanyInvestInfoService {
 									break;
 							}
 						}
-						// System.out.println(rowIndex + "번 행 : " + colIndex + "번 열 값은: " + value);
-						rowInfoList.add(value);
+
+						recordInfoList.add(value);
 					} //컬럼 읽기 종료
 				}
-				if (rowIndex > 2 && rowInfoList.size() >= 16) {
-						String investorName = rowInfoList.get(0).trim(); // 투자하는 회사명
-						String investorCode = rowInfoList.get(1).trim(); // 투자하는 회사코드
-						String investCompany = rowInfoList.get(4).trim(); // 투자받는 회사명
-						String investDate = rowInfoList.get(5).trim(); // 투자 날짜
-						String investTarget = rowInfoList.get(6).trim(); // 투자목적
-						String basic1 = rowInfoList.get(8).trim(); // 기초 잔액 수량
-						String basic2 = rowInfoList.get(9).trim(); // 기초잔액 지분율
-						String basic3 = rowInfoList.get(10).trim(); // 기초잔액 장부가액
-						String change1 = rowInfoList.get(11).trim(); // 증감수량
-						String change2 = rowInfoList.get(12).trim(); // 증감 취득,처분 금액
-						String change3 = rowInfoList.get(13).trim(); // 증감 평가손액
-						String current1 = rowInfoList.get(14).trim(); // 기말잔액 수량
-						String current2 = rowInfoList.get(15).trim(); // 기말잔액 지분율
-						String current3 = rowInfoList.get(16).trim(); // 기말잔액 장부가액
-						List<Company> companies = companyRepository.findByName(investorName.trim());
+				if (rowIndex > 2 && recordInfoList.size() >= 16 && !recordInfoList.get(4).trim().equals("합계")
+					&& !recordInfoList.get(4).trim().equals("-")) {
+					String investorName = recordInfoList.get(0).trim(); // 투자하는 회사명
+					String investorCode = recordInfoList.get(1).trim(); // 투자하는 회사 stock 코드
+					String investCompany = recordInfoList.get(4).trim(); // 투자받는 회사명
+					String investDate = recordInfoList.get(5).trim(); // 투자 날짜
+					String investTarget = recordInfoList.get(6).trim(); // 투자목적
+					String basic1 = recordInfoList.get(8).trim(); // 기초 잔액 수량
+					String basic2 = recordInfoList.get(9).trim(); // 기초잔액 지분율
+					String basic3 = recordInfoList.get(10).trim(); // 기초잔액 장부가액
+					String change1 = recordInfoList.get(11).trim(); // 증감수량
+					String change2 = recordInfoList.get(12).trim(); // 증감 취득,처분 금액
+					String change3 = recordInfoList.get(13).trim(); // 증감 평가손액
+					String current1 = recordInfoList.get(14).trim(); // 기말잔액 수량
+					String current2 = recordInfoList.get(15).trim(); // 기말잔액 지분율
+					String current3 = recordInfoList.get(16).trim(); // 기말잔액 장부가액
+					List<Company> companies = companyRepository.findByName(investorName.trim());
+					Company company = null;
+					if (companies != null) {
+						company = companies.get(0);
+					}
 
-						if(companies != null) {
-							CompanyInvestInfo companyInvestInfo = CompanyInvestInfo.builder()
-								.company(companies.get(0))
-								.investorName(investorName)
-								.corporationCode(investorCode)
-								.name(investCompany)
-								.initialInvestmentDate(investDate)
-								.basicStockCount(basic1)
-								.basicStockShareRatio(basic2)
-								.basicStockEvaluationValue(basic3)
-								.currentStockCount(current1)
-								.currentStockShareRatio(current2)
-								.currentStockEvaluationValue(current3)
-								.recentStockAmountOfChange(change1)
-								.recentAcquisitionAmount(change2)
-								.recentEvaluationGainsAndLosses(change3)
-								.build();
-							companyInvestInfoRepository.save(companyInvestInfo);
-						}
+					CompanyInvestInfo companyInvestInfo = CompanyInvestInfo.builder()
+						.company(company)
+						.investorName(investorName)
+						.corporationCode(investorCode)
+						.name(investCompany)
+						.initialInvestmentDate(investDate)
+						.basicStockCount(basic1)
+						.basicStockShareRatio(basic2)
+						.basicStockEvaluationValue(basic3)
+						.currentStockCount(current1)
+						.currentStockShareRatio(current2)
+						.currentStockEvaluationValue(current3)
+						.recentStockAmountOfChange(change1)
+						.recentAcquisitionAmount(change2)
+						.recentEvaluationGainsAndLosses(change3)
+						.build();
+					companyInvestInfoRepository.save(companyInvestInfo);
 				}
 			});
 
