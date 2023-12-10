@@ -94,12 +94,15 @@ public class CompanyInvestInfoService {
 					if (companies != null) {
 						company = companies.get(0);
 					}
-
+					if(investTarget.indexOf("투자") >= 0 ){
+						investTarget = "투자";
+					}
 					CompanyInvestInfo companyInvestInfo = CompanyInvestInfo.builder()
 						.company(company)
 						.investorName(investorName)
 						.corporationCode(investorCode)
 						.name(investCompany)
+						.investTarget(investTarget)
 						.initialInvestmentDate(investDate)
 						.basicStockCount(basic1)
 						.basicStockShareRatio(basic2)

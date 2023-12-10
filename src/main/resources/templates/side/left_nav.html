@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div id="layoutSidenav" th:fragment="nav">
+    <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion " id="sidenavAccordion">
+            <div class="side-menu sb-sidenav-menu">
+                <div class="nav">
+                    <div class="sb-sidenav-menu-heading">회사정보</div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        투자 정보 조회
+                    </a>
+                    <!--                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false"-->
+                    <!--                                aria-controls="collapseLayouts">-->
+                    <!--                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>-->
+                    <!--                                거래량 상승 종목-->
+                    <!--                            </a>-->
+
+                    <div class="sb-sidenav-menu-heading">국민연금</div>
+                    <a class="nav-link" href="charts.html">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        포트폴리오 분석
+                    </a>
+
+                    <div class="sb-sidenav-menu-heading">게시판</div>
+                    <a class="nav-link" href="charts.html">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        건의게시판
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</body>
+</html>

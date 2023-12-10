@@ -7,17 +7,17 @@ import lombok.Getter;
 @Getter
 public class PensionInvestInfoDto {
 	@JsonProperty("번호")
-	public Long id;
+	private Long id;
 
 	@JsonProperty("자산군 내 비중")
-	public String shareOfAsset;
+	private String shareInAsset;
 
 	@JsonProperty("종목명")
-	public String name;
+	private String name;
 
 	@JsonProperty("지분율(%)")
-	public String shareRatio;
+	private String shareRatio;
 
 	@JsonProperty("평가액(억원)")
-	public Long valuation;
+	private Long evaluation;
 }

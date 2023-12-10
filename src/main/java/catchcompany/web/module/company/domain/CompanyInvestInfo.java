@@ -33,6 +33,9 @@ public class CompanyInvestInfo {
 	@Column(name = "corporation_name")
 	private String name; // 투자받는 회사명
 
+	@Column(name = "target")
+	private String investTarget; // 투자 목적
+
 	@Column(name = "initial_investment_date")
 	private String initialInvestmentDate; // 최초 투자 날짜
 

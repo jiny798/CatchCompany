@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <style>
+        .top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 50px;
+            --bs-bg-opacity: 1;
+            background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) ;
+            z-index: 1;
+
+        }
+        .side-menu {
+            background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important ;
+        }
+       
+        .search {
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 30px;
+        }
+        .table_card {
+            margin-left: 20px;
+            margin-right: 20px;
+            max-width: 1000px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;         
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .data-row:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .pagination {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .pagination li {
+            margin-right: 10px;
+        }
+        
+        .pagination li a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .pagination li .active {
+            background-color: #ccc;
+        }
+
+        .table_title {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        a:link { color: black; text-decoration: none;}
+        a:visited { color: black; text-decoration: none;}
+        a:hover { color: black; text-decoration: underline;}
+
+    </style>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard</title>
+        <link th:href="@{/css/styles.css}" href="css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="top">
+        </nav>
+            <div th:replace="~{side/left_nav :: nav}"></div>
+
+            <div id="layoutSidenav_content">
+                <main>
+                    <div>
+                        <div class="search">
+                        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
+                                    aria-describedby="btnNavbarSearch" />
+                                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">카카오</li>
+                        </ol>
+                        </div>
+                    <div class="table_card">
+                        <div class="table_title">경영 참여 목적으로 투자 중인 회사</div>
+                        <table class="myTable">
+                            <tr>
+                                <th>회사명</th>
+                                <th>주식 보유수</th>
+                                <th>비고</th>
+                            </tr>
+                            <tr th:each="company : ${pageForBusiness}" class="data-row">
+                                <td th:text="${company.investedCompany}">투자받는 회사명</td>
+                                <td>223,123</td>
+                                <td>비고</td>
+                            </tr>
+                        </table>
+
+                        <ul class="pagination">
+                            <li>
+                                <a th:href="${pageForBusiness.first} ? '#' : @{/posts/paging(page=${pageForBusiness.number})}"> 이전 </a>
+                            </li>
+                            <li th:each = "page: ${#numbers.sequence(startPage, endPageForBusiness)}" >
+                                <a th:if="${page == pageForBusiness.number + 1}" href="#" th:text="${page}" class="active">page number</a>
+                                <a th:unless="${page == pageForBusiness.number + 1}" href="#" th:text="${page}">page number</a>
+                            </li>
+
+                            <li>
+                                <a th:href="${pageForBusiness.last} ? '#' : @{/post/paging(page=${pageForBusiness.number + 2})}"> 다음 </a>
+                            </li>
+                        </ul>
+                    </div>
+                    </div>
+                    <br>
+                    <div class="table_card">
+                        <div class="table_title">투자 목적으로 투자 중인 회사</div>
+                        <table class="myTable">
+                            <tr>
+                                <th>회사명</th>
+                                <th>주식 보유수</th>
+                                <th>비고</th>
+                            </tr>
+                            <tr th:each="company : ${pageForInvest}" class="data-row">
+                                <td th:text="${company.investedCompany}">투자받는 회사명</td>
+                                <td>223,123</td>
+                                <td>비고</td>
+                            </tr>
+
+                        </table>
+
+                        <ul class="pagination">
+                            <li>
+                                <a th:href="${pageForInvest.first} ? '#' : @{/posts/paging(page=${pageForInvest.number})}"> 이전 </a>
+                            </li>
+                            <li th:each = "page: ${#numbers.sequence(startPage, endPageForInvest)}">
+                                <a th:if="${page == pageForInvest.number + 1}" href="#" th:text="${page}" class="active">page number</a>
+                                <a th:unless="${page == pageForInvest.number + 1}" href="#" th:text="${page}">page number</a>
+                            </li>
+                            <li>
+                                <a th:href="${pageForInvest.last} ? '#' : @{/post/paging(page=${pageForInvest.number + 2})}"> 다음 </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+    </body>
+</html>

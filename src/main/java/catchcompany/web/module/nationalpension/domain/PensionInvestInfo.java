@@ -4,9 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class PensionInvestInfo {
 
@@ -16,10 +20,12 @@ public class PensionInvestInfo {
 
 	private String corporationName;
 
-	private String evaluationAmount;
+	private Long evaluation;
 
 	private String shareInAsset;
 
 	private String shareRatio;
+
+	private int year;
 
 }
