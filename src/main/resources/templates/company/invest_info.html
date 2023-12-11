@@ -103,7 +103,7 @@
                             </div>
                         </form>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">카카오</li>
+                            <li class="breadcrumb-item active" th:text="${name}">회사명</li>
                         </ol>
                         </div>
                     <div class="table_card">
@@ -112,26 +112,32 @@
                             <tr>
                                 <th>회사명</th>
                                 <th>주식 보유수</th>
+                                <th>상장여부</th>
                                 <th>비고</th>
                             </tr>
                             <tr th:each="company : ${pageForBusiness}" class="data-row">
-                                <td th:text="${company.investedCompany}">투자받는 회사명</td>
-                                <td>223,123</td>
-                                <td>비고</td>
+                                <td style="width: 500px;" th:text="${company.investedCompany}">투자받는 회사명</td>
+                                <td th:text="${company.currentStockCount}">주식수</td>
+                                <td th:text="${company.corporationClass}">상장여부</td>
+                                <td> - </td>
                             </tr>
                         </table>
 
                         <ul class="pagination">
                             <li>
-                                <a th:href="${pageForBusiness.first} ? '#' : @{/posts/paging(page=${pageForBusiness.number})}"> 이전 </a>
+                                <a th:href="${pageForBusiness.first} ? '#' : @{/company/invest/{company}/{page1}/{page2}(company=${name}, page1=${pageForBusiness.number}, page2=${currentPage2})}"> 이전 </a>
                             </li>
-                            <li th:each = "page: ${#numbers.sequence(startPage, endPageForBusiness)}" >
+                            <li th:each = "page: ${#numbers.sequence(startPage1, endPageForBusiness)}" >
                                 <a th:if="${page == pageForBusiness.number + 1}" href="#" th:text="${page}" class="active">page number</a>
-                                <a th:unless="${page == pageForBusiness.number + 1}" href="#" th:text="${page}">page number</a>
+                                <a th:unless="${page == pageForBusiness.number + 1}"
+                                   href="#"
+                                   th:text="${page}"
+                                   th:href="@{/company/invest/{company}/{page1}/{page2}(company=${name}, page1=${page}, page2=${currentPage2})}"
+                                >page number</a>
                             </li>
 
                             <li>
-                                <a th:href="${pageForBusiness.last} ? '#' : @{/post/paging(page=${pageForBusiness.number + 2})}"> 다음 </a>
+                                <a th:href="${pageForBusiness.last} ? '#' : @{/company/invest/{company}/{page1}/{page2}(company=${name}, page1=${pageForBusiness.number}+2, page2=${currentPage2})}"> 다음 </a>
                             </li>
                         </ul>
                     </div>
@@ -143,26 +149,31 @@
                             <tr>
                                 <th>회사명</th>
                                 <th>주식 보유수</th>
+                                <th>상장여부</th>
                                 <th>비고</th>
                             </tr>
                             <tr th:each="company : ${pageForInvest}" class="data-row">
-                                <td th:text="${company.investedCompany}">투자받는 회사명</td>
-                                <td>223,123</td>
-                                <td>비고</td>
+                                <td style="width: 500px;" th:text="${company.investedCompany}">투자받는 회사명</td>
+                                <td th:text="${company.currentStockCount}">주식수</td>
+                                <td th:text="${company.corporationClass}">상장여부</td>
+                                <td>-</td>
                             </tr>
 
                         </table>
 
                         <ul class="pagination">
                             <li>
-                                <a th:href="${pageForInvest.first} ? '#' : @{/posts/paging(page=${pageForInvest.number})}"> 이전 </a>
+                                <a th:href="${pageForInvest.first} ? '#' : @{/company/invest/{company}/{page1}/{page2}(company=${name}, page2=${pageForInvest.number}, page1=${currentPage1})}"> 이전 </a>
                             </li>
-                            <li th:each = "page: ${#numbers.sequence(startPage, endPageForInvest)}">
+                            <li th:each = "page: ${#numbers.sequence(startPage2, endPageForInvest)}">
                                 <a th:if="${page == pageForInvest.number + 1}" href="#" th:text="${page}" class="active">page number</a>
-                                <a th:unless="${page == pageForInvest.number + 1}" href="#" th:text="${page}">page number</a>
+                                <a th:unless="${page == pageForInvest.number + 1}" href="#"
+                                   th:text="${page}"
+                                   th:href="@{/company/invest/{company}/{page1}/{page2}(company=${name}, page2=${page}, page1=${currentPage1})}"
+                                >page number</a>
                             </li>
                             <li>
-                                <a th:href="${pageForInvest.last} ? '#' : @{/post/paging(page=${pageForInvest.number + 2})}"> 다음 </a>
+                                <a th:href="${pageForInvest.last} ? '#' : @{/company/invest/{company}/{page1}/{page2}(company=${name}, page2=${pageForInvest.number}+2, page1=${currentPage1})}"> 다음 </a>
                             </li>
                         </ul>
                     </div>

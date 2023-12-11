@@ -25,12 +25,14 @@ public class CompanyService {
 	private final CompanyRepository companyRepository;
 	private final CompanyInvestInfoRepository companyInvestInfoRepository;
 
-	public CompanyInfo findCompanyInvestInfo(String name) {
-		Pageable pageable = PageRequest.of(0, 5);
+	public CompanyInfo findCompanyInvestInfo(String name,int page1, int page2) {
+		Pageable pageableForBusiness = PageRequest.of(page1-1, 5);
+		Pageable pageableForInvest = PageRequest.of(page2-1, 5);
+
 		List<Company> companies = companyRepository.findByName(name);
 		Company company = companies.get(0);
-		Page<CompanyInvestInfo> pageForInvest = companyInvestInfoRepository.findByCompanyForInvest(company, pageable);
-		Page<CompanyInvestInfo> pageForBusiness = companyInvestInfoRepository.findByCompanyForBusiness(company, pageable);
+		Page<CompanyInvestInfo> pageForInvest = companyInvestInfoRepository.findByCompanyForInvest(company, pageableForInvest);
+		Page<CompanyInvestInfo> pageForBusiness = companyInvestInfoRepository.findByCompanyForBusiness(company, pageableForBusiness);
 
 		CompanyInfo companyInfo = new CompanyInfo(company, pageForInvest, pageForBusiness);
 

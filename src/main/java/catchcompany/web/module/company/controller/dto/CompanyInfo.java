@@ -30,9 +30,13 @@ public class CompanyInfo {
 	@Data
 	static class InvestInfoDto {
 		public String investedCompany;
+		public String currentStockCount;
+		public String corporationClass;
 
 		public InvestInfoDto(CompanyInvestInfo companyInvestInfo) {
 			investedCompany = companyInvestInfo.getName();
+			currentStockCount = companyInvestInfo.getCurrentStockCount();
+			corporationClass = companyInvestInfo.getCorporationClass();
 		}
 	}
 }

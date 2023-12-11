@@ -25,22 +25,28 @@ public class CompanyController {
 
 	private final CompanyService companyService;
 
-	@GetMapping("/invest/{name}")
-	public String findCompanyInvestInfo(Model model, @PathVariable String name) {
-		log.info("검색한 회사명 : " + name);
-		CompanyInfo companyInfo = companyService.findCompanyInvestInfo(name);
+	// GET /매일유업?page=0&size=5&sort=id,DESC
+	@GetMapping("/invest/{name}/{page1}/{page2}")
+	public String findCompanyInvestInfo(Model model, @PathVariable String name,
+		@PathVariable int page1, @PathVariable int page2) {
+		log.debug("검색한 회사명 : " + name);
+		CompanyInfo companyInfo = companyService.findCompanyInvestInfo(name,page1,page2);
 		model.addAttribute("name", companyInfo.getName());
 		model.addAttribute("pageForInvest", companyInfo.getPageForInvest());
 		model.addAttribute("pageForBusiness", companyInfo.getPageForBusiness());
 
-		int blockLimit = 3;
-		int startPage = 1;
-		int endPageForInvest = companyInfo.getPageForInvest().getTotalPages();
-		int endPageForBusiness = companyInfo.getPageForBusiness().getTotalPages();
-		log.info("endPage {} , {} : ", endPageForInvest, endPageForBusiness);
-		model.addAttribute("startPage", startPage);
+		int pageLimit = 5;
+		int startPage1 = (((page1 - 1) / pageLimit) * pageLimit) + 1 ;
+		int startPage2 = (((page2 - 1) / pageLimit) * pageLimit) + 1 ;
+		log.info("page start {} {}",startPage1, startPage2);
+		int endPageForBusiness = Math.min((startPage1 + pageLimit - 1), companyInfo.getPageForBusiness().getTotalPages());
+		int endPageForInvest = Math.min((startPage2 + pageLimit - 1), companyInfo.getPageForInvest().getTotalPages());
+		model.addAttribute("startPage1", startPage1);
+		model.addAttribute("startPage2", startPage2);
 		model.addAttribute("endPageForInvest", endPageForInvest);
 		model.addAttribute("endPageForBusiness", endPageForBusiness);
+		model.addAttribute("currentPage1", page1);
+		model.addAttribute("currentPage2", page2);
 
 		return "company/invest_info";
 	}

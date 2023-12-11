@@ -33,20 +33,14 @@ public class CompanyInvestInfo {
 	@Column(name = "corporation_name")
 	private String name; // 투자받는 회사명
 
+	@Column(name = "corporation_class")
+	private String corporationClass;
+
 	@Column(name = "target")
 	private String investTarget; // 투자 목적
 
 	@Column(name = "initial_investment_date")
 	private String initialInvestmentDate; // 최초 투자 날짜
-
-	@Column(name = "basic_stock_count")
-	private String basicStockCount; // 기초잔액 - 수량
-
-	@Column(name = "basic_stock_ratio")
-	private String basicStockShareRatio; // 기초잔액 - 지분율
-
-	@Column(name = "basic_stock_evaluation_value")
-	private String basicStockEvaluationValue; // 기초잔액 - 장부가액
 
 	@Column(name = "current_stock_count")
 	private String currentStockCount; // 기말 - 수량

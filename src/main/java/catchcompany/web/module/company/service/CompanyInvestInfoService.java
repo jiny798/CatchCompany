@@ -77,12 +77,10 @@ public class CompanyInvestInfoService {
 					&& !recordInfoList.get(4).trim().equals("-")) {
 					String investorName = recordInfoList.get(0).trim(); // 투자하는 회사명
 					String investorCode = recordInfoList.get(1).trim(); // 투자하는 회사 stock 코드
+					String corporationClass = null;
 					String investCompany = recordInfoList.get(4).trim(); // 투자받는 회사명
 					String investDate = recordInfoList.get(5).trim(); // 투자 날짜
 					String investTarget = recordInfoList.get(6).trim(); // 투자목적
-					String basic1 = recordInfoList.get(8).trim(); // 기초 잔액 수량
-					String basic2 = recordInfoList.get(9).trim(); // 기초잔액 지분율
-					String basic3 = recordInfoList.get(10).trim(); // 기초잔액 장부가액
 					String change1 = recordInfoList.get(11).trim(); // 증감수량
 					String change2 = recordInfoList.get(12).trim(); // 증감 취득,처분 금액
 					String change3 = recordInfoList.get(13).trim(); // 증감 평가손액
@@ -94,19 +92,30 @@ public class CompanyInvestInfoService {
 					if (companies != null) {
 						company = companies.get(0);
 					}
-					if(investTarget.indexOf("투자") >= 0 ){
+					if (investTarget.indexOf("투자") >= 0) {
 						investTarget = "투자";
 					}
+					String corpName = investCompany.replaceAll("(주)", "");
+					corpName = investCompany.replaceAll("㈜","");
+					List<Company> corpList = companyRepository.findByName(corpName);
+					corporationClass = "-";
+					if (!corpList.isEmpty()) {
+						for (Company c : corpList) {
+							if (!c.getStockCode().isBlank()) {
+								corporationClass = "상장";
+								break;
+							}
+						}
+					}
+
 					CompanyInvestInfo companyInvestInfo = CompanyInvestInfo.builder()
 						.company(company)
 						.investorName(investorName)
 						.corporationCode(investorCode)
 						.name(investCompany)
+						.corporationClass(corporationClass)
 						.investTarget(investTarget)
 						.initialInvestmentDate(investDate)
-						.basicStockCount(basic1)
-						.basicStockShareRatio(basic2)
-						.basicStockEvaluationValue(basic3)
 						.currentStockCount(current1)
 						.currentStockShareRatio(current2)
 						.currentStockEvaluationValue(current3)
