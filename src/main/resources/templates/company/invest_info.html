@@ -95,19 +95,18 @@
                 <main>
                     <div>
                         <div class="search">
-                        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                                    aria-describedby="btnNavbarSearch" />
-                                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                            </div>
-                        </form>
+                            <form onsubmit="return false;" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                                <div class="input-group">
+                                    <input id="search" class="form-control" type="text" aria-describedby="btnNavbarSearch" />
+                                    <button type="button" onclick="searchCompany()" class="btn btn-primary" id="btnNavbarSearch"><i class="fas fa-search"></i></button>
+                                </div>
+                            </form>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active" th:text="${name}">회사명</li>
                         </ol>
                         </div>
                     <div class="table_card">
-                        <div class="table_title">경영 참여 목적으로 투자 중인 회사</div>
+                        <div class="table_title" >경영 참여 목적으로 투자 중인 회사</div>
                         <table class="myTable">
                             <tr>
                                 <th>회사명</th>
@@ -188,4 +187,12 @@
                 </footer>
             </div>
     </body>
+    <script>
+    function searchCompany(event) {
+        var inputElement = document.getElementById('search');
+        var value = encodeURIComponent(inputElement.value);
+        console.log(inputElement.value);
+        location.href = 'http://localhost:8080/company/invest/' + inputElement.value + '/1/1';
+    }
+    </script>
 </html>

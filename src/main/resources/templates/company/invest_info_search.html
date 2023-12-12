@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+        .top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 50px;
+            --bs-bg-opacity: 1;
+            background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) ;
+            z-index: 1;
+
+        }
+        .side-menu {
+            background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important ;
+        }
+
+        .search {
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 30px;
+        }
+        .table_card {
+            margin-left: 20px;
+            margin-right: 20px;
+            max-width: 1000px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .data-row:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .pagination {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .pagination li {
+            margin-right: 10px;
+        }
+
+        .pagination li a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .pagination li .active {
+            background-color: #ccc;
+        }
+
+        .table_title {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        a:link { color: black; text-decoration: none;}
+        a:visited { color: black; text-decoration: none;}
+        a:hover { color: black; text-decoration: underline;}
+
+    </style>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Dashboard</title>
+  <link th:href="@{/css/styles.css}" href="css/styles.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+<nav class="top">
+</nav>
+<div th:replace="~{side/left_nav :: nav}"></div>
+
+<div id="layoutSidenav_content">
+  <main>
+    <div>
+      <div class="search">
+        <form onsubmit="return false;" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+          <div class="input-group">
+            <input id="search" class="form-control" type="text" aria-describedby="btnNavbarSearch" />
+            <button type="button" onclick="searchCompany()" class="btn btn-primary" id="btnNavbarSearch"><i class="fas fa-search"></i></button>
+          </div>
+        </form>
+        <ol class="breadcrumb mb-4">
+          <li class="breadcrumb-item active company-name" th:text="${name}">회사명을 검색해보세요</li>
+        </ol>
+      </div>
+    </div>
+
+  </main>
+  <footer class="py-4 bg-light mt-auto">
+    <div class="container-fluid px-4">
+      <div class="d-flex align-items-center justify-content-between small">
+        <div class="text-muted">Copyright &copy; Your Website 2023</div>
+      </div>
+    </div>
+  </footer>
+</div>
+</body>
+
+<script>
+  function searchCompany() {
+    var inputElement = document.getElementById('search');
+    var value = encodeURIComponent(inputElement.value);
+    console.log(inputElement.value);
+    location.href = 'http://localhost:8080/company/invest/' + inputElement.value + '/1/1';
+  }
+</script>
+
+</html>

@@ -6,12 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import catchcompany.web.module.company.controller.dto.CompanyInfo;
+import catchcompany.web.module.company.controller.dto.SearchDto;
 import catchcompany.web.module.company.domain.Company;
 import catchcompany.web.module.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyController {
 
 	private final CompanyService companyService;
+
+	@GetMapping("/invest")
+	public String companyInvestInfoHome() {
+		return "company/invest_info_search";
+	}
 
 	// GET /매일유업?page=0&size=5&sort=id,DESC
 	@GetMapping("/invest/{name}/{page1}/{page2}")
