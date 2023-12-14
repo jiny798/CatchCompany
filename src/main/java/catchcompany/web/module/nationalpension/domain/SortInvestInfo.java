@@ -6,12 +6,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity @Getter
 public class SortInvestInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,7 @@ public class SortInvestInfo {
 
 	private Long evaluation;
 
-	private String shareInAsset;
+	private Double shareInAsset;
 
 	private String shareRatio;
 
