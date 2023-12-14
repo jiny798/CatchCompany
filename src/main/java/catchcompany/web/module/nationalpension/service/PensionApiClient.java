@@ -61,24 +61,28 @@ public class PensionApiClient {
 
 	public void sortInvestInfo(int year) {
 		List<SortInvestInfo> sortInvestInfos = sortInvestInfoRepository.findByYear(year);
-		if(!sortInvestInfos.isEmpty()) {
+		if (!sortInvestInfos.isEmpty()) {
 			throw new ProcessedRequestException("이미 처리된 년도 입니다.");
 		}
 
 		List<PensionInvestInfo> investInfoList = pensionInvestInfoRepository.findByYear(year);
 		List<SortInvestInfo> sortList = new ArrayList<>();
 		for (PensionInvestInfo currentInfo : investInfoList) {
-			String corpName = currentInfo.getCorporationName(); // 현재회사이름
-			List<PensionInvestInfo> findList = pensionInvestInfoRepository.findByYearAndCorporationName(year - 1,
-				corpName); // 이전년도 정보 가져오기
+			// year 년도 회사이름 가져오기
+			String corpName = currentInfo.getCorporationName();
+			// 이전년도 회사정보 가져오기
+			List<PensionInvestInfo> findList = pensionInvestInfoRepository.findByYearAndCorporationName(year - 1, corpName);
+
 			if (findList.isEmpty()) {
+				// 없어진 회사는 조회하지 않는다.
 				continue;
 			} else {
 				PensionInvestInfo beforeInfo = findList.get(0);
 				SortInvestInfo sortInvestInfo = SortInvestInfo.builder()
 					.corporationName(currentInfo.getCorporationName())
 					.evaluation(currentInfo.getEvaluation()) // 이전년도 평가액 차이를 구한다
-					.shareInAsset(Double.parseDouble(currentInfo.getShareInAsset()) - Double.parseDouble(beforeInfo.getShareInAsset()))
+					.shareInAsset(Double.parseDouble(currentInfo.getShareInAsset()) - Double.parseDouble(
+						beforeInfo.getShareInAsset()))
 					.shareRatio(currentInfo.getShareRatio())
 					.year(year)
 					.build();
@@ -86,20 +90,25 @@ public class PensionApiClient {
 			}
 		}
 
+		for (SortInvestInfo sortInvestInfo : sortList) {
+			sortInvestInfoRepository.save(sortInvestInfo);
+		}
+	}
+
+	/*
+	* 자산내 비중 퍼센트를 기준으로 오름차순 정렬
+	 */
+	private void sortByShareInAsset(List<SortInvestInfo> sortList) {
 		Collections.sort(sortList, (investInfo1, investInfo2) -> {
 			if (investInfo1.getShareInAsset() < investInfo2.getShareInAsset()) {
 				return -1;
 			} else if (investInfo1.getShareInAsset() == investInfo2.getShareInAsset()) {
 				return 0;
-			} else if(investInfo1.getShareInAsset() > investInfo2.getShareInAsset()){
+			} else if (investInfo1.getShareInAsset() > investInfo2.getShareInAsset()) {
 				return 1;
 			}
 			return 0;
 		});
-
-		for (SortInvestInfo sortInvestInfo : sortList) {
-			sortInvestInfoRepository.save(sortInvestInfo);
-		}
 	}
 }
 
