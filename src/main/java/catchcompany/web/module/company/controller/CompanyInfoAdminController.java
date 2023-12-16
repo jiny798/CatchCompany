@@ -4,26 +4,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import catchcompany.web.module.company.service.CompanyInfoApiService;
-import catchcompany.web.module.company.service.CompanyInvestInfoService;
+import catchcompany.web.module.company.service.CompanyInfoClient;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/financial-supervisory")
 @RequiredArgsConstructor
 @RestController
-public class CompanyInfoApiController {
+public class CompanyInfoAdminController {
 
-	private final CompanyInfoApiService companyInfoApiService;
-	private final CompanyInvestInfoService companyInvestInfoService;
+	private final CompanyInfoClient companyInfoClient;
 
 	@PostMapping("/company")
 	public void processCompanyInfoToDatabase() {
-		companyInfoApiService.processCompanyInfoToDatabase();
+		companyInfoClient.processCompanyInfoToDatabase();
 	}
 
 	@PostMapping("/comapny/invest-info")
 	public void processInvestInfoToDatabase() {
-		companyInvestInfoService.processCompanyInvestInfoToDatabase();
+		companyInfoClient.processCompanyInvestInfoToDatabase();
 	}
 
 }

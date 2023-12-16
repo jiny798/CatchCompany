@@ -81,15 +81,16 @@ public class PensionApiClient {
 				SortInvestInfo sortInvestInfo = SortInvestInfo.builder()
 					.corporationName(currentInfo.getCorporationName())
 					.evaluation(currentInfo.getEvaluation()) // 이전년도 평가액 차이를 구한다
-					.shareInAsset(Double.parseDouble(currentInfo.getShareInAsset()) - Double.parseDouble(
-						beforeInfo.getShareInAsset()))
+					.changeShareInAsset(Double.parseDouble(currentInfo.getShareInAsset()) - Double.parseDouble(beforeInfo.getShareInAsset()))
+					.beforeShareInAsset(Double.parseDouble(beforeInfo.getShareInAsset()))
+					.currentShareInAsset(Double.parseDouble(currentInfo.getShareInAsset()))
 					.shareRatio(currentInfo.getShareRatio())
 					.year(year)
 					.build();
 				sortList.add(sortInvestInfo); // 이전년도 평가액 차이 구한 회사만 list 추가
 			}
 		}
-
+		sortByShareInAsset(sortList);
 		for (SortInvestInfo sortInvestInfo : sortList) {
 			sortInvestInfoRepository.save(sortInvestInfo);
 		}
@@ -100,12 +101,12 @@ public class PensionApiClient {
 	 */
 	private void sortByShareInAsset(List<SortInvestInfo> sortList) {
 		Collections.sort(sortList, (investInfo1, investInfo2) -> {
-			if (investInfo1.getShareInAsset() < investInfo2.getShareInAsset()) {
-				return -1;
-			} else if (investInfo1.getShareInAsset() == investInfo2.getShareInAsset()) {
-				return 0;
-			} else if (investInfo1.getShareInAsset() > investInfo2.getShareInAsset()) {
+			if (investInfo1.getChangeShareInAsset() < investInfo2.getChangeShareInAsset()) {
 				return 1;
+			} else if (investInfo1.getChangeShareInAsset() == investInfo2.getChangeShareInAsset()) {
+				return 0;
+			} else if (investInfo1.getChangeShareInAsset() > investInfo2.getChangeShareInAsset()) {
+				return -1;
 			}
 			return 0;
 		});

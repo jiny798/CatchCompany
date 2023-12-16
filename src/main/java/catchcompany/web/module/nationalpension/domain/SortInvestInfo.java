@@ -22,7 +22,11 @@ public class SortInvestInfo {
 
 	private Long evaluation;
 
-	private Double shareInAsset;
+	private Double beforeShareInAsset;
+
+	private Double changeShareInAsset;
+
+	private Double currentShareInAsset;
 
 	private String shareRatio;
 
