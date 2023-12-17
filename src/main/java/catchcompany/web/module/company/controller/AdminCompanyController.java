@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/financial-supervisory")
 @RequiredArgsConstructor
 @RestController
-public class CompanyInfoAdminController {
+public class AdminCompanyController {
 
 	private final CompanyInfoClient companyInfoClient;
 
