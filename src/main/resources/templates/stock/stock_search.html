@@ -50,8 +50,14 @@
                                         BOOK
                                     </label>
                                 </div>
-                                <div id="yourDivId" style="display: none;">
+                                <div id="TRADING_VOLUME" style="display: none;">
                                     이 div는 라디오 1이 선택되면 보입니다.
+                                </div>
+                                <div id="INCREASE_COUNT" style="display: none;">
+                                    이 div는 라디오 2이 선택되면 보입니다.
+                                </div>
+                                <div id="DECREASE_COUNT" style="display: none;">
+                                    이 div는 라디오 3이 선택되면 보입니다.
                                 </div>
                             </div>
                             <!-- -->
@@ -76,12 +82,24 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var radios = document.querySelectorAll('input[type="radio"]');
-    var targetDiv = document.getElementById('yourDivId');
+    var trading = document.getElementById('TRADING_VOLUME');
+    var increase = document.getElementById('INCREASE_COUNT');
+    var decrease = document.getElementById('DECREASE_COUNT');
 
     radios.forEach(function(radio) {
         radio.addEventListener('change', function() {
-            if (this.value == 'BOOK') {
-                targetDiv.style.display = 'block';
+            if (this.value == 'TRADING_VOLUME') {
+                trading.style.display = 'block';
+                increase.style.display = 'none';
+                decrease.style.display = 'none';
+            } else if (this.value == 'INCREASE_COUNT') {
+                trading.style.display = 'none';
+                increase.style.display = 'block';
+                decrease.style.display = 'none';
+            } else if (this.value == 'DECREASE_COUNT') {
+                trading.style.display = 'none';
+                increase.style.display = 'none';
+                decrease.style.display = 'block';
             } else {
                 targetDiv.style.display = 'none';
             }

@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PensionApiClient {
+public class PensionInfoClient {
 
 	private final PensionInvestInfoRepository pensionInvestInfoRepository;
 	private final SortInvestInfoRepository sortInvestInfoRepository;
