@@ -2,6 +2,7 @@ package catchcompany.web.module.stock.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class StockInfoClient {
 	private String apiKey;
 	private final StockRepository stockRepository;
 
-	public void saveStockInfo() {
+	public void saveStockInfo(int date) {
 		RestTemplate restTemplate = new RestTemplate();
 		UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(
 				"https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo")
@@ -37,10 +38,9 @@ public class StockInfoClient {
 			.queryParam("numOfRows", 10000)
 			.queryParam("pageNo", 1)
 			.queryParam("resultType", "json")
-			.queryParam("basDt", 20231214)
+			.queryParam("basDt", date)
 			.build(true);
 
-		// ResponseEntity<StockInfoResult> result = restTemplate.getForEntity(uriComponents.toUri(), StockInfoResult.class);
 		String result = restTemplate.getForObject(uriComponents.toUri(), String.class);
 		ObjectMapper mapper = new ObjectMapper();
 		String city = "";
@@ -55,7 +55,6 @@ public class StockInfoClient {
 			e.printStackTrace();
 		}
 
-		log.info("가져온 정보");
 		for (int i = 0; i < list.size(); i++) {
 			StockInfo stockInfo = list.get(i);
 			boolean isIncrease = false;
@@ -76,8 +75,6 @@ public class StockInfoClient {
 				.build();
 			stockRepository.save(stock);
 		}
-
-
 
 	}
 
