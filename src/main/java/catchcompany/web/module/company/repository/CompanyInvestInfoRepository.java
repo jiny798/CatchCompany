@@ -11,9 +11,9 @@ import catchcompany.web.module.company.domain.CompanyInvestInfo;
 
 public interface CompanyInvestInfoRepository extends JpaRepository<CompanyInvestInfo, Long> {
 
-	@Query("select cii from CompanyInvestInfo cii where cii.investTarget = '투자' and cii.company = :company ")
-	Page<CompanyInvestInfo> findByCompanyForInvest(@Param("company") Company company, Pageable pageable);
+	@Query("select cii from CompanyInvestInfo cii where cii.company = :company and cii.corporationClass = :type ")
+	Page<CompanyInvestInfo> findInvestInfoByCompanyAndType(@Param("company") Company company, Pageable pageable, @Param("type") String type);
 
-	@Query("select cii from CompanyInvestInfo cii where cii.investTarget != '투자' and cii.company = :company ")
-	Page<CompanyInvestInfo> findByCompanyForBusiness(@Param("company")Company company, Pageable pageable);
+	@Query("select cii from CompanyInvestInfo cii where cii.company = :company ")
+	Page<CompanyInvestInfo> findInvestInfoByCompany(@Param("company") Company company, Pageable pageable);
 }

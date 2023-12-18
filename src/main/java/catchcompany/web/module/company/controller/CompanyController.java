@@ -1,5 +1,6 @@
 package catchcompany.web.module.company.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -33,28 +34,31 @@ public class CompanyController {
 	}
 
 	// GET /매일유업?page=0&size=5&sort=id,DESC
-	@GetMapping("/invest/{name}/{page1}/{page2}")
+	@GetMapping("/invest/{name}/{page}/{type}")
 	public String findCompanyInvestInfo(Model model, @PathVariable String name,
-		@PathVariable int page1, @PathVariable int page2) {
+		@PathVariable int page, @PathVariable String type) {
 		log.debug("검색한 회사명 : " + name);
-		CompanyInfo companyInfo = companyService.findCompanyInvestInfo(name,page1,page2);
+		CompanyInfo companyInfo = companyService.findCompanyInvestInfo(name,page,type);
 		model.addAttribute("name", companyInfo.getName());
-		model.addAttribute("pageForInvest", companyInfo.getPageForInvest());
-		model.addAttribute("pageForBusiness", companyInfo.getPageForBusiness());
+		model.addAttribute("page", companyInfo.getPage());
 
-		int pageLimit = 5;
-		int startPage1 = (((page1 - 1) / pageLimit) * pageLimit) + 1 ;
-		int startPage2 = (((page2 - 1) / pageLimit) * pageLimit) + 1 ;
-		log.info("page start {} {}",startPage1, startPage2);
-		int endPageForBusiness = Math.min((startPage1 + pageLimit - 1), companyInfo.getPageForBusiness().getTotalPages());
-		int endPageForInvest = Math.min((startPage2 + pageLimit - 1), companyInfo.getPageForInvest().getTotalPages());
-		model.addAttribute("startPage1", startPage1);
-		model.addAttribute("startPage2", startPage2);
-		model.addAttribute("endPageForInvest", endPageForInvest);
-		model.addAttribute("endPageForBusiness", endPageForBusiness);
-		model.addAttribute("currentPage1", page1);
-		model.addAttribute("currentPage2", page2);
+		int pageLimit = 10;
+		int startPage = (((page - 1) / pageLimit) * pageLimit) + 1 ;
+		int endPage = Math.min((startPage + pageLimit - 1), companyInfo.getPage().getTotalPages());
+
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("currentType",type);
 
 		return "company/invest_info";
+	}
+
+	@ModelAttribute("typeList")
+	public List<String> typeList(){
+		List<String> typeList = new ArrayList<>();
+		typeList.add("상장");
+		typeList.add("전체");
+		return typeList;
 	}
 }
