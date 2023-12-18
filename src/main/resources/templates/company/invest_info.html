@@ -10,6 +10,7 @@
         <link th:href="@{/css/company.css}" href="css/company.css" rel="stylesheet" />
         <link th:href="@{/css/styles.css}" href="css/styles.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script th:src="@{/js/datatables-simple-demo.js}" src="js/datatables-simple-demo.js"></script>
         <script th:src="@{/js/scripts.js}" src="js/scripts.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
@@ -27,80 +28,62 @@
                                         <button type="button" onclick="searchCompany()" class="btn btn-primary" id="btnNavbarSearch"><i class="fas fa-search"></i></button>
                                     </div>
                                 </form>
-
                             </div>
 
-                            <div class="table_card">
-                                <div class="table_title" ><b th:text="${name}"></b> 경영 참여 목적으로 투자 중인 회사</div>
-                                <table class="myTable">
-                                    <tr>
-                                        <th>회사명</th>
-                                        <th>주식 보유수</th>
-                                        <th>상장여부</th>
-                                        <th>비고</th>
-                                    </tr>
-                                    <tr th:each="company : ${pageForBusiness}" class="data-row">
-                                        <td style="width: 500px;" th:text="${company.investedCompany}">투자받는 회사명</td>
-                                        <td th:text="${company.currentStockCount}">주식수</td>
-                                        <td th:text="${company.corporationClass}">상장여부</td>
-                                        <td> - </td>
-                                    </tr>
-                                </table>
+                            <div class="container-fluid px-4">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-table me-1"></i>
+                                        <span th:text="${name}"></span>에서 투자중인 회사 리스트  -
+                                        <select onchange="location = this.value;">
+                                            <option th:each="type : ${typeList}"
+                                                    th:value="'/company/invest/'+${name}+'/1/'+${type}"
+                                                    th:text="${type} + ' 회사 보기'"
+                                                    th:selected="${type} == ${currentType}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="datatablesSimple">
+                                            <thead>
+                                            <tr>
+                                                <th>회사명</th>
+                                                <th>주식 보유수</th>
+                                                <th>상장여부</th>
+                                                <th>비고</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="company : ${page}" class="data-row">
+                                                <td style="width: 500px;" th:text="${company.investedCompany}">투자받는 회사명</td>
+                                                <td th:text="${company.currentStockCount}">주식수</td>
+                                                <td th:text="${company.corporationClass}">상장여부</td>
+                                                <td> - </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <ul class="pagination">
+                                        <li>
+                                            <a th:href="${page.first} ? '#' : @{ /company/invest/{company}/{pageNum}/{type}(company=${name},pageNum=${page.number}, type=${currentType}) }"> 이전 </a>
+                                        </li>
+                                        <li th:each = "pageNumber: ${#numbers.sequence(startPage, endPage)}" >
+                                            <a th:if="${pageNumber == page.number + 1}" href="#" th:text="${pageNumber}" class="active">page number</a>
+                                            <a th:unless="${pageNumber == page.number + 1}"
+                                               href="#"
+                                               th:text="${pageNumber}"
+                                               th:href="@{/company/invest/{company}/{pageNum}/{type}(company=${name}, pageNum=${pageNumber}, type=${currentType})}"
+                                            >page number</a>
+                                        </li>
 
-                                <ul class="pagination">
-                                    <li>
-                                        <a th:href="${pageForBusiness.first} ? '#' : @{/company/invest/{company}/{page1}/{page2}(company=${name}, page1=${pageForBusiness.number}, page2=${currentPage2})}"> 이전 </a>
-                                    </li>
-                                    <li th:each = "page: ${#numbers.sequence(startPage1, endPageForBusiness)}" >
-                                        <a th:if="${page == pageForBusiness.number + 1}" href="#" th:text="${page}" class="active">page number</a>
-                                        <a th:unless="${page == pageForBusiness.number + 1}"
-                                           href="#"
-                                           th:text="${page}"
-                                           th:href="@{/company/invest/{company}/{page1}/{page2}(company=${name}, page1=${page}, page2=${currentPage2})}"
-                                        >page number</a>
-                                    </li>
+                                        <li>
+                                            <a th:href="${page.last} ? '#' : @{ /company/invest/{company}/{pageNum}/{type}(company=${name},pageNum=${page.number}+2, type=${currentType}) }"> 다음 </a>
+                                        </li>
+                                    </ul>
 
-                                    <li>
-                                        <a th:href="${pageForBusiness.last} ? '#' : @{/company/invest/{company}/{page1}/{page2}(company=${name}, page1=${pageForBusiness.number}+2, page2=${currentPage2})}"> 다음 </a>
-                                    </li>
-                                </ul>
+                                </div>
                             </div>
 
-                        <br>
-                        <div class="table_card">
-                            <div class="table_title"><b th:text="${name}"></b> 투자 목적으로 투자 중인 회사</div>
-                            <table class="myTable">
-                                <tr>
-                                    <th>회사명</th>
-                                    <th>주식 보유수</th>
-                                    <th>상장여부</th>
-                                    <th>비고</th>
-                                </tr>
-                                <tr th:each="company : ${pageForInvest}" class="data-row">
-                                    <td style="width: 500px;" th:text="${company.investedCompany}">투자받는 회사명</td>
-                                    <td th:text="${company.currentStockCount}">주식수</td>
-                                    <td th:text="${company.corporationClass}">상장여부</td>
-                                    <td>-</td>
-                                </tr>
-
-                            </table>
-
-                            <ul class="pagination">
-                                <li>
-                                    <a th:href="${pageForInvest.first} ? '#' : @{/company/invest/{company}/{page1}/{page2}(company=${name}, page2=${pageForInvest.number}, page1=${currentPage1})}"> 이전 </a>
-                                </li>
-                                <li th:each = "page: ${#numbers.sequence(startPage2, endPageForInvest)}">
-                                    <a th:if="${page == pageForInvest.number + 1}" href="#" th:text="${page}" class="active">page number</a>
-                                    <a th:unless="${page == pageForInvest.number + 1}" href="#"
-                                       th:text="${page}"
-                                       th:href="@{/company/invest/{company}/{page1}/{page2}(company=${name}, page2=${page}, page1=${currentPage1})}"
-                                    >page number</a>
-                                </li>
-                                <li>
-                                    <a th:href="${pageForInvest.last} ? '#' : @{/company/invest/{company}/{page1}/{page2}(company=${name}, page2=${pageForInvest.number}+2, page1=${currentPage1})}"> 다음 </a>
-                                </li>
-                            </ul>
-                        </div>
                         </div>
 
                     </main>
@@ -121,8 +104,8 @@
         var inputElement = document.getElementById('search');
         var value = encodeURIComponent(inputElement.value);
         console.log(inputElement.value);
-        location.href = 'http://localhost:8080/company/invest/' + inputElement.value + '/1/1';
+        location.href = 'http://localhost:8080/company/invest/' + inputElement.value + '/1' + '/상장';
     }
     </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 </html>
