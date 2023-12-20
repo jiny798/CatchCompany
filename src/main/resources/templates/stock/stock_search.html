@@ -7,16 +7,8 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <title>Dashboard</title>
-    <style>
-        .condition_input{
-            width: 40px;
-        }
-        .stock-search-btn{
-            margin-top: 15px;
-        }
-
-    </style>
-    <!--        <link th:href="@{/css/company.css}" href="css/company.css" rel="stylesheet" />-->
+    <link th:href="@{/css/stock-search.css}" href="css/stock-search.css" rel="stylesheet"/>
+    <link th:href="@{/css/company.css}" href="css/company.css" rel="stylesheet"/>
     <link th:href="@{/css/styles.css}" href="css/styles.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"></script>
@@ -25,25 +17,33 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
+
+<div id="loadingModal" class="loading-modal" style="display: none;">
+    <div class="modal-content">
+        <div class="loader"></div>
+    </div>
+</div>
+
 <nav th:replace="~{side/nav :: nav}"></nav>
 <div id="layoutSidenav">
     <div th:replace="~{side/side_nav :: side_nav}"></div>
     <div id="layoutSidenav_content">
         <main>
+
             <div class="container-fluid px-4">
                 <h1 class="mt-4">조건 탐색기</h1>
 
                 <div class="card mb-4">
                     <div class="card-body">
-                        <form action="item.html" th:action th:object="${item}" method="post">
+                        <form id="form" action="" th:action="@{/stock/trading-volume}" th:object="${stockSearch}" method="post">
                             <!-- -->
                             <div>
                                 <div>시장</div>
-                                <div th:each="region : ${regions}" class="form-check form-check-inline">
-                                    <input type="checkbox" th:field="*{regions}" th:value="${region.key}"
+                                <div th:each="market : ${marketMap}" class="form-check form-check-inline">
+                                    <input type="checkbox" th:field="*{marketList}" th:value="${market.key}"
                                            class="form-check-input">
-                                    <label th:for="${#ids.prev('regions')}"
-                                           th:text="${region.value}" class="form-check-label">서울</label>
+                                    <label th:for="${#ids.prev('marketList')}"
+                                           th:text="${market.value}" class="form-check-label">서울</label>
                                 </div>
                             </div>
                             <!-- -->
@@ -51,31 +51,57 @@
                             <!-- -->
                             <div>
                                 <div>조건</div>
-                                <div th:each="type : ${itemTypes}" class="form-check form-check-inline">
-                                    <input type="radio" th:field="*{itemType}" th:value="${type.name()}"
-                                           class="form-check-input" >
-                                    <label th:for="${#ids.prev('itemType')}" th:text="${type.description}"
+                                <div th:each="condition : ${firstConditions}" class="form-check form-check-inline">
+                                    <input type="radio" th:field="*{firstCondition}" th:value="${condition.name()}"
+                                           class="form-check-input">
+                                    <label th:for="${#ids.prev('firstCondition')}" th:text="${condition.description}"
                                            class="form-check-label">
-                                        BOOK
+                                        조건
                                     </label>
                                 </div>
+                                <br>
                                 <div id="TRADING_VOLUME" style="display: none;">
-                                    최근 <input value="7" class="condition_input"> 일 내에 전일대비 거래량이 <input value="10" class="condition_input">배 이상 발생한 기업
-                                </div>
-                                <div id="INCREASE_COUNT" style="display: none;">
-                                    현재까지 <input value="5" class="condition_input"> 일 동안 상승한 기업
-                                </div>
-                                <div id="DECREASE_COUNT" style="display: none;">
-                                    현재까지 <input value="5" class="condition_input"> 일 동안 하락한 기업
+                                    날짜 : <input value="20231218" th:field="*{date}" class="condition_input-date"> 일,
+                                    전일대비 거래량이 <input th:field="*{volume}" value="10" class="condition_input">배 이상 발생한 기업
                                 </div>
 
                             </div>
                             <!-- -->
-                            <button type="button" onclick="searchCompany()" class="stock-search-btn btn btn-primary" id="btnNavbarSearch">검색 <i class="fas fa-search"></i></button>
+                            <button type="submit" class="stock-search-btn btn btn-primary" id="btnNavbarSearch">검색 <i
+                                    class="fas fa-search"></i></button>
                             <!-- -->
                         </form>
                     </div>
                 </div>
+
+                <div th:if="${searchResults}" th:fragment="result" class="container-fluid px-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            검색 결과
+                        </div>
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                <tr>
+                                    <th>회사명</th>
+                                    <th>전일 거래량</th>
+                                    <th>검색일 거래량</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="searchResult : ${searchResults}">
+                                    <td th:text="${searchResult.corpName}">회사명</td>
+                                    <td th:text="${searchResult.yesterdayTradingVolume}">전일 거래량</td>
+                                    <td th:text="${searchResult.todayTradingVolume}">현재(검색일) 거래량</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </main>
         <footer class="py-4 bg-light mt-auto">
@@ -92,34 +118,30 @@
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
 <script>
+document.querySelector('#btnNavbarSearch').addEventListener('click', function() {
+  document.getElementById('loadingModal').style.display = 'block';
+  var radios = document.querySelectorAll('input[type=radio]');
+  for (var i = 0; i < radios.length; i++) {
+    radios[i].checked = false;
+  }
+});
+
+</script>
+
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     var radios = document.querySelectorAll('input[type="radio"]');
     var trading = document.getElementById('TRADING_VOLUME');
-    var increase = document.getElementById('INCREASE_COUNT');
-    var decrease = document.getElementById('DECREASE_COUNT');
-
     radios.forEach(function(radio) {
         radio.addEventListener('change', function() {
             if (this.value == 'TRADING_VOLUME') {
                 trading.style.display = 'block';
-                increase.style.display = 'none';
-                decrease.style.display = 'none';
-            } else if (this.value == 'INCREASE_COUNT') {
-                trading.style.display = 'none';
-                increase.style.display = 'block';
-                decrease.style.display = 'none';
-            } else if (this.value == 'DECREASE_COUNT') {
-                trading.style.display = 'none';
-                increase.style.display = 'none';
-                decrease.style.display = 'block';
             } else {
                 targetDiv.style.display = 'none';
             }
         });
     });
 });
-
-
 </script>
 
 </body>
