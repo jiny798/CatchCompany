@@ -29,51 +29,27 @@ import catchcompany.web.module.company.domain.Company;
 import catchcompany.web.module.company.domain.CompanyInvestInfo;
 import catchcompany.web.module.company.repository.CompanyInvestInfoRepository;
 import catchcompany.web.module.company.repository.CompanyRepository;
+import catchcompany.web.module.uri.application.UriManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class CompanyInfoClient {
-
+public class AdminCompanyService {
 	private final CompanyRepository companyRepository;
-
 	private final CompanyInvestInfoRepository companyInvestInfoRepository;
-	@Value("${dart.api-key}")
-	private String apiKey;
+	private final UriManager uriManager;
 
-	public void processCompanyInfoToDatabase() {
-		RestTemplate restTemplate = new RestTemplate();
-		UriComponents uriComponents = UriComponentsBuilder
-			.fromHttpUrl("https://opendart.fss.or.kr/api")
-			.pathSegment("corpCode.xml")
-			.queryParam("crtfc_key", apiKey)
-			.build();
+	private final CompanyDataProcessor companyDataProcessor;
 
-		Document document = restTemplate.execute(uriComponents.toUriString(), HttpMethod.GET, null, response -> {
-			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getBody().readAllBytes());
-			ZipInputStream zipInputStream = new ZipInputStream(byteArrayInputStream);
-			Document tmpDocument = null;
-			try {
-				zipInputStream.getNextEntry();
-				tmpDocument = DocumentBuilderFactory.newDefaultInstance().newDocumentBuilder().parse(zipInputStream);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return tmpDocument;
-		});
+	public void processCompanyListToDatabase() {
+		UriComponents uriComponents = uriManager.getCorpCodeUri();
+		NodeList nodeList = companyDataProcessor.getNodeList(uriComponents.toUriString());
+		IntStream stream = IntStream.rangeClosed(0, nodeList.getLength());
 
-		processXmlToDatabase(document);
-	}
-
-	private void processXmlToDatabase(Document document) {
-		document.getDocumentElement().normalize();
-		Element root = document.getDocumentElement();
-		NodeList nList = root.getElementsByTagName("list");
-		IntStream stream = IntStream.rangeClosed(0, nList.getLength());
 		stream.parallel().forEach(i -> {
-			Node nNode = nList.item(i);
+			Node nNode = nodeList.item(i);
 			Element eElement = (Element)nNode;
 			if (eElement != null) {
 				Company company = companyRepository.save(Company.createCompany(
@@ -82,6 +58,7 @@ public class CompanyInfoClient {
 					getTagValue("stock_code", eElement)));
 			}
 		});
+
 	}
 
 	private String getTagValue(String tag, Element eElement) {

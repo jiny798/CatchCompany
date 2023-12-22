@@ -18,7 +18,7 @@ public class DateManager {
 	public static int today = 20231218;
 	private final StockRepository stockRepository;
 
-	public String calculateYesterdayStockInfo(String date) {
+	public String calculatePreviousDateOf(String date) {
 		LocalDate inputDate = LocalDate.of(Integer.parseInt(date.substring(0, 4)),
 			Integer.parseInt(date.substring(4, 6)),
 			Integer.parseInt(date.substring(6, 8)));
