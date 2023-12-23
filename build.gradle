@@ -54,6 +54,14 @@ dependencies {
 	// view reload
 	implementation 'org.springframework.boot:spring-boot-devtools'
 
+	// java mail
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// lombok for test
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+
 }
 
 tasks.named('test') {
