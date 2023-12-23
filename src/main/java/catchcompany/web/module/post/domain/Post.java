@@ -2,8 +2,8 @@ package catchcompany.web.module.post.domain;
 
 import java.time.LocalDateTime;
 
+import catchcompany.web.module.account.domain.entity.Account;
 import catchcompany.web.module.post.controller.dto.PostForm;
-import catchcompany.web.module.user.domian.Account;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

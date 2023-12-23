@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import catchcompany.web.module.post.controller.dto.PostForm;
 import catchcompany.web.module.post.domain.Post;
-import catchcompany.web.module.post.domain.PostRepository;
 import catchcompany.web.module.post.controller.dto.PostInfo;
+import catchcompany.web.module.post.service.port.PostRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
