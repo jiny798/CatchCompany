@@ -29,7 +29,7 @@ public class StockService {
 	 * @Param date는 {20231218}, volume은 {10}배를 나타낸다
 	 */
 	public List<StockSearchResult> findStockByTradingVolume(StockSearch stockSearch) {
-		String yesterdayDate = dateManager.calculateYesterdayStockInfo(stockSearch.getDate());
+		String yesterdayDate = dateManager.calculatePreviousDateOf(stockSearch.getDate());
 		log.info("조회된 어제 날짜 {}", yesterdayDate);
 		List<StockSearchResult> answer = new ArrayList<>();
 		List<Stock> today = stockRepository.findByBasDt(stockSearch.getDate());

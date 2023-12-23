@@ -1,4 +1,4 @@
-package catchcompany.web.module.company.service;
+package catchcompany.web.module.company.infrastructure;
 
 import java.io.ByteArrayInputStream;
 import java.util.zip.ZipInputStream;
@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import catchcompany.web.module.company.service.CompanyDataProcessor;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
