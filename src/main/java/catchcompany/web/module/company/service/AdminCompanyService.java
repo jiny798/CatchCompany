@@ -1,26 +1,17 @@
 package catchcompany.web.module.company.service;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
-import java.util.zip.ZipInputStream;
-
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -40,14 +31,12 @@ public class AdminCompanyService {
 	private final CompanyRepository companyRepository;
 	private final CompanyInvestInfoRepository companyInvestInfoRepository;
 	private final UriManager uriManager;
-
 	private final CompanyDataProcessor companyDataProcessor;
 
 	public void processCompanyListToDatabase() {
 		UriComponents uriComponents = uriManager.getCorpCodeUri();
 		NodeList nodeList = companyDataProcessor.getNodeList(uriComponents.toUriString());
 		IntStream stream = IntStream.rangeClosed(0, nodeList.getLength());
-
 		stream.parallel().forEach(i -> {
 			Node nNode = nodeList.item(i);
 			Element eElement = (Element)nNode;
@@ -108,7 +97,6 @@ public class AdminCompanyService {
 									break;
 							}
 						}
-
 						recordInfoList.add(value);
 					} //컬럼 읽기 종료
 				}
