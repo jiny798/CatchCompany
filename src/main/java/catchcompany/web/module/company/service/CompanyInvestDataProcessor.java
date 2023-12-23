@@ -3,7 +3,7 @@ package catchcompany.web.module.company.service;
 import java.io.FileInputStream;
 import java.util.List;
 
-import catchcompany.web.module.company.domain.CompanyInvestInfo;
+import catchcompany.web.module.company.domain.Invest;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public class CompanyInvestDataProcessor {
 		return null;
 	}
 
-	public List<CompanyInvestInfo> getInvestInfoList(){
+	public List<Invest> getInvestInfoList(){
 		return null;
 	}
 }

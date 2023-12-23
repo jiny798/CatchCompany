@@ -17,9 +17,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import catchcompany.web.module.company.domain.Company;
-import catchcompany.web.module.company.domain.CompanyInvestInfo;
-import catchcompany.web.module.company.repository.CompanyInvestInfoRepository;
-import catchcompany.web.module.company.repository.CompanyRepository;
+import catchcompany.web.module.company.domain.Invest;
+import catchcompany.web.module.company.service.port.InvestRepository;
+import catchcompany.web.module.company.service.port.CompanyRepository;
 import catchcompany.web.module.uri.application.UriManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class AdminCompanyService {
 	private final CompanyRepository companyRepository;
-	private final CompanyInvestInfoRepository companyInvestInfoRepository;
+	private final InvestRepository investRepository;
 	private final UriManager uriManager;
 	private final CompanyDataProcessor companyDataProcessor;
 
@@ -135,7 +135,7 @@ public class AdminCompanyService {
 						}
 					}
 
-					CompanyInvestInfo companyInvestInfo = CompanyInvestInfo.builder()
+					Invest invest = Invest.builder()
 						.company(company)
 						.investorName(investorName)
 						.corporationCode(investorCode)
@@ -150,7 +150,7 @@ public class AdminCompanyService {
 						.recentAcquisitionAmount(change2)
 						.recentEvaluationGainsAndLosses(change3)
 						.build();
-					companyInvestInfoRepository.save(companyInvestInfo);
+					investRepository.save(invest);
 				}
 			});
 

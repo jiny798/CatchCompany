@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import catchcompany.web.module.company.controller.dto.CompanyInfo;
 import catchcompany.web.module.company.domain.Company;
-import catchcompany.web.module.company.domain.CompanyInvestInfo;
-import catchcompany.web.module.company.repository.CompanyInvestInfoRepository;
-import catchcompany.web.module.company.repository.CompanyRepository;
+import catchcompany.web.module.company.domain.Invest;
+import catchcompany.web.module.company.service.port.InvestRepository;
+import catchcompany.web.module.company.service.port.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,18 +23,18 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyService {
 
 	private final CompanyRepository companyRepository;
-	private final CompanyInvestInfoRepository companyInvestInfoRepository;
+	private final InvestRepository investRepository;
 
 	public CompanyInfo findCompanyInvestInfo(String name,int pageNum, String type) {
 		Pageable pageable = PageRequest.of(pageNum-1, 10);
 
 		List<Company> companies = companyRepository.findByName(name);
 		Company company = companies.get(0);
-		Page<CompanyInvestInfo> page;
+		Page<Invest> page;
 		if(type.equals("상장")) {
-			page = companyInvestInfoRepository.findInvestInfoByCompanyAndType(company, pageable, type);
+			page = investRepository.findInvestInfoByCompanyAndType(company, pageable, type);
 		}else{
-			page = companyInvestInfoRepository.findInvestInfoByCompany(company, pageable);
+			page = investRepository.findInvestInfoByCompany(company, pageable);
 		}
 		CompanyInfo companyInfo = new CompanyInfo(company, page);
 

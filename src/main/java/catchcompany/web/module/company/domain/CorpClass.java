@@ -1,11 +1,11 @@
 package catchcompany.web.module.company.domain;
 
-public enum CorporationClass { // classification
+public enum CorpClass { // classification
 	Y("유가"), K("코스닥"), N("코넥스"), E("기타");
 
 	private String type;
 
-	CorporationClass(String type) {
+	CorpClass(String type) {
 		this.type = type;
 	}
 
@@ -13,18 +13,18 @@ public enum CorporationClass { // classification
 		return this.type;
 	}
 
-	public static CorporationClass createCorpClass(String type) {
+	public static CorpClass createCorpClass(String type) {
 		if(type.equals("Y")){
-			return CorporationClass.Y;
+			return CorpClass.Y;
 		}
 		if(type.equals("K")){
-			return CorporationClass.K;
+			return CorpClass.K;
 		}
 		if(type.equals("N")){
-			return CorporationClass.N;
+			return CorpClass.N;
 		}
 		if(type.equals("E")){
-			return CorporationClass.E;
+			return CorpClass.E;
 		}
 		return null;
 	}
