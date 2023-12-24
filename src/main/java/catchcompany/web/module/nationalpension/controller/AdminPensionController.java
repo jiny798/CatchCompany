@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import catchcompany.web.module.nationalpension.controller.dto.InvestYearInfo;
-import catchcompany.web.module.nationalpension.service.PensionInfoClient;
+import catchcompany.web.module.nationalpension.service.admin.PensionStockDataProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,18 +15,18 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/national-pension")
 public class AdminPensionController {
-	private final PensionInfoClient pensionInfoClient;
+	private final PensionStockDataProcessor pensionStockDataProcessor;
 
 	@PostMapping("/invest")
 	public String processInvestInfoSave(@ModelAttribute InvestYearInfo info) {
 		log.info("info link - {}",info.getLink());
-		pensionInfoClient.saveInvestInfo(info);
+		pensionStockDataProcessor.saveInvestInfo(info);
 		return "home";
 	}
 
 	@PostMapping("/sort/{year}")
 	public String processInvestInfoSort(@PathVariable int year) {
-		pensionInfoClient.sortInvestInfo(year);
+		pensionStockDataProcessor.sortInvestInfo(year);
 		return "home";
 	}
 }

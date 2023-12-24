@@ -1,13 +1,13 @@
-package catchcompany.web.module.nationalpension.service.dto;
+package catchcompany.web.module.nationalpension.service.admin;
 
 import java.util.List;
 
 import lombok.Getter;
 
 @Getter
-public class PensionInvestResult {
+public class PensionStockRestResponse {
 	public String currentCount;
-	public List<PensionInvestInfoDto> data;
+	public List<PensionStockDto> data;
 	public Long matchCount;
 	public Long perPage;
 	public Long totalCount;

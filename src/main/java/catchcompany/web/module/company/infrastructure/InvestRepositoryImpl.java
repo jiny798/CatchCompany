@@ -15,13 +15,13 @@ public class InvestRepositoryImpl implements InvestRepository {
 	private final InvestJpaRepository investJpaRepository;
 
 	@Override
-	public Page<Invest> findInvestInfoByCompanyAndType(Company company, Pageable pageable, String type) {
-		return investJpaRepository.findInvestInfoByCompanyAndType(company, pageable, type);
+	public Page<Invest> findInvestByCompanyAndType(Company company, Pageable pageable, String type) {
+		return investJpaRepository.findInvestByCompanyAndType(company, pageable, type);
 	}
 
 	@Override
-	public Page<Invest> findInvestInfoByCompany(Company company, Pageable pageable) {
-		return investJpaRepository.findInvestInfoByCompany(company, pageable);
+	public Page<Invest> findInvestByCompany(Company company, Pageable pageable) {
+		return investJpaRepository.findInvestByCompany(company, pageable);
 	}
 
 	@Override

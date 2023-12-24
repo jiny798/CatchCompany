@@ -1,4 +1,4 @@
-package catchcompany.web.module.nationalpension.service.dto;
+package catchcompany.web.module.nationalpension.service.admin;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,12 +6,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class PensionInvestInfoDto {
+public class PensionStockDto {
 	@JsonProperty("번호")
 	private Long id;
 
 	@JsonAlias({"자산군 내 비중", "자산군 내 비중(%)", "자산군 내 비중(퍼센트)"})
-	private String shareInAsset;
+	private Double shareInAsset;
 
 	@JsonProperty("종목명")
 	private String name;

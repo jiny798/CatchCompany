@@ -1,4 +1,4 @@
-package catchcompany.web.module.company.service;
+package catchcompany.web.module.company.service.admin;
 
 import java.util.ArrayList;
 import java.util.List;

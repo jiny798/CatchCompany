@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import catchcompany.web.module.company.domain.Company;
 
-@Repository
 public interface CompanyRepository {
 
 	List<Company> findByName(String name);

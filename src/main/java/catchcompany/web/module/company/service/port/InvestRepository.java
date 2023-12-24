@@ -10,9 +10,9 @@ import catchcompany.web.module.company.domain.Company;
 import catchcompany.web.module.company.domain.Invest;
 
 public interface InvestRepository {
-	Page<Invest> findInvestInfoByCompanyAndType(Company company, Pageable pageable, String type);
+	Page<Invest> findInvestByCompanyAndType(Company company, Pageable pageable, String type);
 
-	Page<Invest> findInvestInfoByCompany(Company company, Pageable pageable);
+	Page<Invest> findInvestByCompany(Company company, Pageable pageable);
 
 	Invest save(Invest invest);
 }

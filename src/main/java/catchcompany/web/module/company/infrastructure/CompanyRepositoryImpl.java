@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class CompanyRepositoryImpl implements CompanyRepository {
-	private CompanyJpaRepository companyJpaRepository;
+	private final CompanyJpaRepository companyJpaRepository;
 	@Override
 	public List<Company> findByName(String name) {
 		return companyJpaRepository.findByName(name);

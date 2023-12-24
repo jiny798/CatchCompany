@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import catchcompany.web.module.account.domain.entity.Account;
-import catchcompany.web.module.account.domain.entity.AccountStatus;
 import catchcompany.web.module.account.service.port.AccountRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -20,13 +19,13 @@ public class AccountRepositoryImpl implements AccountRepository {
 	}
 
 	@Override
-	public Optional<Account> findByIdAndStatus(Long id, AccountStatus accountStatus) {
-		return accountJpaRepository.findByIdAndStatus(id, accountStatus);
+	public Optional<Account> findByIdAndIsValid(Long id, boolean isValid) {
+		return accountJpaRepository.findByIdAndIsValid(id, isValid);
 	}
 
 	@Override
-	public Optional<Account> findByEmailAndStatus(String email, AccountStatus accountStatus) {
-		return accountJpaRepository.findByEmailAndStatus(email, accountStatus);
+	public Optional<Account> findByEmailAndIsValid(String email, boolean isValid) {
+		return accountJpaRepository.findByEmailAndIsValid(email, isValid);
 	}
 
 	@Override

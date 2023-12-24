@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity @Getter
-public class PensionInvestInfo {
+public class PensionStock {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,11 @@ public class PensionInvestInfo {
 
 	private Long evaluation; // (억원)
 
-	private String shareInAsset;
+	private Double beforeShareInAsset;
+
+	private Double changeShareInAsset;
+
+	private Double currentShareInAsset;
 
 	private String shareRatio;
 

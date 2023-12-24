@@ -6,6 +6,7 @@ import java.util.zip.ZipInputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
 
@@ -13,6 +14,7 @@ import catchcompany.web.module.company.service.port.CompanyDataRestClient;
 import catchcompany.web.module.uri.application.UriManager;
 import lombok.RequiredArgsConstructor;
 
+@Component
 @RequiredArgsConstructor
 public class CompanyDataRestClientImpl implements CompanyDataRestClient {
 

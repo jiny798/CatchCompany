@@ -6,17 +6,17 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import catchcompany.web.module.nationalpension.controller.dto.InvestInfo;
-import catchcompany.web.module.nationalpension.repository.SortInvestInfoRepository;
+import catchcompany.web.module.nationalpension.infrastructure.PensionInvestRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class PensionService {
 
-	private final SortInvestInfoRepository sortInvestInfoRepository;
+	private final PensionInvestRepository pensionInvestRepository;
 
 	public List<InvestInfo> getInvestInfo(int year) {
-		List<InvestInfo> list = sortInvestInfoRepository.findByYear(year).stream()
+		List<InvestInfo> list = pensionInvestRepository.findByYear(year).stream()
 			.map(sortInvestInfo -> new InvestInfo(
 				sortInvestInfo.getCorporationName(),
 				sortInvestInfo.getBeforeShareInAsset(),

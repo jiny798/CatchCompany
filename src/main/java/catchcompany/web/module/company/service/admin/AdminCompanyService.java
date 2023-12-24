@@ -1,12 +1,13 @@
-package catchcompany.web.module.company.service;
+package catchcompany.web.module.company.service.admin;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponents;
 
 import catchcompany.web.module.company.domain.Company;
 import catchcompany.web.module.company.domain.Invest;
+import catchcompany.web.module.company.service.admin.CompanyDataProcessor;
+import catchcompany.web.module.company.service.admin.InvestDataProcessor;
 import catchcompany.web.module.company.service.port.InvestRepository;
 import catchcompany.web.module.company.service.port.CompanyRepository;
 import catchcompany.web.module.uri.application.UriManager;
@@ -25,9 +26,9 @@ public class AdminCompanyService {
 
 	public void processCompanyListToDatabase() {
 		List<Company> companyList = companyDataProcessor.getCompanyList();
-
-
-
+		companyList.stream().parallel().forEach(i -> {
+			companyRepository.save(i);
+		});
 	}
 
 

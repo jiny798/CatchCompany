@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import catchcompany.web.module.company.service.AdminCompanyService;
+import catchcompany.web.module.company.service.admin.AdminCompanyService;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/financial-supervisory")

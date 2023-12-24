@@ -4,16 +4,12 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import catchcompany.web.module.company.domain.Company;
-import catchcompany.web.module.company.service.CompanyDataProcessor;
+import catchcompany.web.module.company.service.admin.CompanyDataProcessor;
 import catchcompany.web.module.company.service.port.CompanyDataRestClient;
 import catchcompany.web.module.mock.MockCompanyDataRestClient;
 

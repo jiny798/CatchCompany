@@ -1,4 +1,4 @@
-package catchcompany.web.module.company.service;
+package catchcompany.web.module.company.service.admin;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class InvestDataProcessor {
-	private final FileInputStream fileInputStream;
 	private final CompanyRepository companyRepository;
 
 	public List<Invest> getInvestList(String path) { // "C:\\Users\\file\\BusinessReport.xls"

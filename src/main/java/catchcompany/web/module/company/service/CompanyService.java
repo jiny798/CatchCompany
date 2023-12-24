@@ -32,9 +32,9 @@ public class CompanyService {
 		Company company = companies.get(0);
 		Page<Invest> page;
 		if(type.equals("상장")) {
-			page = investRepository.findInvestInfoByCompanyAndType(company, pageable, type);
+			page = investRepository.findInvestByCompanyAndType(company, pageable, type);
 		}else{
-			page = investRepository.findInvestInfoByCompany(company, pageable);
+			page = investRepository.findInvestByCompany(company, pageable);
 		}
 		CompanyInfo companyInfo = new CompanyInfo(company, page);
 
