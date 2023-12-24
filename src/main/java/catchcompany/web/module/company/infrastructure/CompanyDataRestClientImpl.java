@@ -6,23 +6,23 @@ import java.util.zip.ZipInputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
-import catchcompany.web.module.company.service.CompanyDataProcessor;
+import catchcompany.web.module.company.service.port.CompanyDataRestClient;
+import catchcompany.web.module.uri.application.UriManager;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Component
-public class CompanyDataProcessorImpl implements CompanyDataProcessor {
+public class CompanyDataRestClientImpl implements CompanyDataRestClient {
 
 	private final RestTemplate restTemplate;
+	private final UriManager uriManager;
 
-	public NodeList getNodeList(String uri) {
-		Document document = restTemplate.execute(uri, HttpMethod.GET, null, response -> {
+
+	@Override
+	public Document execute() {
+		return restTemplate.execute(uriManager.getCorpCodeUri(), HttpMethod.GET, null, response -> {
 			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getBody().readAllBytes());
 			ZipInputStream zipInputStream = new ZipInputStream(byteArrayInputStream);
 			Document tmpDocument = null;
@@ -34,9 +34,5 @@ public class CompanyDataProcessorImpl implements CompanyDataProcessor {
 			}
 			return tmpDocument;
 		});
-		document.getDocumentElement().normalize();
-		Element root = document.getDocumentElement();
-		NodeList nList = root.getElementsByTagName("list");
-		return nList;
 	}
 }

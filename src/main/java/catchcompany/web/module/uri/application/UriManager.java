@@ -10,12 +10,13 @@ public class UriManager {
 	@Value("${dart.api-key}")
 	private String apiKey;
 
-	public UriComponents getCorpCodeUri() {
+	public String getCorpCodeUri() {
 		return UriComponentsBuilder
 			.fromHttpUrl("https://opendart.fss.or.kr/api")
 			.pathSegment("corpCode.xml")
 			.queryParam("crtfc_key", apiKey)
-			.build();
+			.build()
+			.toUriString();
 	}
 
 }

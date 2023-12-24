@@ -1,5 +1,6 @@
 package catchcompany.web.module.company.controller;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +20,9 @@ public class AdminCompanyController {
 		adminCompanyService.processCompanyListToDatabase();
 	}
 
-	@PostMapping("/comapny/invest-info")
-	public void processInvestInfoToDatabase() {
-		adminCompanyService.processCompanyInvestInfoToDatabase();
+	@PostMapping("/comapny/invest-info/{path}")
+	public void processInvestInfoToDatabase(@PathVariable String path) {
+		adminCompanyService.processCompanyInvestInfoToDatabase(path);
 	}
 
 }
