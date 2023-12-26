@@ -53,6 +53,7 @@
                                 <div>조건</div>
                                 <div th:each="condition : ${firstConditions}" class="form-check form-check-inline">
                                     <input type="radio" th:field="*{firstCondition}" th:value="${condition.name()}"
+                                           th:checked="true"
                                            class="form-check-input">
                                     <label th:for="${#ids.prev('firstCondition')}" th:text="${condition.description}"
                                            class="form-check-label">
@@ -61,8 +62,14 @@
                                 </div>
                                 <br>
                                 <div id="TRADING_VOLUME" style="display: none;">
-                                    날짜 : <input value="20231218" th:field="*{date}" class="condition_input-date"> 일,
-                                    전일대비 거래량이 <input th:field="*{volume}" value="10" class="condition_input">배 이상 발생한 기업
+                                    날짜 : <input th:field="*{date}" class="condition_input-date"> 일,
+                                    전일대비 거래량이 <input th:field="*{volume}"  class="condition_input">배 이상 발생한 기업
+                                </div>
+                                <div class="field-error" th:errors="*{date}">
+                                    날짜
+                                </div>
+                                <div class="field-error" th:errors="*{volume}">
+                                    거래량
                                 </div>
 
                             </div>

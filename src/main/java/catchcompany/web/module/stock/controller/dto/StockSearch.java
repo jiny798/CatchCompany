@@ -16,5 +16,9 @@ public class StockSearch {
 	private List<String> marketList;
 	private FirstCondition firstCondition;
 	private String date;
-	private int volume;
+	private Integer volume;
+	public StockSearch(String date, int volume) {
+		this.date = date;
+		this.volume = volume;
+	}
 }

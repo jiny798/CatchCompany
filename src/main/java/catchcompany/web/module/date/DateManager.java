@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Component
 public class DateManager {
-	public static int today = 20231218;
 	private final StockRepository stockRepository;
 
 	public String calculatePreviousDateOf(String date) {
@@ -33,5 +32,10 @@ public class DateManager {
 			}
 		}
 		return yesterdayDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+	}
+
+	public String getTodayDate() {
+		LocalDate localDate = LocalDate.now();
+		return localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 	}
 }
