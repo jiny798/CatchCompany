@@ -30,5 +30,10 @@ public class SignUpFormValidator implements Validator { // (1)
 			errors.rejectValue("nickname", "invalid.nickname", new Object[]{signUpForm.getEmail()},
 				"이미 사용중인 닉네임입니다.");
 		}
+		if (!signUpForm.getPassword().equals(signUpForm.getConfirmPassword())) {
+			errors.rejectValue("password", "invalid.password", new Object[]{signUpForm.getEmail()},
+				"비밀번호가 서로 일치하지 않습니다.");
+		}
+
 	}
 }

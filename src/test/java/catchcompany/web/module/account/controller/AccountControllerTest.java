@@ -1,6 +1,6 @@
 package catchcompany.web.module.account.controller;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import catchcompany.web.module.account.domain.entity.Account;
 import catchcompany.web.module.account.service.port.AccountRepository;
 
 @Transactional
@@ -35,16 +36,19 @@ class AccountControllerTest {
 	@Test
 	@DisplayName("회원 가입 정상 처리")
 	void 회원가입이_정상_처리된다() throws Exception {
+		String password = "jiny798!";
 		mockMvc.perform(post("/account/sign-up")
 				.param("nickname", "jiny798")
 				.param("email", "jiny798@email.com")
-				.param("password", "jiny798!")
-				.param("confirmPassword", "jiny798!")
+				.param("password", password)
+				.param("confirmPassword", password)
 				.with(csrf()))
 			.andDo(print())
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/"));
 
+		Account account = accountRepository.findByEmailAndIsValid("jiny798@email.com",false).get();
+		assertNotEquals(account.getPassword(), password); // 암호화로 서로 불일치
 		assertTrue(accountRepository.existsByEmail("jiny798@email.com"));
 
 		then(mailSender).should().send(any(SimpleMailMessage.class));
@@ -72,6 +76,20 @@ class AccountControllerTest {
 				.param("email", "jiny798@email")
 				.param("password", "jiny798!")
 				.param("confirmPassword", "jiny798!")
+				.with(csrf()))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(view().name("account/register"));
+	}
+
+	@Test
+	@DisplayName("회원 가입 오류 : 비밀번호 불일치")
+	void 비밀번호가_다르면_되돌아간다() throws Exception {
+		mockMvc.perform(post("/account/sign-up")
+				.param("nickname", "jiny798")
+				.param("email", "jiny798@email")
+				.param("password", "jiny798!")
+				.param("confirmPassword", "jiny798!!")
 				.with(csrf()))
 			.andDo(print())
 			.andExpect(status().isOk())

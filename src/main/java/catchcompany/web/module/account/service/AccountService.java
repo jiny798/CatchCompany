@@ -1,6 +1,7 @@
 package catchcompany.web.module.account.service;
 
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import catchcompany.web.module.account.controller.dto.SignUpForm;
@@ -19,12 +20,14 @@ public class AccountService {
 	private final AccountRepository accountRepository;
 	private final TokenGenerator tokenGenerator;
 	private final MailSender mailSender;
+	private final PasswordEncoder passwordEncoder;
 
 	public void login(Account account) {
 		account.login(clockHolder);
 	}
 
 	public void signUp(SignUpForm form) {
+		form.setPassword(passwordEncoder.encode(form.getPassword()));
 		Account account = Account.from(form, tokenGenerator);
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(account.getEmail());
