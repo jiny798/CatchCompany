@@ -32,4 +32,14 @@ public class AccountRepositoryImpl implements AccountRepository {
 	public Account save(Account account) {
 		return accountJpaRepository.save(account);
 	}
+
+	@Override
+	public Boolean existsByEmail(String email){
+		return accountJpaRepository.existsByEmail(email);
+	}
+
+	@Override
+	public Boolean existsByNickname(String nickname){
+		return accountJpaRepository.existsByNickname(nickname);
+	}
 }

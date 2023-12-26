@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import catchcompany.web.module.account.controller.dto.SignUpForm;
 import catchcompany.web.module.account.domain.entity.Account;
 import catchcompany.web.module.account.domain.entity.AccountCreate;
 import catchcompany.web.module.account.exception.AuthTokenNotMatchedException;
@@ -15,14 +16,15 @@ public class AccountTest {
 	@Test
 	public void UserCreate_객체로_생성할_수_있다() {
 		// given
-		AccountCreate userCreate = AccountCreate.builder()
-			.email("jyoung798@naver.com")
-			.nickname("jiny")
-			.password("abc123123!")
-			.build();
+		SignUpForm signUpForm = new SignUpForm(
+			"jyoung798@naver.com",
+			"jiny",
+			"abc123123!",
+			"abc123123!"
+		);
 
 		// when
-		Account user = Account.from(userCreate, new MockTokenGenerator("aaaa-aaaa-aaaa-aaaa"));
+		Account user = Account.from(signUpForm, new MockTokenGenerator("aaaa-aaaa-aaaa-aaaa"));
 
 		// then
 		assertThat(user.getId()).isNull();

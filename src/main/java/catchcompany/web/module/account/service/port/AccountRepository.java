@@ -11,5 +11,9 @@ public interface AccountRepository {
 
 	Optional<Account> findByEmailAndIsValid(String email, boolean isValid);
 
+	Boolean existsByEmail(String email);
+
+	Boolean existsByNickname(String email);
+
 	Account save(Account account);
 }

@@ -1,12 +1,14 @@
 package catchcompany.web.module.account.domain.entity;
 
-import java.time.Clock;
 
+import catchcompany.web.module.account.controller.dto.SignUpForm;
 import catchcompany.web.module.account.exception.AuthTokenNotMatchedException;
 import catchcompany.web.module.common.service.port.ClockHolder;
 import catchcompany.web.module.common.service.port.TokenGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -34,20 +36,28 @@ public class Account {
 	@Column(unique = true)
 	private String nickname;
 
+	@Column(nullable = false)
 	private String password;
 
+	@Column(nullable = false)
 	private String emailAuthToken;
 
+	@Column(nullable = false)
 	private boolean isValid;
 	private long lastLoginAt;
 
-	public static Account from(AccountCreate accountCreate, TokenGenerator tokenGenerator) {
+	@Column(nullable = false)
+	@Enumerated(value = EnumType.STRING)
+	private Role role;
+
+	public static Account from(SignUpForm form, TokenGenerator tokenGenerator) {
 		return Account.builder()
-			.email(accountCreate.getEmail())
-			.nickname(accountCreate.getNickname())
-			.password(accountCreate.getPassword())
+			.email(form.getEmail())
+			.nickname(form.getNickname())
+			.password(form.getPassword())
 			.isValid(false)
 			.emailAuthToken(tokenGenerator.random())
+			.role(Role.ROLE_USER)
 			.build();
 	}
 

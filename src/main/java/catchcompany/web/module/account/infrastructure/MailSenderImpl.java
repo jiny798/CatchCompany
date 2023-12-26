@@ -21,4 +21,9 @@ public class MailSenderImpl implements MailSender {
 		message.setText(content);
 		javaMailSender.send(message);
 	}
+
+	@Override
+	public void send(SimpleMailMessage message) {
+		javaMailSender.send(message);
+	}
 }

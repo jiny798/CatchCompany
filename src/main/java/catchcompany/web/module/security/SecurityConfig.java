@@ -9,6 +9,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import jakarta.servlet.DispatcherType;
 
@@ -17,9 +19,12 @@ import jakarta.servlet.DispatcherType;
 public class SecurityConfig {
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests((req) -> req
-				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+	public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introSpector) throws Exception {
+		http
+
+
+			.authorizeHttpRequests((req) -> req
+				.requestMatchers(new MvcRequestMatcher(introSpector,"/admin/**")).hasRole("ADMIN")
 				.anyRequest().permitAll()
 			)
 			.formLogin(login -> login    // form 방식 로그인 사용

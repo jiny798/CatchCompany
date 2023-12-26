@@ -13,4 +13,8 @@ public interface AccountJpaRepository extends JpaRepository<Account, Long> {
 	public Optional<Account> findByIdAndIsValid(Long id, boolean isValid);
 
 	public Optional<Account> findByEmailAndIsValid(String email, boolean isValid);
+
+	Boolean existsByEmail(String email);
+
+	Boolean existsByNickname(String nickname);
 }

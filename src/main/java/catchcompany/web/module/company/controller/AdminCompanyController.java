@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.RestController;
 import catchcompany.web.module.company.service.admin.AdminCompanyService;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/financial-supervisory")
+@RequestMapping("/admin/company")
 @RequiredArgsConstructor
 @RestController
 public class AdminCompanyController {
 
 	private final AdminCompanyService adminCompanyService;
 
-	@PostMapping("/company")
+	@PostMapping()
 	public void processCompanyInfoToDatabase() {
 		adminCompanyService.processCompanyListToDatabase();
 	}
 
-	@PostMapping("/comapny/invest-info/{path}")
+	@PostMapping("/invest/{path}")
 	public void processInvestInfoToDatabase(@PathVariable String path) {
 		adminCompanyService.processCompanyInvestInfoToDatabase(path);
 	}
