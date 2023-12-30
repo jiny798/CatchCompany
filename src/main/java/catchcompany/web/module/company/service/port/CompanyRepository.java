@@ -18,5 +18,7 @@ public interface CompanyRepository {
 
 	Company findAllWithInvestInfo(String name);
 
+	Boolean existsByName(String name);
+
 	Company save(Company company);
 }

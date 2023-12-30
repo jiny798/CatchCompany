@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
 <nav th:fragment="nav" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -18,14 +18,14 @@
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                로그인
+                <span sec:authorize="!isAuthenticated()">로그인</span>
+                <span sec:authorize="isAuthenticated()" th:text="${nickname}"></span>
                 <i class="fas fa-user fa-fw"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#!">준비중</a></li>
-                <li><a class="dropdown-item" href="#!">준비중</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#!">준비중</a></li>
+                <li><a class="dropdown-item" href="#!" th:href="@{/login}" sec:authorize="!isAuthenticated()">로그인</a></li>
+                <li><a class="dropdown-item" href="#!" th:href="@{/account/sign-up}" sec:authorize="!isAuthenticated()">회원가입</a></li>
+                <li><a class="dropdown-item" href="#!" th:href="@{/logout}" sec:authorize="isAuthenticated()">로그아웃</a></li>
             </ul>
         </li>
     </ul>

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -62,12 +63,12 @@ public class CompanyDataProcessorTest {
 
 	@Test
 	public void List_는_멀티스레드에서_안전하지_않다() {
-		List<Integer> list = new ArrayList<>();
-		IntStream stream = IntStream.rangeClosed(0, 100);
+		List<Integer> list = new CopyOnWriteArrayList<>();
+		IntStream stream = IntStream.rangeClosed(0, 499);
 		stream.parallel().forEach(i -> {
 			list.add(i);
 		});
 
-		System.out.println(list.size());
+		assertThat(list.size()).isEqualTo(500);
 	}
 }

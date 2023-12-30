@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.IntStream;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -16,14 +17,17 @@ import catchcompany.web.module.company.domain.Company;
 import catchcompany.web.module.company.domain.Invest;
 import catchcompany.web.module.company.service.port.CompanyRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class InvestDataProcessor {
 	private final CompanyRepository companyRepository;
+	private static String path = "C:\\Users\\file\\BusinessReport.xls";
 
-	public List<Invest> getInvestList(String path) { // "C:\\Users\\file\\BusinessReport.xls"
-		List<Invest> investList = new ArrayList<>();
+	public List<Invest> getInvestList() {
+		List<Invest> investList = new CopyOnWriteArrayList<>();
 		FileInputStream file = null;
 		HSSFWorkbook workbook = null;
 		try {
@@ -35,6 +39,7 @@ public class InvestDataProcessor {
 		HSSFSheet sheet = workbook.getSheetAt(0); //첫번째 시트탭
 		int rows = sheet.getPhysicalNumberOfRows(); // 행의 길이를 모두 불러온다
 		IntStream stream = IntStream.range(0, rows);
+
 		stream.parallel().forEach(rowIndex -> {
 			List<String> rowList = new ArrayList<>();
 			HSSFRow row = sheet.getRow(rowIndex); //행 읽기
@@ -44,14 +49,17 @@ public class InvestDataProcessor {
 					//셀값을 읽는다
 					HSSFCell cell = row.getCell(colIndex);
 					String value = "";
-					if (cell == null) continue;
+					if (cell == null)
+						continue;
 					value = getCellValue(cell);
 					rowList.add(value);
+
 				} //컬럼 읽기 종료
 			}
-			if (!rowList.get(4).trim().equals("합계")
+			if (rowList.size() >= 18
+				&& !rowList.get(4).trim().equals("합계")
 				&& !rowList.get(4).trim().equals("-")
-				&& rowList.size() >= 18) {
+			) {
 				Invest invest = convertRowsToInvest(rowList); // 액셀 ROW 정보 한줄을 Invest 객체로 변환
 				investList.add(invest);
 			}
@@ -59,6 +67,7 @@ public class InvestDataProcessor {
 
 		return investList;
 	}
+
 	private String getCellValue(HSSFCell cell) {
 		String value = "";
 		switch (cell.getCellType()) {
@@ -83,32 +92,21 @@ public class InvestDataProcessor {
 
 	private Invest convertRowsToInvest(List<String> rowList) {
 		String investorName = rowList.get(0).trim(); // 투자하는 회사명
-		String investorCode = rowList.get(1).trim(); // 투자하는 회사 stock 코드
-		String corpClass = "-";
+		String corpClass = "";
 		String investCompany = rowList.get(4).trim(); // 투자받는 회사명
-		investCompany = investCompany.replaceAll("(주)", "");
-		investCompany = investCompany.replaceAll("㈜", "");
-		String investDate = rowList.get(5).trim(); // 투자 날짜
+		investCompany = investCompany.replaceAll("[(주)|㈜]", "");
 		String investTarget = rowList.get(6).trim(); // 투자목적
-		if (investTarget.indexOf("투자") >= 0) {
-			investTarget = "투자";
-		}
-		String change1 = rowList.get(11).trim(); // 증감수량
-		String change2 = rowList.get(12).trim(); // 증감 취득,처분 금액
-		String change3 = rowList.get(13).trim(); // 증감 평가손액
-		String current1 = rowList.get(14).trim(); // 기말잔액 수량
-		String current2 = rowList.get(15).trim(); // 기말잔액 지분율
-		String current3 = rowList.get(16).trim(); // 기말잔액 장부가액
+		if (investTarget.indexOf("투자") >= 0) {investTarget = "투자";}
 
 		List<Company> companies = companyRepository.findByName(investorName.trim());
 		Company company = null;
-		if (companies != null) {
+		if (companies.size() != 0) {
 			company = companies.get(0);
 		}
 		List<Company> corpList = companyRepository.findByName(investCompany);
 		if (!corpList.isEmpty()) {
 			for (Company c : corpList) {
-				if (!c.getStockCode().isBlank()) {
+				if (!c.getStockCode().isBlank()) { // Company에 StockCode가 존재하면 코스피 or 코스닥
 					corpClass = "상장";
 					break;
 				}
@@ -116,20 +114,19 @@ public class InvestDataProcessor {
 		}
 		return Invest.builder()
 			.company(company)
-			.investorName(investorName)
-			.corporationCode(investorCode)
-			.name(investCompany)
+			.investorName(investorName) // 투자하는 회사
+			.corporationCode(rowList.get(1).trim())
+			.name(investCompany) // 투자받는 회사
 			.corporationClass(corpClass)
 			.investTarget(investTarget)
-			.initialInvestmentDate(investDate)
-			.currentStockCount(current1)
-			.currentStockShareRatio(current2)
-			.currentStockEvaluationValue(current3)
-			.recentStockAmountOfChange(change1)
-			.recentAcquisitionAmount(change2)
-			.recentEvaluationGainsAndLosses(change3)
+			.initialInvestmentDate(rowList.get(5).trim())
+			.currentStockCount(rowList.get(14).trim())  // 현재 주식 정보
+			.currentStockShareRatio(rowList.get(15).trim())
+			.currentStockEvaluationValue(rowList.get(16).trim())
+			.recentStockAmountOfChange(rowList.get(11).trim()) // 최근 증감 정보
+			.recentAcquisitionAmount(rowList.get(12).trim())
+			.recentEvaluationGainsAndLosses(rowList.get(13).trim())
 			.build();
 	}
-
 
 }

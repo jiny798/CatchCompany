@@ -27,6 +27,8 @@
               <input placeholder="관심있는 회사를 검색해보세요" id="search" class="form-control" type="text" aria-describedby="btnNavbarSearch" />
               <button type="button" onclick="searchCompany()" class="btn btn-primary" id="btnNavbarSearch"><i class="fas fa-search"></i></button>
             </div>
+            <small>추천 : <a th:href="@{/company/invest/NAVER/1/상장}">NAVER</a>, <a th:href="@{/company/invest/카카오/1/상장}">카카오</a> </small>
+            <small class="form-text text-danger" th:if="${errorName}"> 존재하지 않는 회사명입니다. </small>
           </form>
         </div>
 
@@ -47,10 +49,16 @@
 </body>
 <script>
     function searchCompany(event) {
-        var inputElement = document.getElementById('search');
-        var value = encodeURIComponent(inputElement.value);
+        let inputElement = document.getElementById('search');
+        let value = encodeURIComponent(inputElement.value);
         console.log(inputElement.value);
-        location.href = 'http://localhost:8080/company/invest/' + inputElement.value + '/1'+"/상장";
+        let name = inputElement.value;
+
+        if( name === '' ) {
+         name = ' ';
+        }
+
+        location.href = 'http://localhost:8080/company/invest/' + name + '/1'+"/상장";
     }
     </script>
 

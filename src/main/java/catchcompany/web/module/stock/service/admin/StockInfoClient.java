@@ -1,12 +1,10 @@
-package catchcompany.web.module.stock.service;
+package catchcompany.web.module.stock.service.admin;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;

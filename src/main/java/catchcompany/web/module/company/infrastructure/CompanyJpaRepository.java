@@ -15,4 +15,6 @@ public interface CompanyJpaRepository extends JpaRepository<Company, Long> {
 
 	@Query("select c from Company c where c.name = :name")
 	Company findAllWithInvestInfo(@Param("name") String name);
+
+	Boolean existsByName(String name);
 }

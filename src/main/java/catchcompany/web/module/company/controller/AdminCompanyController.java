@@ -20,9 +20,9 @@ public class AdminCompanyController {
 		adminCompanyService.processCompanyListToDatabase();
 	}
 
-	@PostMapping("/invest/{path}")
-	public void processInvestInfoToDatabase(@PathVariable String path) {
-		adminCompanyService.processCompanyInvestInfoToDatabase(path);
+	@PostMapping("/invest")
+	public void processInvestInfoToDatabase() {
+		adminCompanyService.processCompanyInvestInfoToDatabase();
 	}
 
 }

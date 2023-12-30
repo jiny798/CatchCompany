@@ -32,8 +32,8 @@ public class AdminCompanyService {
 	}
 
 
-	public void processCompanyInvestInfoToDatabase(String path) {
-		List<Invest> investList = investDataProcessor.getInvestList(path);
+	public void processCompanyInvestInfoToDatabase() {
+		List<Invest> investList = investDataProcessor.getInvestList();
 		investList.stream().parallel()
 			.forEach(invest -> {
 				investRepository.save(invest);

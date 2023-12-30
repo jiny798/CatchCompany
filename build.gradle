@@ -45,6 +45,9 @@ dependencies {
 	//thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+	//thymeleaf-security
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
 	//XSS filter
 	implementation 'com.navercorp.lucy:lucy-xss:1.6.3'
 
@@ -63,6 +66,8 @@ dependencies {
 
 	// validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+
 
 
 }

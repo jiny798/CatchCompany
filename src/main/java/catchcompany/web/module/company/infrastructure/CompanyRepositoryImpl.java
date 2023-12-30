@@ -26,4 +26,9 @@ public class CompanyRepositoryImpl implements CompanyRepository {
 	public Company save(Company company) {
 		return companyJpaRepository.save(company);
 	}
+
+	@Override
+	public Boolean existsByName(String name) {
+		return companyJpaRepository.existsByName(name);
+	}
 }
