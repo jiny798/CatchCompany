@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity @Getter
-public class PensionStock {
+public class PensionYearStock {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

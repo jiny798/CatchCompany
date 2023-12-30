@@ -8,7 +8,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import catchcompany.web.module.nationalpension.controller.dto.InvestYearInfo;
-import catchcompany.web.module.nationalpension.service.admin.PensionStockRestResponse;
+import catchcompany.web.module.nationalpension.service.admin.dto.PensionStockRestResponse;
 import catchcompany.web.module.nationalpension.service.port.PensionStockRestClient;
 import lombok.RequiredArgsConstructor;
 

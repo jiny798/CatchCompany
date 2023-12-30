@@ -7,8 +7,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import catchcompany.web.module.nationalpension.controller.dto.InvestYearInfo;
-import catchcompany.web.module.nationalpension.domain.PensionStock;
-import catchcompany.web.module.nationalpension.infrastructure.PensionInvestRepository;
+import catchcompany.web.module.nationalpension.domain.PensionYearStock;
+import catchcompany.web.module.nationalpension.infrastructure.PensionYearStockJpaRepository;
+import catchcompany.web.module.nationalpension.service.admin.dto.PensionStockDto;
+import catchcompany.web.module.nationalpension.service.admin.dto.PensionStockRestResponse;
 import catchcompany.web.module.nationalpension.service.port.PensionStockRestClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class PensionStockDataProcessor {
 
-	private final PensionInvestRepository pensionInvestRepository;
+	private final PensionYearStockJpaRepository pensionYearStockJpaRepository;
 	private final PensionStockRestClient pensionStockRestClient;
 
 
@@ -27,31 +29,31 @@ public class PensionStockDataProcessor {
 		PensionStockRestResponse pensionStockRestResponse = pensionStockRestClient.execute(investYearInfo);
 		List<PensionStockDto> list = pensionStockRestResponse.getData();
 		for (PensionStockDto dto : list) {
-			PensionStock info = PensionStock.builder()
+			PensionYearStock info = PensionYearStock.builder()
 				.corporationName(dto.getName())
 				.evaluation(dto.getEvaluation())
 				.currentShareInAsset(dto.getShareInAsset())
 				.shareRatio(dto.getShareRatio())
 				.year(investYearInfo.getYear())
 				.build();
-			pensionInvestRepository.save(info);
+			pensionYearStockJpaRepository.save(info);
 		}
 	}
 
 	public void sortInvestInfo(int year) {
-		List<PensionStock> investList = pensionInvestRepository.findByYear(year);
-		List<PensionStock> sortList = new ArrayList<>();
-		for (PensionStock stock : investList) {
+		List<PensionYearStock> investList = pensionYearStockJpaRepository.findByYear(year);
+		List<PensionYearStock> sortList = new ArrayList<>();
+		for (PensionYearStock stock : investList) {
 			// year 년도 회사이름 가져오기
 			String corpName = stock.getCorporationName();
 			// 이전년도 회사정보 가져오기
-			List<PensionStock> findList = pensionInvestRepository.findByYearAndCorporationName(year - 1, corpName);
+			List<PensionYearStock> findList = pensionYearStockJpaRepository.findByYearAndCorporationName(year - 1, corpName);
 			if (findList.isEmpty()) {
 				// 없어진 회사는 조회하지 않는다.
 				continue;
 			} else {
-				PensionStock beforeYearStock = findList.get(0);
-				PensionStock sortInvest = PensionStock.builder()
+				PensionYearStock beforeYearStock = findList.get(0);
+				PensionYearStock sortInvest = PensionYearStock.builder()
 					.corporationName(stock.getCorporationName())
 					.evaluation(stock.getEvaluation()) // 이전년도 평가액 차이를 구한다
 					.changeShareInAsset(stock.getCurrentShareInAsset() - beforeYearStock.getCurrentShareInAsset())
@@ -64,20 +66,20 @@ public class PensionStockDataProcessor {
 			}
 		}
 
-		for (PensionStock stock : investList) {
-			pensionInvestRepository.delete(stock);
+		for (PensionYearStock stock : investList) {
+			pensionYearStockJpaRepository.delete(stock);
 		}
 
 		sortByShareInAsset(sortList);
-		for (PensionStock sortInvest : sortList) {
-			pensionInvestRepository.save(sortInvest);
+		for (PensionYearStock sortInvest : sortList) {
+			pensionYearStockJpaRepository.save(sortInvest);
 		}
 	}
 
 	/*
 	* 자산내 비중 퍼센트를 기준으로 오름차순 정렬
 	 */
-	private void sortByShareInAsset(List<PensionStock> sortList) {
+	private void sortByShareInAsset(List<PensionYearStock> sortList) {
 		Collections.sort(sortList, (investInfo1, investInfo2) -> {
 			if (investInfo1.getChangeShareInAsset() < investInfo2.getChangeShareInAsset()) {
 				return 1;
