@@ -2,7 +2,9 @@ package catchcompany.web.module.common.infrastructure;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -10,19 +12,22 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.stereotype.Component;
 
 import catchcompany.web.module.common.service.port.ExcelClient;
 import catchcompany.web.module.common.service.port.FilePath;
 import catchcompany.web.module.nationalpension.domain.PensionMonthStock;
 
-public class ExcelClientImpl <T,R> implements ExcelClient {
+@Component
+public class ExcelClientImpl<T, R> implements ExcelClient {
 
 	@Override
-	public <R> List<R> getRowList(FilePath filePath, Function<List<String>,R> convert) {
+	public <R> List<R> getRowList(FilePath filePath, Function<List<String>, R> convert) {
 		List<R> rowList = new CopyOnWriteArrayList<>();
 		Sheet sheet = getSheet(filePath); //첫번째 시트탭
 		int rows = sheet.getPhysicalNumberOfRows(); // 행의 길이를 모두 불러온다
@@ -70,7 +75,13 @@ public class ExcelClientImpl <T,R> implements ExcelClient {
 				value = cell.getCellFormula();
 				break;
 			case NUMERIC:
+				if (DateUtil.isCellDateFormatted(cell)) {
+					Date date = cell.getDateCellValue();
+					value = new SimpleDateFormat("yyyy-MM-dd").format(date);
+					break;
+				}
 				value = cell.getNumericCellValue() + "";
+
 				break;
 			case STRING:
 				value = cell.getStringCellValue() + "";
@@ -84,6 +95,5 @@ public class ExcelClientImpl <T,R> implements ExcelClient {
 		}
 		return value;
 	}
-
 
 }
