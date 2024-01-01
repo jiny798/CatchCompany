@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 
 import catchcompany.web.module.common.service.port.ExcelClient;
 import catchcompany.web.module.common.service.port.FilePath;
-import catchcompany.web.module.nationalpension.domain.PensionMonthStock;
 
 @Component
 public class ExcelClientImpl<T, R> implements ExcelClient {

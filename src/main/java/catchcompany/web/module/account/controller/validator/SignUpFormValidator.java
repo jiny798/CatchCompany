@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class SignUpFormValidator implements Validator { // (1)
+public class SignUpFormValidator implements Validator {
 
-	private final AccountRepository accountRepository; // (2)
+	private final AccountRepository accountRepository;
 
 	@Override
 	public boolean supports(Class<?> clazz) { // (3)

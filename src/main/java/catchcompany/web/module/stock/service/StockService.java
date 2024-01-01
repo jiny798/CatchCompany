@@ -1,7 +1,5 @@
 package catchcompany.web.module.stock.service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +11,7 @@ import catchcompany.web.module.date.DateManager;
 import catchcompany.web.module.stock.controller.dto.StockSearch;
 import catchcompany.web.module.stock.controller.dto.StockSearchResult;
 import catchcompany.web.module.stock.domain.Stock;
-import catchcompany.web.module.stock.repository.StockRepository;
+import catchcompany.web.module.stock.repository.AdminStockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class StockService {
-	private final StockRepository stockRepository;
+	private final AdminStockRepository adminStockRepository;
 	private final DateManager dateManager;
 
 	/*
@@ -32,8 +30,8 @@ public class StockService {
 		String yesterdayDate = dateManager.calculatePreviousDateOf(stockSearch.getDate());
 		log.info("조회된 어제 날짜 {}", yesterdayDate);
 		List<StockSearchResult> answer = new ArrayList<>();
-		List<Stock> today = stockRepository.findByBasDt(stockSearch.getDate());
-		List<Stock> yesterday = stockRepository.findByBasDt(yesterdayDate);
+		List<Stock> today = adminStockRepository.findByBasDt(stockSearch.getDate());
+		List<Stock> yesterday = adminStockRepository.findByBasDt(yesterdayDate);
 		Map<String, Long> map = new HashMap<>();
 		for (Stock stock : today) {
 			map.put(stock.getSrtnCd(), stock.getTrqu());

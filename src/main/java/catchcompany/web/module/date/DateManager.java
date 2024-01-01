@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import catchcompany.web.module.stock.domain.Stock;
-import catchcompany.web.module.stock.repository.StockRepository;
+import catchcompany.web.module.stock.repository.AdminStockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Component
 public class DateManager {
-	private final StockRepository stockRepository;
+	private final AdminStockRepository adminStockRepository;
 
 	public String calculatePreviousDateOf(String date) {
 		LocalDate inputDate = LocalDate.of(Integer.parseInt(date.substring(0, 4)),
@@ -23,7 +23,7 @@ public class DateManager {
 			Integer.parseInt(date.substring(6, 8)));
 		LocalDate yesterdayDate = inputDate.minusDays(1);
 		while (true) {
-			List<Stock> list = stockRepository.findByBasDt(
+			List<Stock> list = adminStockRepository.findByBasDt(
 				yesterdayDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 			if (!list.isEmpty()) { // 전날 주식정보가 있으면 빠져나온다
 				break;

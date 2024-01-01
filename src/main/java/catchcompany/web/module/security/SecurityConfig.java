@@ -26,11 +26,11 @@ public class SecurityConfig {
 
 
 			.authorizeHttpRequests((req) -> req
-				.requestMatchers(new MvcRequestMatcher(introSpector,"/admin/**")).hasRole("ADMIN")
+				.requestMatchers(new MvcRequestMatcher(introSpector,"/admin/**")).permitAll()
 				.anyRequest().permitAll()
 			)
 			.formLogin(login -> login    // form 방식 로그인 사용
-				.defaultSuccessUrl("/view/home", true)    // 성공 시 dashboard로
+				.defaultSuccessUrl("/", true)    // 성공 시 dashboard로
 				.loginProcessingUrl("/login")    // [B] submit 받을 url
 				.usernameParameter("id")    // [C] submit할 아이디
 				.passwordParameter("password")    // [D] submit할 비밀번호
