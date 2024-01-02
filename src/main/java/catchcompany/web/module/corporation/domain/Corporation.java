@@ -30,7 +30,7 @@ public class Corporation {
 	private String stockCode;
 
 	@Column(name = "invest_company")
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "corporation")
 	private List<InvestOfCorporation> invest = new ArrayList<>();
 
 	public static Corporation createCompany(String corporationCode, String name, String stockCode) {

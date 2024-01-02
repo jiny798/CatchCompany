@@ -18,10 +18,10 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class CorporationDataProcessor {
 
-	private final CorporationDataRestClient restCompanyDataClient;
+	private final CorporationDataRestClient restCorporationDataClient;
 
 	public List<Corporation> getCompanyList() {
-		Document document = restCompanyDataClient.execute();
+		Document document = restCorporationDataClient.execute();
 
 		List<Corporation> corporationList = new CopyOnWriteArrayList<>();
 		document.getDocumentElement().normalize();

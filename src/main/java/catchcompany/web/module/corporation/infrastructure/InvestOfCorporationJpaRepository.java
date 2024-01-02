@@ -11,9 +11,9 @@ import catchcompany.web.module.corporation.domain.InvestOfCorporation;
 
 public interface InvestOfCorporationJpaRepository extends JpaRepository<InvestOfCorporation, Long> {
 
-	@Query("select inv from Invest inv where inv.company = :company and inv.corporationClass = :type ")
-	Page<InvestOfCorporation> findInvestByCompanyAndType(@Param("company") Corporation corporation, Pageable pageable, @Param("type") String type);
+	@Query("select inv from InvestOfCorporation inv where inv.corporation = :corporation and inv.corporationClass = :type ")
+	Page<InvestOfCorporation> findInvestByCompanyAndType(@Param("corporation") Corporation corporation, Pageable pageable, @Param("type") String type);
 
-	@Query("select inv from Invest inv where inv.company = :company ")
-	Page<InvestOfCorporation> findInvestByCompany(@Param("company") Corporation corporation, Pageable pageable);
+	@Query("select inv from InvestOfCorporation inv where inv.corporation = :corporation ")
+	Page<InvestOfCorporation> findInvestByCompany(@Param("corporation") Corporation corporation, Pageable pageable);
 }

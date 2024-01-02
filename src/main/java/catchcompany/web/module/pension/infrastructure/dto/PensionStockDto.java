@@ -1,4 +1,4 @@
-package catchcompany.web.module.pension.service.dto;
+package catchcompany.web.module.pension.infrastructure.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
