@@ -17,8 +17,8 @@ public class WebConfig {
 			.requestFactory(() ->
 				new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory())
 			)
-			.setConnectTimeout(Duration.ofMillis(5000)) // connection-timeout
-			.setReadTimeout(Duration.ofMillis(5000)) // read-timeout
+			.setConnectTimeout(Duration.ofMillis(10000)) // connection-timeout
+			.setReadTimeout(Duration.ofMillis(10000)) // read-timeout
 			.build();
 	}
 }
