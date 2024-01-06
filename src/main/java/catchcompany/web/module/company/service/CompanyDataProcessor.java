@@ -25,7 +25,7 @@ public class CompanyDataProcessor {
 
 	public void processSaveCompanyInfo(String link) {
 		int repeatCount = companyDataRestClient.getTotalPageCount(link);
-		IntStream stream = IntStream.range(1, repeatCount);
+		IntStream stream = IntStream.rangeClosed(1, repeatCount);
 		stream.parallel().forEach(count -> {
 			log.info("{} 시작 ---- ", count);
 			CompanyDataResponse response = companyDataRestClient.execute(link, count);
