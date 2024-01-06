@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import catchcompany.web.module.corporation.controller.dto.CompanyInfo;
 import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
-import catchcompany.web.module.corporation.service.port.InvestOfCorporationRepository;
-import catchcompany.web.module.corporation.service.port.CorporationRepository;
+import catchcompany.web.module.corporation.repository.CorporationRepository;
+import catchcompany.web.module.corporation.repository.InvestOfCorporationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

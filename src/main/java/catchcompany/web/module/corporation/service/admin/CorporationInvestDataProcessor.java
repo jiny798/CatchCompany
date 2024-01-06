@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
-import catchcompany.web.module.corporation.service.port.CorporationRepository;
+import catchcompany.web.module.corporation.repository.CorporationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,16 +56,19 @@ public class CorporationInvestDataProcessor {
 
 				} //컬럼 읽기 종료
 			}
-			if (rowList.size() >= 18
-				&& !rowList.get(4).trim().equals("합계")
-				&& !rowList.get(4).trim().equals("-")
-			) {
+			if (isCorporationData(rowList)) {
 				InvestOfCorporation invest = convertRowsToInvest(rowList); // 액셀 ROW 정보 한줄을 Invest 객체로 변환
 				investList.add(invest);
 			}
 		});
 
 		return investList;
+	}
+
+	private boolean isCorporationData(List<String> rowList) {
+		return rowList.size() >= 18 &&
+			!rowList.get(4).trim().equals("합계") &&
+			!rowList.get(4).trim().equals("-");
 	}
 
 	private String getCellValue(HSSFCell cell) {
@@ -96,7 +99,9 @@ public class CorporationInvestDataProcessor {
 		String investCompany = rowList.get(4).trim(); // 투자받는 회사명
 		investCompany = investCompany.replaceAll("[(주)|㈜]", "");
 		String investTarget = rowList.get(6).trim(); // 투자목적
-		if (investTarget.indexOf("투자") >= 0) {investTarget = "투자";}
+		if (investTarget.indexOf("투자") >= 0) {
+			investTarget = "투자";
+		}
 
 		List<Corporation> companies = corporationRepository.findByName(investorName.trim());
 		Corporation corporation = null;

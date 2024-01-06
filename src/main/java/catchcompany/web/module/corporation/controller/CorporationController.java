@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import catchcompany.web.module.corporation.controller.dto.CompanyInfo;
+import catchcompany.web.module.corporation.repository.CorporationRepository;
 import catchcompany.web.module.corporation.service.CorporationService;
-import catchcompany.web.module.corporation.service.port.CorporationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

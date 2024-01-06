@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import catchcompany.web.module.corporation.service.port.CorporationRepository;
+import catchcompany.web.module.corporation.repository.CorporationRepository;
 import lombok.RequiredArgsConstructor;
 
 @Component
