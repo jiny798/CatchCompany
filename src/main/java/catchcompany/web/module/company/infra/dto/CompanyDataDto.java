@@ -2,9 +2,11 @@ package catchcompany.web.module.company.infra.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class CompanyDataDto {
 	@JsonProperty("가입자수")
 	private String memberCount;

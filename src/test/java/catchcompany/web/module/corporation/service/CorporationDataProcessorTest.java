@@ -1,4 +1,4 @@
-package catchcompany.web.module.comapny.service;
+package catchcompany.web.module.corporation.service;
 
 import static org.assertj.core.api.Assertions.*;
 
