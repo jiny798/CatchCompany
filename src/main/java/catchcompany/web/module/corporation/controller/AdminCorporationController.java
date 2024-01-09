@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import catchcompany.web.module.corporation.service.admin.AdminCorporationService;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/admin/company")
+@RequestMapping("/admin/corporation")
 @RequiredArgsConstructor
 @RestController
 public class AdminCorporationController {
