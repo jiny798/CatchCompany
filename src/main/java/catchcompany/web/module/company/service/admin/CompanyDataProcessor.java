@@ -24,8 +24,8 @@ public class CompanyDataProcessor {
 	public void processSaveCompanyInfo(String link) {
 		int repeatCount = companyDataRestClient.getRepeatCount(link);
 		IntStream stream = IntStream.rangeClosed(1, repeatCount);
-		stream.parallel().forEach(count -> {
-			CompanyDataResponse response = companyDataRestClient.execute(link, count);
+		stream.parallel().forEach(page -> {
+			CompanyDataResponse response = companyDataRestClient.execute(link, page);
 			List<CompanyDataDto> companyList = response.getData();
 			companyJdbcRepository.saveAll(companyList);
 		});
