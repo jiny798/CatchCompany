@@ -11,14 +11,14 @@ import org.springframework.validation.Validator;
 
 import catchcompany.web.module.stock.controller.dto.StockSearch;
 import catchcompany.web.module.stock.domain.Stock;
-import catchcompany.web.module.stock.repository.AdminStockRepository;
+import catchcompany.web.module.stock.infra.repository.AdminStockJpaRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
 public class StockSearchValidator implements Validator {
 
-	private final AdminStockRepository adminStockRepository;
+	private final AdminStockJpaRepository adminStockJpaRepository;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -31,7 +31,7 @@ public class StockSearchValidator implements Validator {
 		if (stockSearch.getVolume() == null) {
 			((BindingResult)errors).addError(new FieldError("stockSearch", "volume", "거래량은 필수입니다."));
 		}
-		List<Stock> stockList = adminStockRepository.findByBasDt(stockSearch.getDate());
+		List<Stock> stockList = adminStockJpaRepository.findByBasDt(stockSearch.getDate());
 		if (!StringUtils.hasText(stockSearch.getDate()) || stockList.isEmpty()) {
 			((BindingResult)errors).addError(new FieldError("stockSearch", "date", "해당 날짜에 업데이트된 시세 정보가 없습니다."));
 		}

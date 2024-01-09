@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import catchcompany.web.module.stock.service.StockInfoClient;
+import catchcompany.web.module.stock.service.StockInfoProcessor;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/admin/stock")
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class AdminStockController {
 
-	private final StockInfoClient stockInfoClient;
+	private final StockInfoProcessor stockInfoClient;
 
 	@PostMapping("/{date}")
 	public String saveStockInfo(@PathVariable int date) {

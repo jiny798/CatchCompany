@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 
 import catchcompany.web.module.account.domain.UserAccount;
 import catchcompany.web.module.account.domain.entity.Account;
-import catchcompany.web.module.account.service.port.AccountRepository;
+import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class AccountDetailsService implements UserDetailsService {
 
-	private final AccountRepository accountRepository;
+	private final AccountJpaRepository accountRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String nickname) {

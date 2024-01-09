@@ -6,9 +6,9 @@ import java.util.stream.IntStream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import catchcompany.web.module.company.domain.repository.CompanyJdbcRepository;
-import catchcompany.web.module.company.infrastructure.dto.CompanyDataDto;
-import catchcompany.web.module.company.infrastructure.dto.CompanyDataResponse;
+import catchcompany.web.module.company.infra.repository.CompanyJdbcRepository;
+import catchcompany.web.module.company.infra.dto.CompanyDataDto;
+import catchcompany.web.module.company.infra.dto.CompanyDataResponse;
 import catchcompany.web.module.company.service.port.CompanyDataRestClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

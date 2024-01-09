@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import catchcompany.web.module.pension.infrastructure.dto.PensionStockDto;
-import catchcompany.web.module.pension.infrastructure.dto.PensionStockRestResponse;
+import catchcompany.web.module.pension.infra.dto.PensionStockDto;
+import catchcompany.web.module.pension.infra.dto.PensionStockRestResponse;
 import catchcompany.web.module.pension.controller.dto.InvestYearInfo;
 import catchcompany.web.module.pension.domain.PensionYearStock;
-import catchcompany.web.module.pension.repository.PensionYearStockJpaRepository;
+import catchcompany.web.module.pension.infra.repository.PensionYearStockJpaRepository;
 import catchcompany.web.module.pension.service.port.PensionStockRestClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

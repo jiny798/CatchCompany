@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
-import catchcompany.web.module.corporation.repository.CorporationRepository;
+import catchcompany.web.module.corporation.infra.repository.CorporationJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class CorporationInvestDataProcessor {
-	private final CorporationRepository corporationRepository;
+	private final CorporationJpaRepository corporationRepository;
 	private static String path = "C:\\Users\\file\\BusinessReport.xls";
 
 	public List<InvestOfCorporation> getInvestList() {

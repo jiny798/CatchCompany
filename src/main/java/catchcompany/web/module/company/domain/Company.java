@@ -1,19 +1,11 @@
 package catchcompany.web.module.company.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import catchcompany.web.module.company.infrastructure.dto.CompanyDataDto;
-import jakarta.persistence.CascadeType;
+import catchcompany.web.module.company.infra.dto.CompanyDataDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

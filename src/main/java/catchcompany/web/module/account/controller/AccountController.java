@@ -1,6 +1,5 @@
 package catchcompany.web.module.account.controller;
 
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,9 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import catchcompany.web.module.account.controller.dto.SignUpForm;
 import catchcompany.web.module.account.controller.validator.SignUpFormValidator;
 import catchcompany.web.module.account.domain.entity.Account;
-import catchcompany.web.module.account.domain.entity.AccountCreate;
+import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
 import catchcompany.web.module.account.service.AccountService;
-import catchcompany.web.module.account.service.port.AccountRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AccountController {
 	private final SignUpFormValidator signUpFormValidator;
 	private final AccountService accountService;
-	private final AccountRepository accountRepository;
+	private final AccountJpaRepository accountRepository;
 
 	@InitBinder("signUpForm")
 	public void initBinder(WebDataBinder webDataBinder) {

@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import catchcompany.web.module.corporation.controller.dto.CompanyInfo;
 import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
-import catchcompany.web.module.corporation.repository.CorporationRepository;
-import catchcompany.web.module.corporation.repository.InvestOfCorporationRepository;
+import catchcompany.web.module.corporation.infra.repository.CorporationJpaRepository;
+import catchcompany.web.module.corporation.infra.repository.InvestOfCorporationJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class CorporationService {
 
-	private final CorporationRepository corporationRepository;
-	private final InvestOfCorporationRepository investRepository;
+	private final CorporationJpaRepository corporationRepository;
+	private final InvestOfCorporationJpaRepository investRepository;
 
 	public CompanyInfo findCompanyInvestInfo(String name,int pageNum, String type) {
 		Pageable pageable = PageRequest.of(pageNum-1, 10);

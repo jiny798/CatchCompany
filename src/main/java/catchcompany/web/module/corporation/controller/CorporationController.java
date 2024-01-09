@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import catchcompany.web.module.corporation.controller.dto.CompanyInfo;
-import catchcompany.web.module.corporation.repository.CorporationRepository;
+import catchcompany.web.module.corporation.infra.repository.CorporationJpaRepository;
 import catchcompany.web.module.corporation.service.CorporationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CorporationController {
 
 	private final CorporationService corporationService;
-	private final CorporationRepository corporationRepository;
+	private final CorporationJpaRepository corporationRepository;
 
 	@GetMapping("/invest")
 	public String companyInvestInfoHome() {

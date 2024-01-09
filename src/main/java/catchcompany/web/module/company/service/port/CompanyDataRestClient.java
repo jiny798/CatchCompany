@@ -1,6 +1,6 @@
 package catchcompany.web.module.company.service.port;
 
-import catchcompany.web.module.company.infrastructure.dto.CompanyDataResponse;
+import catchcompany.web.module.company.infra.dto.CompanyDataResponse;
 
 public interface CompanyDataRestClient {
 	public int getTotalPageCount(String link);

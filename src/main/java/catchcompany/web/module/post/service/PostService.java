@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 import catchcompany.web.module.post.controller.dto.PostForm;
 import catchcompany.web.module.post.domain.Post;
 import catchcompany.web.module.post.controller.dto.PostInfo;
-import catchcompany.web.module.post.service.port.PostRepository;
+import catchcompany.web.module.post.infra.repository.PostJpaRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
-	private final PostRepository postRepository;
+	private final PostJpaRepository postRepository;
 
 	public Long save(PostForm form) {
 		return postRepository.save(Post.from(form)).getId();

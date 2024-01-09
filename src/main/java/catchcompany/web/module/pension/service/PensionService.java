@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import catchcompany.web.module.pension.controller.dto.InvestInfo;
-import catchcompany.web.module.pension.repository.PensionYearStockJpaRepository;
+import catchcompany.web.module.pension.infra.repository.PensionYearStockJpaRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

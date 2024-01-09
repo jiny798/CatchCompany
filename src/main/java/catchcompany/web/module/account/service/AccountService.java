@@ -7,8 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import catchcompany.web.module.account.controller.dto.SignUpForm;
 import catchcompany.web.module.account.domain.entity.Account;
-import catchcompany.web.module.account.domain.entity.AccountCreate;
-import catchcompany.web.module.account.service.port.AccountRepository;
+import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
 import catchcompany.web.module.account.service.port.MailSender;
 import catchcompany.web.module.common.service.port.ClockHolder;
 import catchcompany.web.module.common.service.port.TokenGenerator;
@@ -19,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AccountService {
 	private final ClockHolder clockHolder;
-	private final AccountRepository accountRepository;
+	private final AccountJpaRepository accountRepository;
 	private final TokenGenerator tokenGenerator;
 	private final MailSender mailSender;
 	private final PasswordEncoder passwordEncoder;
