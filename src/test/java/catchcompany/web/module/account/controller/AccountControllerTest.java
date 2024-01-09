@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import catchcompany.web.module.account.domain.entity.Account;
+import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
 
 @Transactional
 @SpringBootTest
@@ -27,7 +28,7 @@ class AccountControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 	@Autowired
-	AccountRepository accountRepository;
+	AccountJpaRepository accountRepository;
 	@MockBean
 	JavaMailSender mailSender;
 
