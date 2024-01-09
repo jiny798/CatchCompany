@@ -16,12 +16,12 @@ public class AdminCorporationController {
 
 	@PostMapping()
 	public void processCompanyInfoToDatabase() {
-		adminCorporationService.processCompanyListToDatabase();
+		adminCorporationService.processCorporationListToDatabase();
 	}
 
 	@PostMapping("/invest")
 	public void processInvestInfoToDatabase() {
-		adminCorporationService.processCompanyInvestInfoToDatabase();
+		adminCorporationService.processCorporationInvestInfoToDatabase();
 	}
 
 }

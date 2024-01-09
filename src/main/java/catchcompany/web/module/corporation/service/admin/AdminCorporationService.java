@@ -22,7 +22,7 @@ public class AdminCorporationService {
 	private final CorporationDataProcessor corporationDataProcessor;
 	private final CorporationInvestDataProcessor corporationInvestDataProcessor;
 
-	public void processCompanyListToDatabase() {
+	public void processCorporationListToDatabase() {
 		List<Corporation> corporationList = corporationDataProcessor.getCompanyList();
 		corporationList.stream().parallel().forEach(i -> {
 			corporationRepository.save(i);
@@ -30,7 +30,7 @@ public class AdminCorporationService {
 	}
 
 
-	public void processCompanyInvestInfoToDatabase() {
+	public void processCorporationInvestInfoToDatabase() {
 		List<InvestOfCorporation> investList = corporationInvestDataProcessor.getInvestList();
 		investList.stream().parallel()
 			.forEach(invest -> {

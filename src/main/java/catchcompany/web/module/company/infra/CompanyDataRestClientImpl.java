@@ -21,7 +21,7 @@ public class CompanyDataRestClientImpl implements CompanyDataRestClient {
 	@Value("${open-data.api-key}")
 	private String apiKey;
 
-	public int getTotalPageCount(String link) {
+	public int getRepeatCount(String link) {
 		UriComponents uriComponents = UriComponentsBuilder
 			.fromHttpUrl(link)
 			.queryParam("serviceKey", apiKey)

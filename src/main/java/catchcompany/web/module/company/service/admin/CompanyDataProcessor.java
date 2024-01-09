@@ -1,4 +1,4 @@
-package catchcompany.web.module.company.service;
+package catchcompany.web.module.company.service.admin;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -22,7 +22,7 @@ public class CompanyDataProcessor {
 	private final CompanyJdbcRepository companyJdbcRepository;
 
 	public void processSaveCompanyInfo(String link) {
-		int repeatCount = companyDataRestClient.getTotalPageCount(link);
+		int repeatCount = companyDataRestClient.getRepeatCount(link);
 		IntStream stream = IntStream.rangeClosed(1, repeatCount);
 		stream.parallel().forEach(count -> {
 			CompanyDataResponse response = companyDataRestClient.execute(link, count);
