@@ -3,6 +3,7 @@ package catchcompany.web.module.account.service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import catchcompany.web.module.account.controller.dto.SignUpForm;
 import catchcompany.web.module.account.domain.entity.Account;
@@ -14,6 +15,7 @@ import catchcompany.web.module.common.service.port.TokenGenerator;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AccountService {
 	private final ClockHolder clockHolder;
@@ -32,9 +34,14 @@ public class AccountService {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(account.getEmail());
 		mailMessage.setSubject("회원 가입 인증");
-		mailMessage.setText(String.format("/email-auth?token=%s&email=%s", account.getEmailAuthToken(),
+		mailMessage.setText(String.format("/account/email-auth?token=%s&email=%s", account.getEmailAuthToken(),
 			account.getEmail()));
 		mailSender.send(mailMessage);
 		accountRepository.save(account);
 	}
+
+	public void certificate(Account account, String emailAuthToken) {
+		account.certificate(emailAuthToken);
+	}
+
 }

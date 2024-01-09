@@ -18,6 +18,12 @@ public class AccountRepositoryImpl implements AccountRepository {
 		return accountJpaRepository.findById(id);
 	}
 
+
+	@Override
+	public java.util.Optional<Account> findByNickname(String nickname) {
+		return accountJpaRepository.findByNickname(nickname);
+	}
+
 	@Override
 	public Optional<Account> findByIdAndIsValid(Long id, boolean isValid) {
 		return accountJpaRepository.findByIdAndIsValid(id, isValid);

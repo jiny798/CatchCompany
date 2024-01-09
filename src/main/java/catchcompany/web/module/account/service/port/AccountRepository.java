@@ -7,6 +7,8 @@ import catchcompany.web.module.account.domain.entity.Account;
 public interface AccountRepository {
 	Optional<Account> findById(Long id);
 
+	Optional<Account> findByNickname(String nickname);
+
 	Optional<Account> findByIdAndIsValid(Long id, boolean isValid);
 
 	Optional<Account> findByEmailAndIsValid(String email, boolean isValid);
