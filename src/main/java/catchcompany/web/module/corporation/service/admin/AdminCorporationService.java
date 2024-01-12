@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
+import catchcompany.web.module.corporation.infra.repository.CorporationJdbcRepository;
 import catchcompany.web.module.corporation.infra.repository.CorporationJpaRepository;
 import catchcompany.web.module.corporation.infra.repository.InvestOfCorporationJpaRepository;
 import catchcompany.web.module.uri.application.UriManager;
@@ -16,19 +17,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class AdminCorporationService {
-	private final UriManager uriManager;
-	private final CorporationJpaRepository corporationRepository;
+	private final CorporationJdbcRepository corporationJdbcRepository;
 	private final InvestOfCorporationJpaRepository investRepository;
 	private final CorporationDataProcessor corporationDataProcessor;
 	private final CorporationInvestDataProcessor corporationInvestDataProcessor;
 
 	public void processCorporationListToDatabase() {
 		List<Corporation> corporationList = corporationDataProcessor.getCompanyList();
-		corporationList.stream().parallel().forEach(i -> {
-			corporationRepository.save(i);
-		});
+		corporationJdbcRepository.saveAll(corporationList);
 	}
-
 
 	public void processCorporationInvestInfoToDatabase() {
 		List<InvestOfCorporation> investList = corporationInvestDataProcessor.getInvestList();
