@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 
 import catchcompany.web.module.corporation.domain.Corporation;
-import catchcompany.web.module.corporation.service.admin.CorporationDataProcessor;
+import catchcompany.web.module.corporation.service.admin.processor.CorporationDataProcessor;
 import catchcompany.web.module.corporation.service.port.CorporationDataRestClient;
 import catchcompany.web.module.mock.MockCorporationDataRestClient;
 

@@ -25,6 +25,7 @@ public class InvestOfCorporation {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Corporation corporation;
 
+	@Column(name = "investor_name")
 	private String investorName; // 투자하는 회사의 이름명
 
 	@Column(name = "corporation_code")
