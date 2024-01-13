@@ -1,9 +1,12 @@
-package catchcompany.web.module.corporation.service.admin;
+package catchcompany.web.module.corporation.service.admin.processor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.IntStream;
 
@@ -23,11 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class CorporationInvestDataProcessor {
-	private final CorporationJpaRepository corporationRepository;
-	private static String path = "C:\\Users\\file\\BusinessReport.xls";
+	private final CorporationJpaRepository corporationJpaRepository;
+	private final String path = "C:\\Users\\file\\BusinessReport.xls";
+	private Map<String, LinkedList<Corporation>> corporationMap;
 
 	public List<InvestOfCorporation> getInvestList() {
 		List<InvestOfCorporation> investList = new CopyOnWriteArrayList<>();
+		initMap();
 		FileInputStream file = null;
 		HSSFWorkbook workbook = null;
 		try {
@@ -46,14 +51,10 @@ public class CorporationInvestDataProcessor {
 			if (row != null) {
 				int cells = row.getPhysicalNumberOfCells();
 				for (int colIndex = 0; colIndex <= cells; colIndex++) {
-					//셀값을 읽는다
-					HSSFCell cell = row.getCell(colIndex);
-					String value = "";
+					HSSFCell cell = row.getCell(colIndex); //셀값을 읽는다
 					if (cell == null)
 						continue;
-					value = getCellValue(cell);
-					rowList.add(value);
-
+					rowList.add(getCellValue(cell));
 				} //컬럼 읽기 종료
 			}
 			if (isCorporationData(rowList)) {
@@ -63,6 +64,22 @@ public class CorporationInvestDataProcessor {
 		});
 
 		return investList;
+	}
+
+	private void initMap() {
+		corporationMap = new LinkedHashMap<>();
+		List<Corporation> corporationList = corporationJpaRepository.findAll();
+		for (Corporation corporation : corporationList) {
+			if (corporationMap.get(corporation.getName()) == null) {
+				LinkedList list = new LinkedList();
+				list.add(corporation);
+				corporationMap.put(corporation.getName(), list);
+			} else {
+				LinkedList list = corporationMap.get(corporation.getName());
+				list.add(corporation);
+			}
+		}
+
 	}
 
 	private boolean isCorporationData(List<String> rowList) {
@@ -103,13 +120,15 @@ public class CorporationInvestDataProcessor {
 			investTarget = "투자";
 		}
 
-		List<Corporation> companies = corporationRepository.findByName(investorName.trim());
+		// List<Corporation> companies = corporationJpaRepository.findByName(investorName.trim());
+		List<Corporation> companies = corporationMap.get(investorName.trim());
 		Corporation corporation = null;
-		if (companies.size() != 0) {
+		if (companies != null && companies.size() != 0) {
 			corporation = companies.get(0);
 		}
-		List<Corporation> corpList = corporationRepository.findByName(investCompany);
-		if (!corpList.isEmpty()) {
+		// List<Corporation> corpList = corporationJpaRepository.findByName(investCompany);
+		List<Corporation> corpList = corporationMap.get(investCompany);
+		if (corpList != null) {
 			for (Corporation c : corpList) {
 				if (!c.getStockCode().isBlank()) { // Company에 StockCode가 존재하면 코스피 or 코스닥
 					corpClass = "상장";
