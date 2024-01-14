@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PayData {
 
+	private LocalDate firstBillingDate;
 	private LocalDate billingDate;
 	private int payAmount;
 
