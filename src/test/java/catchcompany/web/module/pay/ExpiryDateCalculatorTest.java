@@ -8,6 +8,12 @@ import org.junit.jupiter.api.Test;
 
 public class ExpiryDateCalculatorTest {
 
+	private void assertExpiryDate(PayData payData, LocalDate expectedExpiryDate) {
+		ExpiryDateCalculator calculator = new ExpiryDateCalculator();
+		LocalDate realExpiryDate = calculator.calculateExpiryDate(payData);
+		assertEquals(expectedExpiryDate, realExpiryDate);
+	}
+
 	@Test
 	void 만원_납부시_한달_뒤가_만료일이_됨() {
 		assertExpiryDate(
@@ -53,10 +59,14 @@ public class ExpiryDateCalculatorTest {
 
 	}
 
-	private void assertExpiryDate(PayData payData, LocalDate expectedExpiryDate) {
-		ExpiryDateCalculator calculator = new ExpiryDateCalculator();
-		LocalDate realExpiryDate = calculator.calculateExpiryDate(payData);
-		assertEquals(expectedExpiryDate, realExpiryDate);
+	@Test
+	void 이만원_이상_납부시_비례해서_만료일_계산() {
+		assertExpiryDate(
+			PayData.builder()
+				.billingDate(LocalDate.of(2019, 3, 1))
+				.payAmount(20_000)
+				.build(),
+			LocalDate.of(2019, 5, 1));
 	}
 
 }
