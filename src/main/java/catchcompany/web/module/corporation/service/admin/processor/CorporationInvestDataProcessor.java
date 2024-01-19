@@ -15,7 +15,10 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import catchcompany.web.module.common.service.port.ExcelClient;
+import catchcompany.web.module.common.service.port.FileClient;
 import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
 import catchcompany.web.module.corporation.infra.repository.CorporationJpaRepository;
@@ -27,45 +30,28 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CorporationInvestDataProcessor {
 	private final CorporationJpaRepository corporationJpaRepository;
-	private final String path = "C:\\Users\\file\\BusinessReport.xls";
 	private Map<String, LinkedList<Corporation>> corporationMap;
+	private final ExcelClient excelClient;
+	private final FileClient fileClient;
 
-	public List<InvestOfCorporation> getInvestList() {
-		List<InvestOfCorporation> investList = new CopyOnWriteArrayList<>();
+	public List<InvestOfCorporation> getInvestList(MultipartFile multipartFile) {
 		initMap();
-		FileInputStream file = null;
-		HSSFWorkbook workbook = null;
-		try {
-			file = new FileInputStream(path);
-			workbook = new HSSFWorkbook(file);
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
-		}
-		HSSFSheet sheet = workbook.getSheetAt(0); //첫번째 시트탭
-		int rows = sheet.getPhysicalNumberOfRows(); // 행의 길이를 모두 불러온다
-		IntStream stream = IntStream.range(0, rows);
-
-		stream.parallel().forEach(rowIndex -> {
-			List<String> rowList = new ArrayList<>();
-			HSSFRow row = sheet.getRow(rowIndex); //행 읽기
-			if (row != null) {
-				int cells = row.getPhysicalNumberOfCells();
-				for (int colIndex = 0; colIndex <= cells; colIndex++) {
-					HSSFCell cell = row.getCell(colIndex); //셀값을 읽는다
-					if (cell == null)
-						continue;
-					rowList.add(getCellValue(cell));
-				} //컬럼 읽기 종료
-			}
-			if (isCorporationData(rowList)) {
-				InvestOfCorporation invest = convertRowsToInvest(rowList); // 액셀 ROW 정보 한줄을 Invest 객체로 변환
-				investList.add(invest);
-			}
-		});
-
+		String filePath = fileClient.save(multipartFile);
+		List<InvestOfCorporation> investList =
+			excelClient.getRowList(filePath, (rowList) -> {
+				if (isCorporationData(rowList)) {
+					return convertRowsToInvest(rowList);
+				}
+				return null;
+			});
+		
 		return investList;
 	}
 
+	/*
+	 * Corporation 을 전부 조회하여 Map에 저장하는 초기화 메서드
+	 * convertRowsToInvest() 메서드 내부에서 조회 속도 상승을 위해 사용하는 메서드
+	 */
 	private void initMap() {
 		corporationMap = new LinkedHashMap<>();
 		List<Corporation> corporationList = corporationJpaRepository.findAll();
@@ -82,32 +68,14 @@ public class CorporationInvestDataProcessor {
 
 	}
 
+	/*
+	 * 행의 길이가 18 이상
+	 * 셀에 "합계", "-" 문자가 포함되는 경우는 데이터 정보에서 제외한다
+	 */
 	private boolean isCorporationData(List<String> rowList) {
 		return rowList.size() >= 18 &&
 			!rowList.get(4).trim().equals("합계") &&
 			!rowList.get(4).trim().equals("-");
-	}
-
-	private String getCellValue(HSSFCell cell) {
-		String value = "";
-		switch (cell.getCellType()) {
-			case FORMULA:
-				value = cell.getCellFormula();
-				break;
-			case NUMERIC:
-				value = cell.getNumericCellValue() + "";
-				break;
-			case STRING:
-				value = cell.getStringCellValue() + "";
-				break;
-			case BLANK:
-				value = cell.getBooleanCellValue() + "";
-				break;
-			case ERROR:
-				value = cell.getErrorCellValue() + "";
-				break;
-		}
-		return value;
 	}
 
 	private InvestOfCorporation convertRowsToInvest(List<String> rowList) {
@@ -119,14 +87,13 @@ public class CorporationInvestDataProcessor {
 		if (investTarget.indexOf("투자") >= 0) {
 			investTarget = "투자";
 		}
-
-		// List<Corporation> companies = corporationJpaRepository.findByName(investorName.trim());
-		List<Corporation> companies = corporationMap.get(investorName.trim());
+		
+		List<Corporation> companies = corporationMap.get(investorName);
 		Corporation corporation = null;
 		if (companies != null && companies.size() != 0) {
 			corporation = companies.get(0);
 		}
-		// List<Corporation> corpList = corporationJpaRepository.findByName(investCompany);
+
 		List<Corporation> corpList = corporationMap.get(investCompany);
 		if (corpList != null) {
 			for (Corporation c : corpList) {

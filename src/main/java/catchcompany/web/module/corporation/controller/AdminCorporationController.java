@@ -2,7 +2,9 @@ package catchcompany.web.module.corporation.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import catchcompany.web.module.corporation.service.admin.AdminCorporationService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +22,8 @@ public class AdminCorporationController {
 	}
 
 	@PostMapping("/invest")
-	public void processInvestInfoToDatabase() {
-		adminCorporationService.processCorporationInvestInfoToDatabase();
+	public void processInvestInfoToDatabase(@RequestParam MultipartFile file) {
+		adminCorporationService.processCorporationInvestInfoToDatabase(file);
 	}
 
 }

@@ -23,7 +23,7 @@ import catchcompany.web.module.common.service.port.ExcelClient;
 import catchcompany.web.module.common.service.port.FileClient;
 
 @Component
-public class ExcelClientImpl<T, R> implements ExcelClient {
+public class ExcelClientImpl<R> implements ExcelClient {
 
 	@Override
 	public <R> List<R> getRowList(String filePath, Function<List<String>, R> convert) {

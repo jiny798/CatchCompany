@@ -3,6 +3,7 @@ package catchcompany.web.module.corporation.service.admin;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
@@ -27,8 +28,8 @@ public class AdminCorporationService {
 		corporationJdbcRepository.saveAll(corporationList);
 	}
 
-	public void processCorporationInvestInfoToDatabase() {
-		List<InvestOfCorporation> investList = corporationInvestDataProcessor.getInvestList();
+	public void processCorporationInvestInfoToDatabase(MultipartFile multipartFile) {
+		List<InvestOfCorporation> investList = corporationInvestDataProcessor.getInvestList(multipartFile);
 		investOfCorporationJdbcRepository.saveAll(investList);
 	}
 

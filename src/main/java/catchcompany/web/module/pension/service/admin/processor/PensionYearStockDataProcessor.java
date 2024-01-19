@@ -23,12 +23,11 @@ public class PensionYearStockDataProcessor {
 	private final PensionYearStockJpaRepository pensionYearStockJpaRepository;
 	private final PensionStockRestClient pensionStockRestClient;
 
-
-	public void saveInvestInfo(InvestYearInfo investYearInfo) {
-
+	public List<PensionYearStock> saveInvestInfo(InvestYearInfo investYearInfo) {
 		PensionStockRestResponse pensionStockRestResponse = pensionStockRestClient.execute(investYearInfo);
-		List<PensionStockDto> list = pensionStockRestResponse.getData();
-		for (PensionStockDto dto : list) {
+		List<PensionStockDto> pensionStockDtoList = pensionStockRestResponse.getData();
+		List<PensionYearStock> pensionYearStockList = new ArrayList<>();
+		for (PensionStockDto dto : pensionStockDtoList) {
 			PensionYearStock info = PensionYearStock.builder()
 				.corporationName(dto.getName())
 				.evaluation(dto.getEvaluation())
@@ -36,8 +35,10 @@ public class PensionYearStockDataProcessor {
 				.shareRatio(dto.getShareRatio())
 				.year(investYearInfo.getYear())
 				.build();
-			pensionYearStockJpaRepository.save(info);
+			pensionYearStockList.add(info);
 		}
+
+		return pensionYearStockList;
 	}
 
 	public void sortInvestInfo(int year) {
@@ -47,7 +48,8 @@ public class PensionYearStockDataProcessor {
 			// year 년도 회사이름 가져오기
 			String corpName = stock.getCorporationName();
 			// 이전년도 회사정보 가져오기
-			List<PensionYearStock> findList = pensionYearStockJpaRepository.findByYearAndCorporationName(year - 1, corpName);
+			List<PensionYearStock> findList = pensionYearStockJpaRepository.findByYearAndCorporationName(year - 1,
+				corpName);
 			if (findList.isEmpty()) {
 				// 없어진 회사는 조회하지 않는다.
 				continue;
@@ -77,7 +79,7 @@ public class PensionYearStockDataProcessor {
 	}
 
 	/*
-	* 자산내 비중 퍼센트를 기준으로 오름차순 정렬
+	 * 자산내 비중 퍼센트를 기준으로 오름차순 정렬
 	 */
 	private void sortByShareInAsset(List<PensionYearStock> sortList) {
 		Collections.sort(sortList, (investInfo1, investInfo2) -> {

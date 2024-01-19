@@ -18,14 +18,12 @@ public class PensionQuarterStockDataProcessor {
 	private final PensionQuarterStockJpaRepository pensionQuarterStockJpaRepository;
 	private final ExcelClient excelClient;
 
-	public void executeSaveQuarterStock(String filePath) {
-		List<PensionQuarterStock> monthStocks
+	public List<PensionQuarterStock> executeSaveQuarterStock(String filePath) {
+		List<PensionQuarterStock> stocks
 			= excelClient.getRowList(filePath, (rowList) -> {
 			return convertRowsToMonthStock(rowList);
 		});
-		for (PensionQuarterStock stock : monthStocks) {
-			pensionQuarterStockJpaRepository.save(stock);
-		}
+		return stocks;
 	}
 
 	private PensionQuarterStock convertRowsToMonthStock(List<String> rowList) {
