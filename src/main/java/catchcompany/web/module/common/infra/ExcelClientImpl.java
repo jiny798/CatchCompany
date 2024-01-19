@@ -20,13 +20,13 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Component;
 
 import catchcompany.web.module.common.service.port.ExcelClient;
-import catchcompany.web.module.common.service.port.FilePath;
+import catchcompany.web.module.common.service.port.FileClient;
 
 @Component
 public class ExcelClientImpl<T, R> implements ExcelClient {
 
 	@Override
-	public <R> List<R> getRowList(FilePath filePath, Function<List<String>, R> convert) {
+	public <R> List<R> getRowList(String filePath, Function<List<String>, R> convert) {
 		List<R> rowList = new CopyOnWriteArrayList<>();
 		Sheet sheet = getSheet(filePath); //첫번째 시트탭
 		int rows = sheet.getPhysicalNumberOfRows(); // 행의 길이를 모두 불러온다
@@ -41,9 +41,9 @@ public class ExcelClientImpl<T, R> implements ExcelClient {
 		return rowList;
 	}
 
-	private Sheet getSheet(FilePath filePath) {
+	private Sheet getSheet(String filePath) {
 		try {
-			FileInputStream file = new FileInputStream(filePath.getPath());
+			FileInputStream file = new FileInputStream(filePath);
 			Workbook workbook = WorkbookFactory.create(file);
 			Sheet sheet = workbook.getSheetAt(0);
 			return sheet;
