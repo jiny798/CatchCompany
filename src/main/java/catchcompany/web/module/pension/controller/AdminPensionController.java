@@ -5,14 +5,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import catchcompany.web.module.pension.controller.dto.InvestYearInfo;
 import catchcompany.web.module.pension.service.admin.AdminPensionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
 @Slf4j
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/pension")
 public class AdminPensionController {
@@ -21,18 +24,18 @@ public class AdminPensionController {
 	@PostMapping("/invest")
 	public String processInvestInfoSave(@ModelAttribute InvestYearInfo investYearInfo) {
 		adminPensionService.processInvestInfoSave(investYearInfo);
-		return "home";
+		return "ok";
 	}
 
 	@PostMapping("/sort/{year}")
 	public String processInvestInfoSort(@PathVariable int year) {
 		adminPensionService.processInvestInfoSort(year);
-		return "home";
+		return "ok";
 	}
 
-	@PostMapping("/invest/month")
-	public String processSaveMonthInvest() {
-		adminPensionService.processSaveMonthInvest();
-		return "home";
+	@PostMapping("/invest/quarter")
+	public String processSaveQuarterInvest(@RequestParam MultipartFile file) {
+		adminPensionService.processSaveQuarterInvest(file);
+		return "ok";
 	}
 }
