@@ -1,4 +1,4 @@
-package catchcompany.web.module.pension.infra;
+package catchcompany.web.module.pension.service.admin.processor;
 
 import org.springframework.stereotype.Component;
 

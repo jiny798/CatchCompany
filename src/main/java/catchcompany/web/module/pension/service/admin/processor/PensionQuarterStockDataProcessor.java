@@ -1,11 +1,10 @@
-package catchcompany.web.module.pension.service;
+package catchcompany.web.module.pension.service.admin.processor;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 import catchcompany.web.module.common.service.port.ExcelClient;
 import catchcompany.web.module.pension.domain.PensionMonthStock;
-import catchcompany.web.module.pension.infra.MonthStockFilePath;
 import catchcompany.web.module.pension.infra.repository.PensionMonthStockJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PensionMonthStockDataProcessor {
+public class PensionQuarterStockDataProcessor {
 
 	private final PensionMonthStockJpaRepository pensionMonthStockJpaRepository;
 	private final ExcelClient excelClient;
