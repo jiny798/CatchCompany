@@ -22,7 +22,6 @@ public class PensionService {
 				sortInvestInfo.getBeforeShareInAsset(),
 				sortInvestInfo.getCurrentShareInAsset()
 			)).
-			limit(20).
 			collect(Collectors.toList());
 		return list;
 	}

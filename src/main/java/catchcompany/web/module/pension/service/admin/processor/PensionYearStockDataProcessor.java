@@ -23,7 +23,7 @@ public class PensionYearStockDataProcessor {
 	private final PensionYearStockJpaRepository pensionYearStockJpaRepository;
 	private final PensionStockRestClient pensionStockRestClient;
 
-	public List<PensionYearStock> saveInvestInfo(InvestYearInfo investYearInfo) {
+	public List<PensionYearStock> getPensionYearStockList(InvestYearInfo investYearInfo) {
 		PensionStockRestResponse pensionStockRestResponse = pensionStockRestClient.execute(investYearInfo);
 		List<PensionStockDto> pensionStockDtoList = pensionStockRestResponse.getData();
 		List<PensionYearStock> pensionYearStockList = new ArrayList<>();
@@ -41,7 +41,11 @@ public class PensionYearStockDataProcessor {
 		return pensionYearStockList;
 	}
 
-	public void sortInvestInfo(int year) {
+	public void sortByShareRatio(int year) {
+		List<PensionYearStock> beforeYearStockList = pensionYearStockJpaRepository.findByYear(year - 1);
+		if(beforeYearStockList.isEmpty()) { // 첫번째 년도는 정렬하지 않는다
+			return;
+		}
 		List<PensionYearStock> investList = pensionYearStockJpaRepository.findByYear(year);
 		List<PensionYearStock> sortList = new ArrayList<>();
 		for (PensionYearStock stock : investList) {

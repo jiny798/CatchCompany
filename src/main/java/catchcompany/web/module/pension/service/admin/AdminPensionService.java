@@ -31,16 +31,19 @@ public class AdminPensionService {
 	private final PensionQuarterStockJpaRepository pensionQuarterStockJpaRepository;
 	private final PensionYearStockJpaRepository pensionYearStockJpaRepository;
 
-	public void processInvestInfoSave(InvestYearInfo investYearInfo) {
-		List<PensionYearStock> pensionYearStockList = pensionYearStockDataProcessor.saveInvestInfo(investYearInfo);
-		for (PensionYearStock stock : pensionYearStockList) {
-			pensionYearStockJpaRepository.save(stock);
-		}
-	}
+	public void processInvestInfoSave(List<InvestYearInfo> investYearInfoList) {
+		investYearInfoList.stream().forEach(investYearInfo -> {
+			if(!pensionYearStockJpaRepository.findByYear(investYearInfo.getYear()).isEmpty()) { // 이미 추가된 년도면 무시한다
+				return;
+			}
+			List<PensionYearStock> pensionYearStockList = pensionYearStockDataProcessor.getPensionYearStockList(
+				investYearInfo);
+			for (PensionYearStock stock : pensionYearStockList) {
+				pensionYearStockJpaRepository.save(stock);
+			}
+			pensionYearStockDataProcessor.sortByShareRatio(investYearInfo.getYear()); // 저장 후 정렬
+		});
 
-	public void processInvestInfoSort(int year) {
-		// TODO: processInvestInfoSave() 메서드에 포함되도록 변경 필요
-		pensionYearStockDataProcessor.sortInvestInfo(year);
 	}
 
 	public void processSaveQuarterInvest(MultipartFile file) {
