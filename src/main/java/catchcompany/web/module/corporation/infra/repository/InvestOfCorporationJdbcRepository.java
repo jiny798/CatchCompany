@@ -55,6 +55,9 @@ public class InvestOfCorporationJdbcRepository {
 			new BatchPreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					if (investList.get(i) == null) {
+						return;
+					}
 					if (investList.get(i).getCorporation() != null) {
 						ps.setLong(1, investList.get(i).getCorporation().getId());
 					} else {

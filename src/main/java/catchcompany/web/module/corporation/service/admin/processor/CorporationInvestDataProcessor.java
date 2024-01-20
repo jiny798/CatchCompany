@@ -1,19 +1,9 @@
 package catchcompany.web.module.corporation.service.admin.processor;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.IntStream;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +27,7 @@ public class CorporationInvestDataProcessor {
 	public List<InvestOfCorporation> getInvestList(MultipartFile multipartFile) {
 		initMap();
 		String filePath = fileClient.save(multipartFile);
+		log.debug("file path = {}", filePath);
 		List<InvestOfCorporation> investList =
 			excelClient.getRowList(filePath, (rowList) -> {
 				if (isCorporationData(rowList)) {
@@ -44,7 +35,7 @@ public class CorporationInvestDataProcessor {
 				}
 				return null;
 			});
-		
+
 		return investList;
 	}
 
@@ -87,7 +78,7 @@ public class CorporationInvestDataProcessor {
 		if (investTarget.indexOf("투자") >= 0) {
 			investTarget = "투자";
 		}
-		
+
 		List<Corporation> companies = corporationMap.get(investorName);
 		Corporation corporation = null;
 		if (companies != null && companies.size() != 0) {
