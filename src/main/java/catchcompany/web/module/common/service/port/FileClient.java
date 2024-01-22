@@ -4,4 +4,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileClient {
 	public String save(MultipartFile multipartFile);
+
+	public boolean remove(String path);
 }

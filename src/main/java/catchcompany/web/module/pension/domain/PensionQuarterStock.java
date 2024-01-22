@@ -23,9 +23,16 @@ public class PensionQuarterStock {
 
 	private String date;
 
-	private Double beforeShareInAsset;
+	private Double beforeShareRatio;
 
-	private Double changeShareInAsset;
+	private Double changeShareRatio;
 
-	private Double currentShareInAsset;
+	private Double currentShareRatio;
+
+	public void setBeforeShareRatio(Double value) {
+		this.beforeShareRatio = value;
+	}
+	public void setChangeShareRatio(Double value) {
+		this.changeShareRatio = value;
+	}
 }

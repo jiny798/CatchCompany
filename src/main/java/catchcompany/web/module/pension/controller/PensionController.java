@@ -36,7 +36,16 @@ public class PensionController {
 		yearList.add(2021);
 		yearList.add(2020);
 		yearList.add(2019);
-		yearList.add(2018);
 		return yearList;
+	}
+
+	@ModelAttribute("yearList")
+	public List<String> quarterList(){
+		List<String> quarterList = new ArrayList<>();
+		quarterList.add("2023-4분기");
+		quarterList.add("2023-3분기");
+		quarterList.add("2023-2분기");
+		quarterList.add("2023-1분기");
+		return quarterList;
 	}
 }

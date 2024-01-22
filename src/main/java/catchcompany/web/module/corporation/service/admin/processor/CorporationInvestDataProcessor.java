@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,7 +74,8 @@ public class CorporationInvestDataProcessor {
 		String investorName = rowList.get(0).trim(); // 투자하는 회사명
 		String corpClass = "";
 		String investCompany = rowList.get(4).trim(); // 투자받는 회사명
-		investCompany = investCompany.replaceAll("[(주)|㈜]", "");
+		investCompany = investCompany.replace("(주)", "");
+		investCompany = investCompany.replace("㈜", "");
 		String investTarget = rowList.get(6).trim(); // 투자목적
 		if (investTarget.indexOf("투자") >= 0) {
 			investTarget = "투자";

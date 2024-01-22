@@ -41,45 +41,35 @@ public class PensionYearStockDataProcessor {
 		return pensionYearStockList;
 	}
 
-	public void sortByShareRatio(int year) {
+	public List<PensionYearStock> sortByShareRatio(List<PensionYearStock> pensionYearStockList, int year) {
 		List<PensionYearStock> beforeYearStockList = pensionYearStockJpaRepository.findByYear(year - 1);
-		if(beforeYearStockList.isEmpty()) { // 첫번째 년도는 정렬하지 않는다
-			return;
+		if (beforeYearStockList.isEmpty()) { // 첫번째 년도는 정렬하지 않는다
+			return pensionYearStockList;
 		}
-		List<PensionYearStock> investList = pensionYearStockJpaRepository.findByYear(year);
-		List<PensionYearStock> sortList = new ArrayList<>();
-		for (PensionYearStock stock : investList) {
+
+		for (PensionYearStock currentYearStock : pensionYearStockList) {
 			// year 년도 회사이름 가져오기
-			String corpName = stock.getCorporationName();
+			String corpName = currentYearStock.getCorporationName();
 			// 이전년도 회사정보 가져오기
-			List<PensionYearStock> findList = pensionYearStockJpaRepository.findByYearAndCorporationName(year - 1,
+			List<PensionYearStock> beforeStockList = pensionYearStockJpaRepository.findByYearAndCorporationName(
+				year - 1,
 				corpName);
-			if (findList.isEmpty()) {
-				// 없어진 회사는 조회하지 않는다.
-				continue;
+
+			if (beforeStockList.size() == 0) {
+				// 이전 년도가 없으면, 새로운 회사로 취급
+				currentYearStock.setBeforeShareInAsset(currentYearStock.getCurrentShareInAsset());
+				currentYearStock.setChangeShareInAsset(0.0);
 			} else {
-				PensionYearStock beforeYearStock = findList.get(0);
-				PensionYearStock sortInvest = PensionYearStock.builder()
-					.corporationName(stock.getCorporationName())
-					.evaluation(stock.getEvaluation()) // 이전년도 평가액 차이를 구한다
-					.changeShareInAsset(stock.getCurrentShareInAsset() - beforeYearStock.getCurrentShareInAsset())
-					.beforeShareInAsset(beforeYearStock.getCurrentShareInAsset())
-					.currentShareInAsset(stock.getCurrentShareInAsset())
-					.shareRatio(stock.getShareRatio())
-					.year(year)
-					.build();
-				sortList.add(sortInvest); // 이전년도 평가액 차이 구한 회사만 list 추가
+				PensionYearStock beforeYearStock = beforeStockList.get(0);
+				currentYearStock.setBeforeShareInAsset(beforeYearStock.getCurrentShareInAsset());
+				currentYearStock.setChangeShareInAsset(
+					currentYearStock.getCurrentShareInAsset() - beforeYearStock.getCurrentShareInAsset());
 			}
+
 		}
 
-		for (PensionYearStock stock : investList) {
-			pensionYearStockJpaRepository.delete(stock);
-		}
-
-		sortByShareInAsset(sortList);
-		for (PensionYearStock sortInvest : sortList) {
-			pensionYearStockJpaRepository.save(sortInvest);
-		}
+		sortByShareInAsset(pensionYearStockList);
+		return pensionYearStockList;
 	}
 
 	/*

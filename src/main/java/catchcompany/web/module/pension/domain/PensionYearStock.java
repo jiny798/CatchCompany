@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity @Getter
+@Entity
+@Getter
 public class PensionYearStock {
 
 	@Id
@@ -29,7 +30,15 @@ public class PensionYearStock {
 
 	private Double currentShareInAsset;
 
-	private String shareRatio;
+	private Double shareRatio;
 
 	private int year;
+
+	public void setBeforeShareInAsset(Double value) {
+		this.beforeShareInAsset = value;
+	}
+
+	public void setChangeShareInAsset(Double value) {
+		this.changeShareInAsset = value;
+	}
 }

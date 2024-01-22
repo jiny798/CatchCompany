@@ -28,4 +28,10 @@ public class FileClientImpl implements FileClient {
 		}
 		return fullPath;
 	}
+
+	@Override
+	public boolean remove(String path) {
+		File file = new File(path);
+		return file.delete();
+	}
 }

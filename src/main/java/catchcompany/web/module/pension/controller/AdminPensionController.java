@@ -3,6 +3,7 @@ package catchcompany.web.module.pension.controller;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +30,16 @@ public class AdminPensionController {
 		adminPensionService.processInvestInfoSave(list);
 		return "ok";
 	}
-	
+
 	@PostMapping("/invest/quarter")
-	public String processSaveQuarterInvest(@RequestParam MultipartFile file) {
-		adminPensionService.processSaveQuarterInvest(file);
+	public String processSaveQuarterInvest(@RequestParam MultipartFile file, @RequestParam int beforeYear) {
+		adminPensionService.processSaveQuarterInvest(file, beforeYear);
 		return "ok";
+	}
+
+	@GetMapping("/invest/quarter/name-check")
+	public List<String> checkNotExistName(@RequestParam MultipartFile file, @RequestParam int beforeYear) {
+		List<String> notExistNameList = adminPensionService.checkExistCorporationName(file, beforeYear);
+		return notExistNameList;
 	}
 }

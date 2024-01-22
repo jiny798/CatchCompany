@@ -17,7 +17,7 @@ public class PensionStockDto {
 	private String name;
 
 	@JsonAlias({"지분율(%)", "지분율(퍼센트)"})
-	private String shareRatio;
+	private Double shareRatio;
 
 	@JsonAlias({"평가액(억원)", "평가액(억 원)"})
 	private Long evaluation;
