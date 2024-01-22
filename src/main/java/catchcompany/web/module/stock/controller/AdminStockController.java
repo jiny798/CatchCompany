@@ -4,20 +4,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import catchcompany.web.module.stock.service.StockInfoProcessor;
+import catchcompany.web.module.stock.service.AdminStockService;
+import catchcompany.web.module.stock.service.processor.StockInfoProcessor;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/admin/stock")
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class AdminStockController {
 
-	private final StockInfoProcessor stockInfoClient;
+	private final AdminStockService adminStockService;
 
 	@PostMapping("/{date}")
 	public String saveStockInfo(@PathVariable int date) {
-		stockInfoClient.saveStockInfo(date);
-		return "home";
+		adminStockService.processSaveDailyStockInfo(date);
+		return "ok";
 	}
 }

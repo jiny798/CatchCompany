@@ -11,7 +11,7 @@ import catchcompany.web.module.date.DateManager;
 import catchcompany.web.module.stock.controller.dto.StockSearch;
 import catchcompany.web.module.stock.controller.dto.StockSearchResult;
 import catchcompany.web.module.stock.domain.Stock;
-import catchcompany.web.module.stock.infra.repository.AdminStockJpaRepository;
+import catchcompany.web.module.stock.infra.repository.StockJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class StockService {
-	private final AdminStockJpaRepository adminStockJpaRepository;
+	private final StockJpaRepository stockJpaRepository;
 	private final DateManager dateManager;
 
 	/*
@@ -30,8 +30,8 @@ public class StockService {
 		String yesterdayDate = dateManager.calculatePreviousDateOf(stockSearch.getDate());
 		log.info("조회된 어제 날짜 {}", yesterdayDate);
 		List<StockSearchResult> answer = new ArrayList<>();
-		List<Stock> today = adminStockJpaRepository.findByBasDt(stockSearch.getDate());
-		List<Stock> yesterday = adminStockJpaRepository.findByBasDt(yesterdayDate);
+		List<Stock> today = stockJpaRepository.findByBasDt(stockSearch.getDate());
+		List<Stock> yesterday = stockJpaRepository.findByBasDt(yesterdayDate);
 		Map<String, Long> map = new HashMap<>();
 		for (Stock stock : today) {
 			map.put(stock.getSrtnCd(), stock.getTrqu());

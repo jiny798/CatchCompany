@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import catchcompany.web.module.stock.domain.Stock;
 
-public interface AdminStockJpaRepository extends JpaRepository<Stock, Long> {
+public interface StockJpaRepository extends JpaRepository<Stock, Long> {
 
 	List<Stock> findByBasDt(String basDt);
 
