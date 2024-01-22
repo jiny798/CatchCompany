@@ -41,6 +41,22 @@ public class ExcelClientImpl<R> implements ExcelClient {
 		return rowList;
 	}
 
+	@Override
+	public <R> List<R> getRowList(String filePath, int startRowNum, int endRowNum, Function<List<String>, R> function) {
+		List<R> rowList = new CopyOnWriteArrayList<>();
+		Sheet sheet = getSheet(filePath); //첫번째 시트탭
+		int rows = sheet.getPhysicalNumberOfRows(); // 행의 길이를 모두 불러온다
+		IntStream stream = IntStream.rangeClosed(startRowNum, endRowNum);
+		stream.parallel().forEach(rowIndex -> {
+			List<String> columList = new ArrayList<>();
+			Row row = sheet.getRow(rowIndex); //행 읽기
+			transferRowToList(row, columList);
+			R target = function.apply(columList);
+			rowList.add(target);
+		});
+		return rowList;
+	}
+
 	private Sheet getSheet(String filePath) {
 		try {
 			FileInputStream file = new FileInputStream(filePath);

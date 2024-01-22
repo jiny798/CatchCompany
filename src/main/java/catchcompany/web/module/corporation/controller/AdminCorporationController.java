@@ -22,8 +22,9 @@ public class AdminCorporationController {
 	}
 
 	@PostMapping("/invest")
-	public void processInvestInfoToDatabase(@RequestParam MultipartFile file) {
-		adminCorporationService.processCorporationInvestInfoToDatabase(file);
+	public void processInvestInfoToDatabase(@RequestParam MultipartFile file, @RequestParam int startRowNum,
+		@RequestParam int endRowNum) {
+		adminCorporationService.processCorporationInvestInfoToDatabase(file, startRowNum, endRowNum);
 	}
 
 }

@@ -25,16 +25,13 @@ public class CorporationInvestDataProcessor {
 	private final ExcelClient excelClient;
 	private final FileClient fileClient;
 
-	public List<InvestOfCorporation> getInvestList(MultipartFile multipartFile) {
+	public List<InvestOfCorporation> getInvestList(MultipartFile multipartFile, int startRowNum, int endRowNum) {
 		initMap();
 		String filePath = fileClient.save(multipartFile);
 		log.debug("file path = {}", filePath);
 		List<InvestOfCorporation> investList =
-			excelClient.getRowList(filePath, (rowList) -> {
-				if (isCorporationData(rowList)) {
-					return convertRowsToInvest(rowList);
-				}
-				return null;
+			excelClient.getRowList(filePath, startRowNum, endRowNum, (rowList) -> {
+				return convertRowsToInvest(rowList);
 			});
 
 		return investList;
@@ -60,23 +57,11 @@ public class CorporationInvestDataProcessor {
 
 	}
 
-	/*
-	 * 행의 길이가 18 이상
-	 * 셀에 "합계", "-" 문자가 포함되는 경우는 데이터 정보에서 제외한다
-	 */
-	private boolean isCorporationData(List<String> rowList) {
-		return rowList.size() >= 18 &&
-			!rowList.get(4).trim().equals("합계") &&
-			!rowList.get(4).trim().equals("-");
-	}
-
 	private InvestOfCorporation convertRowsToInvest(List<String> rowList) {
 		String investorName = rowList.get(0).trim(); // 투자하는 회사명
-		String corpClass = "";
 		String investCompany = rowList.get(4).trim(); // 투자받는 회사명
-		investCompany = investCompany.replace("(주)", "");
-		investCompany = investCompany.replace("㈜", "");
 		String investTarget = rowList.get(6).trim(); // 투자목적
+		String corpClass = null;
 		if (investTarget.indexOf("투자") >= 0) {
 			investTarget = "투자";
 		}

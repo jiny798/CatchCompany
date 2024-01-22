@@ -28,8 +28,9 @@ public class AdminCorporationService {
 		corporationJdbcRepository.saveAll(corporationList);
 	}
 
-	public void processCorporationInvestInfoToDatabase(MultipartFile multipartFile) {
-		List<InvestOfCorporation> investList = corporationInvestDataProcessor.getInvestList(multipartFile);
+	public void processCorporationInvestInfoToDatabase(MultipartFile multipartFile, int startRowNum, int endRowNum) {
+		List<InvestOfCorporation> investList = corporationInvestDataProcessor.getInvestList(multipartFile, startRowNum,
+			endRowNum);
 		investOfCorporationJdbcRepository.saveAll(investList);
 	}
 
