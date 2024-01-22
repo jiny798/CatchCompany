@@ -1,4 +1,4 @@
-package catchcompany.web.module.pension.service.admin.processor;
+package catchcompany.web.module.pension.service.processor;
 
 import java.util.Collections;
 import java.util.List;

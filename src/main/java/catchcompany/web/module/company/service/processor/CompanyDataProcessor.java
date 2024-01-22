@@ -1,4 +1,4 @@
-package catchcompany.web.module.company.service.admin;
+package catchcompany.web.module.company.service.processor;
 
 import java.util.List;
 import java.util.stream.IntStream;

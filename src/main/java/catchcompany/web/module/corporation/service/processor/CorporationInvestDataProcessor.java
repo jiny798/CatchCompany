@@ -1,4 +1,4 @@
-package catchcompany.web.module.corporation.service.admin.processor;
+package catchcompany.web.module.corporation.service.processor;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

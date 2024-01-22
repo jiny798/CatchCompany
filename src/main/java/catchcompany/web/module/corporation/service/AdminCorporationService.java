@@ -1,4 +1,4 @@
-package catchcompany.web.module.corporation.service.admin;
+package catchcompany.web.module.corporation.service;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
 import catchcompany.web.module.corporation.infra.repository.CorporationJdbcRepository;
 import catchcompany.web.module.corporation.infra.repository.InvestOfCorporationJdbcRepository;
-import catchcompany.web.module.corporation.service.admin.processor.CorporationDataProcessor;
-import catchcompany.web.module.corporation.service.admin.processor.CorporationInvestDataProcessor;
+import catchcompany.web.module.corporation.service.processor.CorporationDataProcessor;
+import catchcompany.web.module.corporation.service.processor.CorporationInvestDataProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

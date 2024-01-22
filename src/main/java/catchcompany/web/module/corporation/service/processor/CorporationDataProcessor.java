@@ -1,4 +1,4 @@
-package catchcompany.web.module.corporation.service.admin.processor;
+package catchcompany.web.module.corporation.service.processor;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
