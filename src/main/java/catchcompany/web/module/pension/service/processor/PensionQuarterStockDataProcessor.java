@@ -21,18 +21,16 @@ public class PensionQuarterStockDataProcessor {
 	private final PensionYearStockJpaRepository pensionYearStockJpaRepository;
 	private final ExcelClient excelClient;
 
-	public List<PensionQuarterStock> executeSaveQuarterStock(String filePath) {
+	public List<PensionQuarterStock> executeSaveQuarterStock(String filePath, String quarter) {
 		List<PensionQuarterStock> stocks
 			= excelClient.getRowList(filePath, (rowList) -> {
-			return convertRowsToMonthStock(rowList);
+			return convertRowsToMonthStock(rowList, quarter);
 		});
 		return stocks;
 	}
 
-	private PensionQuarterStock convertRowsToMonthStock(List<String> rowList) {
+	private PensionQuarterStock convertRowsToMonthStock(List<String> rowList, String quarter) {
 		String companyName = rowList.get(2);
-		companyName = companyName.replace("(주)", "");
-		companyName = companyName.replace("㈜", "");
 		String date = rowList.get(3);
 		String shareInAsset = rowList.get(4);
 
@@ -40,6 +38,7 @@ public class PensionQuarterStockDataProcessor {
 			.corporationName(companyName)
 			.currentShareRatio(Double.parseDouble(shareInAsset))
 			.date(date)
+			.quarter(quarter)
 			.build();
 	}
 

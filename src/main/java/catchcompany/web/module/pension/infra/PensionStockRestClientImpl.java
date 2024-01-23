@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import catchcompany.web.module.pension.controller.dto.InvestYearInfo;
+import catchcompany.web.module.pension.controller.dto.RequestYearInfo;
 import catchcompany.web.module.pension.infra.dto.PensionStockRestResponse;
 import catchcompany.web.module.pension.service.port.PensionStockRestClient;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,9 @@ public class PensionStockRestClientImpl implements PensionStockRestClient {
 	private String apiKey;
 
 	@Override
-	public PensionStockRestResponse execute(InvestYearInfo investYearInfo) {
+	public PensionStockRestResponse execute(RequestYearInfo requestYearInfo) {
 		UriComponents uriComponents = UriComponentsBuilder
-			.fromHttpUrl(investYearInfo.getLink())
+			.fromHttpUrl(requestYearInfo.getLink())
 			.queryParam("serviceKey", apiKey)
 			.queryParam("perPage", 1500)
 			.build(true);

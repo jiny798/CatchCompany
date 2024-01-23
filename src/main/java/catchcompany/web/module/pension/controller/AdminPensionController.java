@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import catchcompany.web.module.pension.controller.dto.InvestYearInfo;
+import catchcompany.web.module.pension.controller.dto.RequestYearInfo;
 import catchcompany.web.module.pension.service.AdminPensionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +23,15 @@ public class AdminPensionController {
 	private final AdminPensionService adminPensionService;
 
 	@PostMapping("/invest")
-	public String processInvestInfoSave(@RequestBody List<InvestYearInfo> list) {
+	public String processInvestInfoSave(@RequestBody List<RequestYearInfo> list) {
 		adminPensionService.processInvestInfoSave(list);
 		return "ok";
 	}
 
 	@PostMapping("/invest/quarter")
-	public String processSaveQuarterInvest(@RequestParam MultipartFile file, @RequestParam int beforeYear) {
-		adminPensionService.processSaveQuarterInvest(file, beforeYear);
+	public String processSaveQuarterInvest(@RequestParam MultipartFile file, @RequestParam String quarter,
+		@RequestParam int beforeYear) {
+		adminPensionService.processSaveQuarterInvest(file, quarter, beforeYear);
 		return "ok";
 	}
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import catchcompany.web.module.common.service.port.FileClient;
-import catchcompany.web.module.pension.controller.dto.InvestYearInfo;
+import catchcompany.web.module.pension.controller.dto.RequestYearInfo;
 import catchcompany.web.module.pension.domain.PensionQuarterStock;
 import catchcompany.web.module.pension.domain.PensionYearStock;
 import catchcompany.web.module.pension.infra.repository.PensionQuarterStockJpaRepository;
@@ -31,8 +31,8 @@ public class AdminPensionService {
 	/*
 	 * 년도별 투자 리스트를 자산 비중을 내림차순으로 정렬하여 저장
 	 */
-	public void processInvestInfoSave(List<InvestYearInfo> investYearInfoList) {
-		investYearInfoList.stream().forEach(investYearInfo -> {
+	public void processInvestInfoSave(List<RequestYearInfo> requestYearInfoList) {
+		requestYearInfoList.stream().forEach(investYearInfo -> {
 			if (!pensionYearStockJpaRepository.findByYear(investYearInfo.getYear()).isEmpty()) { // 이미 추가된 년도면 무시한다
 				return;
 			}
@@ -48,9 +48,10 @@ public class AdminPensionService {
 
 	}
 
-	public void processSaveQuarterInvest(MultipartFile file, int beforeYear) {
+	public void processSaveQuarterInvest(MultipartFile file, String quarter, int beforeYear) {
 		String fullPath = fileClient.save(file);
-		List<PensionQuarterStock> quarterStocks = pensionQuarterStockDataProcessor.executeSaveQuarterStock(fullPath);
+		List<PensionQuarterStock> quarterStocks = pensionQuarterStockDataProcessor.executeSaveQuarterStock(fullPath,
+			quarter);
 		pensionQuarterStockDataProcessor.sortByShareRatio(quarterStocks, beforeYear);
 		for (PensionQuarterStock stock : quarterStocks) {
 			pensionQuarterStockJpaRepository.save(stock);
@@ -59,7 +60,8 @@ public class AdminPensionService {
 
 	public List<String> checkExistCorporationName(MultipartFile file, int beforeYear) {
 		String fullPath = fileClient.save(file);
-		List<PensionQuarterStock> quarterStocks = pensionQuarterStockDataProcessor.executeSaveQuarterStock(fullPath);
+		List<PensionQuarterStock> quarterStocks = pensionQuarterStockDataProcessor.executeSaveQuarterStock(fullPath,
+			null);
 		List<String> notExistNameList = new ArrayList<>();
 
 		for (PensionQuarterStock stock : quarterStocks) {

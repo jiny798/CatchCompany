@@ -8,4 +8,6 @@ import catchcompany.web.module.pension.domain.PensionQuarterStock;
 
 public interface PensionQuarterStockJpaRepository extends JpaRepository<PensionQuarterStock, Long> {
 	List<PensionQuarterStock> findByCorporationName(String corporationName);
+
+	List<PensionQuarterStock> findByQuarter(String quarter);
 }

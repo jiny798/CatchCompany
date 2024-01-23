@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import catchcompany.web.module.pension.infra.dto.PensionStockDto;
 import catchcompany.web.module.pension.infra.dto.PensionStockRestResponse;
-import catchcompany.web.module.pension.controller.dto.InvestYearInfo;
+import catchcompany.web.module.pension.controller.dto.RequestYearInfo;
 import catchcompany.web.module.pension.domain.PensionYearStock;
 import catchcompany.web.module.pension.infra.repository.PensionYearStockJpaRepository;
 import catchcompany.web.module.pension.service.port.PensionStockRestClient;
@@ -23,8 +23,8 @@ public class PensionYearStockDataProcessor {
 	private final PensionYearStockJpaRepository pensionYearStockJpaRepository;
 	private final PensionStockRestClient pensionStockRestClient;
 
-	public List<PensionYearStock> getPensionYearStockList(InvestYearInfo investYearInfo) {
-		PensionStockRestResponse pensionStockRestResponse = pensionStockRestClient.execute(investYearInfo);
+	public List<PensionYearStock> getPensionYearStockList(RequestYearInfo requestYearInfo) {
+		PensionStockRestResponse pensionStockRestResponse = pensionStockRestClient.execute(requestYearInfo);
 		List<PensionStockDto> pensionStockDtoList = pensionStockRestResponse.getData();
 		List<PensionYearStock> pensionYearStockList = new ArrayList<>();
 		for (PensionStockDto dto : pensionStockDtoList) {
@@ -33,7 +33,7 @@ public class PensionYearStockDataProcessor {
 				.evaluation(dto.getEvaluation())
 				.currentShareInAsset(dto.getShareInAsset())
 				.shareRatio(dto.getShareRatio())
-				.year(investYearInfo.getYear())
+				.year(requestYearInfo.getYear())
 				.build();
 			pensionYearStockList.add(info);
 		}

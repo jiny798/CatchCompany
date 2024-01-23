@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class InvestYearInfo {
+public class RequestYearInfo {
 	private int year;
 	private String link;
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import catchcompany.web.module.pension.controller.dto.InvestInfo;
+import catchcompany.web.module.pension.controller.dto.QuarterInvestInfo;
 import catchcompany.web.module.pension.service.PensionService;
 import lombok.RequiredArgsConstructor;
 
@@ -22,15 +23,22 @@ public class PensionController {
 	private final PensionService pensionService;
 
 	@GetMapping("/portfolio/{year}")
-	public String processInvestInfoSave(@PathVariable int year, Model model) {
+	public String pensionYearPortfolio(@PathVariable int year, Model model) {
 		List<InvestInfo> list = pensionService.getInvestInfo(year);
-		model.addAttribute("investInfoList",list);
-		model.addAttribute("year",year);
+		model.addAttribute("investInfoList", list);
+		model.addAttribute("year", year);
 		return "pension/pension_portfolio";
 	}
 
+	@GetMapping("/portfolio/{quarter}")
+	public String pensionQuarterPortfolio(@PathVariable String quarter, Model model) {
+		List<QuarterInvestInfo> quarterInvestInfoList = pensionService.getQuarterInvestInfo(quarter);
+		model.addAttribute("quarterInvestInfoList", quarterInvestInfoList);
+		return "pension/pension_portfolio_quart";
+	}
+
 	@ModelAttribute("yearList")
-	public List<Integer> yearList(){
+	public List<Integer> yearList() {
 		List<Integer> yearList = new ArrayList<>();
 		yearList.add(2022);
 		yearList.add(2021);
@@ -39,8 +47,8 @@ public class PensionController {
 		return yearList;
 	}
 
-	@ModelAttribute("yearList")
-	public List<String> quarterList(){
+	@ModelAttribute("quarterList")
+	public List<String> quarterList() {
 		List<String> quarterList = new ArrayList<>();
 		quarterList.add("2023-4분기");
 		quarterList.add("2023-3분기");

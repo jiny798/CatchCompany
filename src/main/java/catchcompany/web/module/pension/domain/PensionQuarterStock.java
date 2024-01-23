@@ -22,6 +22,7 @@ public class PensionQuarterStock {
 	private String corporationName;
 
 	private String date;
+	private String quarter;
 
 	private Double beforeShareRatio;
 
