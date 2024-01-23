@@ -7,6 +7,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import catchcompany.web.module.account.controller.form.SignUpForm;
 import catchcompany.web.module.account.domain.entity.Account;
 import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
+import catchcompany.web.module.mock.MockTokenGenerator;
 
 @Transactional
 @SpringBootTest
@@ -29,6 +32,7 @@ class AccountControllerTest {
 	MockMvc mockMvc;
 	@Autowired
 	AccountJpaRepository accountRepository;
+
 	@MockBean
 	JavaMailSender mailSender;
 
@@ -55,7 +59,7 @@ class AccountControllerTest {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/account/email-auth-send"));
 
-		Account account = accountRepository.findByEmailAndIsValid("jiny798@email.com",false).get();
+		Account account = accountRepository.findByEmailAndIsValid("jiny798@email.com", false).get();
 		assertNotEquals(account.getPassword(), password); // 암호화로 서로 불일치
 		assertTrue(accountRepository.existsByEmail("jiny798@email.com"));
 
@@ -102,5 +106,38 @@ class AccountControllerTest {
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(view().name("account/register"));
+	}
+
+	@Test
+	@DisplayName("인증 메일 확인 : 링크 오류")
+	void 잘못된_링크로_인증_메일을_확인할_경우_오류화면을_반환() throws Exception {
+		mockMvc.perform(get("/account/check-email-token")
+				.param("token", "123")
+				.param("email", "email"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("account/email-auth/email-verification"))
+			.andExpect(model().attributeExists("error"));
+	}
+
+	@Test
+	@DisplayName("인증 메일 확인 : 유효한 링크")
+	@Transactional
+	void verifyEmail() throws Exception {
+		SignUpForm signUpForm = new SignUpForm(
+			"nickname",
+			"jiny798@catch.com",
+			"jiny1234!",
+			"jiny1234!"
+		);
+
+		Account account = Account.from(signUpForm, new MockTokenGenerator("aaa-bbb-ccc"));
+		Account newAccount = accountRepository.save(account);
+		mockMvc.perform(get("/account/check-email-token")
+				.param("token", newAccount.getEmailAuthToken())
+				.param("email", newAccount.getEmail()))
+			.andExpect(status().isOk())
+			.andExpect(view().name("account/email-auth/email-verification"))
+			.andExpect(model().attributeDoesNotExist("error"))
+			.andExpect(model().attributeExists("nickname", "nickname"));
 	}
 }

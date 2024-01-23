@@ -53,11 +53,18 @@ public class AccountController {
 
 	@GetMapping("/check-email-token")
 	public String verifyEmailAuth(String token, String email, Model model) {
-		Account account = accountRepository.findByEmailAndIsValid(email, false)
-			.orElseThrow(() -> new RuntimeException());
+		Account account = accountRepository.findByEmailAndIsValid(email, false).orElse(null);
+		if (account == null) {
+			model.addAttribute("error", "wrong.email");
+			return "account/email-auth/email-verification";
+		}
+		if (!account.getEmailAuthToken().equals(token)) {
+			model.addAttribute("error", "wrong.token");
+			return "account/email-auth/email-verification";
+		}
 		accountService.certificate(account, token);
 		model.addAttribute("nickname", account.getNickname());
-		return "account/email-auth/success";
+		return "account/email-auth/email-verification";
 	}
 
 	@GetMapping("/email-auth-send")
