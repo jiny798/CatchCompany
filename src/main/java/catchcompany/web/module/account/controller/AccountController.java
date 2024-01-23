@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import catchcompany.web.module.account.controller.dto.SignUpForm;
+import catchcompany.web.module.account.controller.form.SignUpForm;
 import catchcompany.web.module.account.controller.validator.SignUpFormValidator;
 import catchcompany.web.module.account.domain.entity.Account;
 import catchcompany.web.module.account.infra.repository.AccountJpaRepository;

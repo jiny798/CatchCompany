@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import catchcompany.web.module.account.controller.dto.SignUpForm;
+import catchcompany.web.module.account.controller.form.SignUpForm;
 import catchcompany.web.module.account.domain.entity.Account;
 import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
 import catchcompany.web.module.account.service.port.MailSender;

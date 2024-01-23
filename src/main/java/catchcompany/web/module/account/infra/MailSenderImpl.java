@@ -19,6 +19,7 @@ public class MailSenderImpl implements MailSender {
 		message.setTo(email);
 		message.setSubject(title);
 		message.setText(content);
+		message.setFrom("dareme798@naver.com");
 		javaMailSender.send(message);
 	}
 

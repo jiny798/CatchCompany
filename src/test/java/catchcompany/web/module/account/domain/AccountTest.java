@@ -4,9 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import catchcompany.web.module.account.controller.dto.SignUpForm;
+import catchcompany.web.module.account.controller.form.SignUpForm;
 import catchcompany.web.module.account.domain.entity.Account;
-import catchcompany.web.module.account.domain.entity.AccountCreate;
 import catchcompany.web.module.account.exception.AuthTokenNotMatchedException;
 import catchcompany.web.module.mock.MockClockHolder;
 import catchcompany.web.module.mock.MockTokenGenerator;

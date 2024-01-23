@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import catchcompany.web.module.account.controller.dto.SignUpForm;
+import catchcompany.web.module.account.controller.form.SignUpForm;
 import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
 import lombok.RequiredArgsConstructor;
 

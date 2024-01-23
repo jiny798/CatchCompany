@@ -1,7 +1,7 @@
 package catchcompany.web.module.account.domain.entity;
 
 
-import catchcompany.web.module.account.controller.dto.SignUpForm;
+import catchcompany.web.module.account.controller.form.SignUpForm;
 import catchcompany.web.module.account.exception.AuthTokenNotMatchedException;
 import catchcompany.web.module.common.service.port.ClockHolder;
 import catchcompany.web.module.common.service.port.TokenGenerator;

@@ -1,4 +1,4 @@
-package catchcompany.web.module.account.controller.dto;
+package catchcompany.web.module.account.controller.form;
 
 import org.hibernate.validator.constraints.Length;
 
