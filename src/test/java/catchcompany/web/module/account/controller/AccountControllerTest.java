@@ -53,7 +53,7 @@ class AccountControllerTest {
 				.with(csrf()))
 			.andDo(print())
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/"));
+			.andExpect(view().name("redirect:/account/email-auth-send"));
 
 		Account account = accountRepository.findByEmailAndIsValid("jiny798@email.com",false).get();
 		assertNotEquals(account.getPassword(), password); // 암호화로 서로 불일치
