@@ -29,14 +29,17 @@ public class AccountService {
 
 	public void signUp(SignUpForm form) {
 		form.setPassword(passwordEncoder.encode(form.getPassword()));
-		Account account = Account.from(form, tokenGenerator);
+		Account newAccount = accountRepository.save(Account.from(form, tokenGenerator));
+		sendAuthEmail(newAccount);
+	}
+
+	public void sendAuthEmail(Account newAccount) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(account.getEmail());
+		mailMessage.setTo(newAccount.getEmail());
 		mailMessage.setSubject("회원 가입 인증");
-		mailMessage.setText(String.format("/account/email-auth?token=%s&email=%s", account.getEmailAuthToken(),
-			account.getEmail()));
+		mailMessage.setText(String.format("/account/email-auth?token=%s&email=%s", newAccount.getEmailAuthToken(),
+			newAccount.getEmail()));
 		mailSender.send(mailMessage);
-		accountRepository.save(account);
 	}
 
 	public void certificate(Account account, String emailAuthToken) {

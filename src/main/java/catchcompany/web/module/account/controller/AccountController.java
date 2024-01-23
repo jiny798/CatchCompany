@@ -41,7 +41,8 @@ public class AccountController {
 	}
 
 	@PostMapping("/sign-up")
-	public String signUpSubmit(@Valid @ModelAttribute SignUpForm signUpForm, Errors errors, RedirectAttributes redirectAttributes) {
+	public String signUpSubmit(@Valid @ModelAttribute SignUpForm signUpForm, Errors errors,
+		RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			return "account/register";
 		}
