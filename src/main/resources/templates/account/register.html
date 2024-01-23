@@ -10,15 +10,9 @@
     <link th:href="@{/css/styles.css}" href="css/styles.css" rel="stylesheet"/>
     <script th:src="@{/js/scripts.js}" src="js/scripts.js"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <style>
-        .btn-primary{
-            display: none;
-        }
-
-
-    </style>
 </head>
 <body class="bg-primary">
+<nav th:replace="~{side/nav :: nav}"></nav>
 <div id="layoutAuthentication">
     <div id="layoutAuthentication_content" style="background-color: currentcolor;">
         <main>
@@ -29,7 +23,8 @@
                             <div class="card-header"><h3 class="text-center font-weight-light my-4">계정 생성</h3>
                             </div>
                             <div class="card-body">
-                                <form id="signUpForm" th:action="@{/account/sign-up}" th:object="${signUpForm}" method="post">
+                                <form id="signUpForm" th:action="@{/account/sign-up}" th:object="${signUpForm}"
+                                      method="post">
                                     <div class="form-floating mb-3">
                                         <input class="form-control" th:field="*{nickname}" type="text"
                                                placeholder="name@example.com"/>
@@ -47,6 +42,9 @@
                                         <input class="form-control" th:field="*{email}" type="email"
                                                placeholder="name@example.com"/>
                                         <label th:for="*{email}">이메일 입력</label>
+                                        <small id="emailHelp" class="form-text text-muted">
+                                            이메일은 로그인 용도로만 사용되며, 다른 사용자에게 공개되지 않습니다.
+                                        </small>
                                         <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}"
                                                th:errors="*{email}">email Error</small>
                                     </div>
@@ -66,21 +64,27 @@
                                                 <label th:for="*{confirmPassword}">패스워드 확인</label>
                                             </div>
                                         </div>
+                                        <small id="passwordHelp" class="form-text text-muted">
+                                            8자 이상 50자 이내로 입력하세요. 영문자, 숫자, 특수기호를 사용할 수 있으며 공백은 사용할 수 없습니다.
+                                        </small>
                                         <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}"
                                                th:errors="*{password}">password Error</small>
                                     </div>
-                                    <div class="mt-4 mb-0">
-                                        <div class="d-grid"><a class="btn btn-primary btn-block" href="login.html">Create
-                                            Account</a></div>
-                                    </div>
 
-                                    <button type="submit" class="btn-primary btn btn-block" style="display: block"
-                                            id="btnNavbarSearch">계정 생성
-                                    </button>
+                                    <div class="form-floating mb-3">
+                                        <small id="submitHelp" class="form-text text-muted">
+                                            <a href="#">약관</a>에 동의하시면 가입하기 버튼을 클릭하세요.
+                                        </small>
+                                    </div>
+                                    <div class="card-footer text-center py-3">
+                                        <div class="d-grid">
+                                            <button class="btn btn-primary btn-block" type="submit"
+                                                    id="btnNavbarSearch">가입하기
+                                            </button>
+                                        </div>
+
+                                    </div>
                                 </form>
-                            </div>
-                            <div class="card-footer text-center py-3">
-                                <div class="small"><a th:href="@{/login}" href="login.html">로그인하러 가기</a></div>
                             </div>
                         </div>
                     </div>
