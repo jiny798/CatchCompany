@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +31,15 @@ class AccountControllerTest {
 	AccountJpaRepository accountRepository;
 	@MockBean
 	JavaMailSender mailSender;
+
+	@Test
+	@DisplayName("회원 가입 폼 화면 진입")
+	void 회원가입_화면_진입() throws Exception {
+		mockMvc.perform(get("/account/sign-up"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(view().name("account/register"));
+	}
 
 	@Test
 	@DisplayName("회원 가입 정상 처리")
