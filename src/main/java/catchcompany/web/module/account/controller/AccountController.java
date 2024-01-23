@@ -51,7 +51,7 @@ public class AccountController {
 		return "redirect:/account/email-auth-send";
 	}
 
-	@GetMapping("/email-auth")
+	@GetMapping("/check-email-token")
 	public String verifyEmailAuth(String token, String email, Model model) {
 		Account account = accountRepository.findByEmailAndIsValid(email, false)
 			.orElseThrow(() -> new RuntimeException());

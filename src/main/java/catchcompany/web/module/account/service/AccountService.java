@@ -37,7 +37,7 @@ public class AccountService {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(newAccount.getEmail());
 		mailMessage.setSubject("회원 가입 인증");
-		mailMessage.setText(String.format("/account/email-auth?token=%s&email=%s", newAccount.getEmailAuthToken(),
+		mailMessage.setText(String.format("/account/check-email-token?token=%s&email=%s", newAccount.getEmailAuthToken(),
 			newAccount.getEmail()));
 		mailSender.send(mailMessage);
 	}
