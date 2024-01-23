@@ -26,7 +26,11 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-7">
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header"><h3 class="text-center font-weight-light my-4">계정 생성 완료</h3>
+                            <div class="card-header"><h3 class="text-center font-weight-light my-4">이메일 인증</h3>
+                            </div>
+
+                            <div class="card-body" th:if="${error}">
+                                    이메일 확인 링크가 정확하지 않습니다.
                             </div>
                             <div class="card-body">
                                 <span th:text="${nickname}"></span><span>님 가입을 축하합니다.</span>
