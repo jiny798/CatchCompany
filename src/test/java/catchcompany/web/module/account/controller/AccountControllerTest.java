@@ -4,35 +4,51 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.aspectj.lang.annotation.Before;
+import org.hibernate.validator.internal.metadata.raw.BeanConfiguration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import catchcompany.web.module.account.controller.form.SignUpForm;
 import catchcompany.web.module.account.domain.entity.Account;
 import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
 import catchcompany.web.module.mock.MockTokenGenerator;
+import catchcompany.web.module.security.SecurityConfig;
 
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
+@Import({SecurityConfig.class})
 class AccountControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 	@Autowired
 	AccountJpaRepository accountRepository;
-
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	@MockBean
 	JavaMailSender mailSender;
 
@@ -123,21 +139,27 @@ class AccountControllerTest {
 	@DisplayName("인증 메일 확인 : 유효한 링크")
 	@Transactional
 	void verifyEmail() throws Exception {
+		// given
 		SignUpForm signUpForm = new SignUpForm(
 			"nickname",
 			"jiny798@catch.com",
 			"jiny1234!",
 			"jiny1234!"
 		);
-
+		signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+		signUpForm.setConfirmPassword(passwordEncoder.encode(signUpForm.getConfirmPassword()));
 		Account account = Account.from(signUpForm, new MockTokenGenerator("aaa-bbb-ccc"));
 		Account newAccount = accountRepository.save(account);
+
+		// when&then
 		mockMvc.perform(get("/account/check-email-token")
 				.param("token", newAccount.getEmailAuthToken())
 				.param("email", newAccount.getEmail()))
 			.andExpect(status().isOk())
 			.andExpect(view().name("account/email-auth/email-verification"))
 			.andExpect(model().attributeDoesNotExist("error"))
-			.andExpect(model().attributeExists("nickname", "nickname"));
+			.andExpect(model().attributeExists("nickname", "nickname"))
+			.andExpect(authenticated().withUsername(newAccount.getNickname()));
 	}
+
 }
