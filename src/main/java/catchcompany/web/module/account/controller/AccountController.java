@@ -16,6 +16,8 @@ import catchcompany.web.module.account.controller.validator.SignUpFormValidator;
 import catchcompany.web.module.account.domain.entity.Account;
 import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
 import catchcompany.web.module.account.service.AccountService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +54,8 @@ public class AccountController {
 	}
 
 	@GetMapping("/check-email-token")
-	public String verifyEmailAuth(String token, String email, Model model) {
+	public String verifyEmailAuth(String token, String email, Model model, HttpServletRequest request,
+		HttpServletResponse response) {
 		Account account = accountRepository.findByEmailAndIsValid(email, false).orElse(null);
 		if (account == null) {
 			model.addAttribute("error", "wrong.email");
@@ -63,6 +66,7 @@ public class AccountController {
 			return "account/email-auth/email-verification";
 		}
 		accountService.certificate(account, token);
+		accountService.login(account, request, response);
 		model.addAttribute("nickname", account.getNickname());
 		return "account/email-auth/email-verification";
 	}
