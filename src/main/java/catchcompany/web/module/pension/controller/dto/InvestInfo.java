@@ -12,4 +12,5 @@ public class InvestInfo {
 	private String corporationName;
 	private Double beforeShareInAsset;
 	private Double currentShareInAsset;
+	private String changeRate;
 }

@@ -10,6 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuarterInvestInfo {
+	private String corporationName;
 	private Double beforeShareRatio;
 	private Double currentShareRatio;
+	private String changeRate;
 }

@@ -23,7 +23,8 @@ public class PensionService {
 			.map(sortInvestInfo -> new InvestInfo(
 				sortInvestInfo.getCorporationName(),
 				sortInvestInfo.getBeforeShareInAsset(),
-				sortInvestInfo.getCurrentShareInAsset()
+				sortInvestInfo.getCurrentShareInAsset(),
+				String.format("%.2f", sortInvestInfo.getChangeShareInAsset())
 			)).collect(Collectors.toList());
 		return list;
 	}
@@ -31,8 +32,10 @@ public class PensionService {
 	public List<QuarterInvestInfo> getQuarterInvestInfo(String quarter) {
 		List<QuarterInvestInfo> list = pensionQuarterStockJpaRepository.findByQuarter(quarter).stream()
 			.map(quarterStock -> new QuarterInvestInfo(
+				quarterStock.getCorporationName(),
 				quarterStock.getBeforeShareRatio(),
-				quarterStock.getCurrentShareRatio()
+				quarterStock.getCurrentShareRatio(),
+				String.format("%.2f", quarterStock.getChangeShareRatio())
 			)).collect(Collectors.toList());
 		return list;
 	}

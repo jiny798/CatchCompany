@@ -14,7 +14,9 @@ import catchcompany.web.module.pension.controller.dto.InvestInfo;
 import catchcompany.web.module.pension.controller.dto.QuarterInvestInfo;
 import catchcompany.web.module.pension.service.PensionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/pension")
@@ -30,10 +32,12 @@ public class PensionController {
 		return "pension/pension_portfolio";
 	}
 
-	@GetMapping("/portfolio/{quarter}")
-	public String pensionQuarterPortfolio(@PathVariable String quarter, Model model) {
-		List<QuarterInvestInfo> quarterInvestInfoList = pensionService.getQuarterInvestInfo(quarter);
+	@GetMapping("/portfolio/quarter/{currentQuarter}")
+	public String pensionQuarterPortfolio(@PathVariable String currentQuarter, Model model) {
+		log.info("currentQuarter {}", currentQuarter);
+		List<QuarterInvestInfo> quarterInvestInfoList = pensionService.getQuarterInvestInfo(currentQuarter);
 		model.addAttribute("quarterInvestInfoList", quarterInvestInfoList);
+		model.addAttribute("currentQuarter", currentQuarter);
 		return "pension/pension_portfolio_quart";
 	}
 
