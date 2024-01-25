@@ -60,14 +60,4 @@ public class CorporationDataProcessorTest {
 
 	}
 
-	@Test
-	public void List_는_멀티스레드에서_안전하지_않다() {
-		List<Integer> list = new CopyOnWriteArrayList<>();
-		IntStream stream = IntStream.rangeClosed(0, 499);
-		stream.parallel().forEach(i -> {
-			list.add(i);
-		});
-
-		assertThat(list.size()).isEqualTo(500);
-	}
 }
