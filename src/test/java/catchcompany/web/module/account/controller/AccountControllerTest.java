@@ -35,6 +35,7 @@ import org.springframework.web.context.WebApplicationContext;
 import catchcompany.web.module.account.controller.form.SignUpForm;
 import catchcompany.web.module.account.domain.entity.Account;
 import catchcompany.web.module.account.infra.repository.AccountJpaRepository;
+import catchcompany.web.module.account.service.port.MailSender;
 import catchcompany.web.module.mock.MockTokenGenerator;
 import catchcompany.web.module.security.SecurityConfig;
 
@@ -50,7 +51,7 @@ class AccountControllerTest {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	@MockBean
-	JavaMailSender mailSender;
+	MailSender mailSender;
 
 	@Test
 	@DisplayName("회원 가입 폼 화면 진입")

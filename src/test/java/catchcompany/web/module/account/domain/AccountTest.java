@@ -16,8 +16,8 @@ public class AccountTest {
 	public void UserCreate_객체로_생성할_수_있다() {
 		// given
 		SignUpForm signUpForm = new SignUpForm(
-			"jyoung798@naver.com",
 			"jiny",
+			"jyoung798@naver.com",
 			"abc123123!",
 			"abc123123!"
 		);
