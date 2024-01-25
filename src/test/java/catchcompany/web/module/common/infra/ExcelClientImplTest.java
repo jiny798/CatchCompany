@@ -1,18 +1,15 @@
-package catchcompany.web.module.excel.service;
+package catchcompany.web.module.common.infra;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import catchcompany.web.module.common.infra.ExcelClientImpl;
-import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
 
-public class ExcelProcessorTest {
-
+class ExcelClientImplTest {
 	@Test
 	public void 액셀에서_원하는_객체로_가져올_수_있다() {
 		ExcelClientImpl excelClient = new ExcelClientImpl();
@@ -59,5 +56,4 @@ public class ExcelProcessorTest {
 			.recentEvaluationGainsAndLosses(rowList.get(13).trim())
 			.build();
 	}
-
 }
