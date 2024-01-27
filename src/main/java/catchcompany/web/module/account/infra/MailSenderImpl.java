@@ -29,7 +29,7 @@ public class MailSenderImpl implements MailSender {
 
 	@Override
 	public void send(SimpleMailMessage message) {
-		javaMailSender.send(message);
 		message.setFrom(email);
+		javaMailSender.send(message);
 	}
 }
