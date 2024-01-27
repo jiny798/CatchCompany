@@ -2,6 +2,8 @@ package catchcompany.web.module.security;
 
 import static org.springframework.security.config.Customizer.*;
 
+import javax.sql.DataSource;
+
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -19,16 +21,22 @@ import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import jakarta.servlet.DispatcherType;
+import catchcompany.web.module.account.service.AccountDetailsService;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+	private final AccountDetailsService accountDetailsService;
+	private final DataSource dataSource;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introSpector) throws
@@ -36,6 +44,7 @@ public class SecurityConfig {
 		http
 			.authorizeHttpRequests((req) -> req
 				.requestMatchers(new MvcRequestMatcher(introSpector, "/admin/**")).permitAll()
+				.requestMatchers(new MvcRequestMatcher(introSpector, "/stock")).authenticated()
 				.anyRequest().permitAll()
 			)
 			.formLogin(login -> login
@@ -46,7 +55,9 @@ public class SecurityConfig {
 				.permitAll()
 			)
 			.logout(withDefaults())
-			.csrf(csrf -> csrf.disable())
+			.rememberMe(remember -> remember
+				.userDetailsService(accountDetailsService)
+				.tokenRepository(tokenRepository()))
 			.securityContext((context) ->
 				context.securityContextRepository(new HttpSessionSecurityContextRepository()));
 
@@ -71,6 +82,14 @@ public class SecurityConfig {
 	@Bean
 	public SecurityContextRepository securityContextRepository() {
 		return new HttpSessionSecurityContextRepository();
+	}
+
+	@Bean
+	public PersistentTokenRepository tokenRepository() {
+		// JDBC 기반 tokenRepository 구현체
+		JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+		jdbcTokenRepository.setDataSource(dataSource);
+		return jdbcTokenRepository;
 	}
 
 }
