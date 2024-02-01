@@ -55,7 +55,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr th:each="company : ${page}" class="data-row">
+                                            <tr th:each="company : ${companyList}" class="data-row">
                                                 <td style="width: 500px;" th:text="${company.investedCompany}">투자받는 회사명</td>
                                                 <td th:text="${company.currentStockCount}">주식수</td>
                                                 <td th:text="${company.corporationClass}">상장여부</td>
@@ -66,11 +66,11 @@
                                     </div>
                                     <ul class="pagination">
                                         <li>
-                                            <a th:href="${page.first} ? '#' : @{ /company/invest/{company}/{pageNum}/{type}(company=${name},pageNum=${page.number}, type=${currentType}) }"> 이전 </a>
+                                            <a th:href="${pageInfo.first} ? '#' : @{ /company/invest/{company}/{pageNum}/{type}(company=${name},pageNum=${pageInfo.number}-1, type=${currentType}) }"> 이전 </a>
                                         </li>
-                                        <li th:each = "pageNumber: ${#numbers.sequence(startPage, endPage)}" >
-                                            <a th:if="${pageNumber == page.number + 1}" href="#" th:text="${pageNumber}" class="active">page number</a>
-                                            <a th:unless="${pageNumber == page.number + 1}"
+                                        <li th:each = "pageNumber: ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}" >
+                                            <a th:if="${pageNumber == pageInfo.number}" href="#" th:text="${pageNumber}" class="active">page number</a>
+                                            <a th:unless="${pageNumber == pageInfo.number}"
                                                href="#"
                                                th:text="${pageNumber}"
                                                th:href="@{/company/invest/{company}/{pageNum}/{type}(company=${name}, pageNum=${pageNumber}, type=${currentType})}"
@@ -78,7 +78,7 @@
                                         </li>
 
                                         <li>
-                                            <a th:href="${page.last} ? '#' : @{ /company/invest/{company}/{pageNum}/{type}(company=${name},pageNum=${page.number}+2, type=${currentType}) }"> 다음 </a>
+                                            <a th:href="${pageInfo.last} ? '#' : @{ /company/invest/{company}/{pageNum}/{type}(company=${name},pageNum=${pageInfo.number}+1, type=${currentType}) }"> 다음 </a>
                                         </li>
                                     </ul>
 

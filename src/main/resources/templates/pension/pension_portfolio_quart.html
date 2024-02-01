@@ -45,7 +45,8 @@
                             <thead>
                             <tr>
                                 <th>회사명</th>
-                                <th>전년도 지분율</th>
+                                <th>보고일</th>
+                                <th>전년도 기말(12월) 지분율</th>
                                 <th>현재 분기 지분율</th>
                                 <th>지분 증가율</th>
                             </tr>
@@ -53,6 +54,7 @@
                             <tbody>
                             <tr th:each="investInfo : ${quarterInvestInfoList}">
                                 <td th:text="${investInfo.corporationName}">회사이름</td>
+                                <td>2024-00-00</td>
                                 <td th:text="${investInfo.beforeShareRatio}">전년도 지분</td>
                                 <td th:text="${investInfo.currentShareRatio}">현재 지분율</td>
                                 <td th:text="${investInfo.changeRate}">지분 증가율</td>
