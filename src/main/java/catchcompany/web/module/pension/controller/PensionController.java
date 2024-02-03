@@ -3,6 +3,7 @@ package catchcompany.web.module.pension.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import catchcompany.web.module.pension.controller.dto.InvestInfo;
-import catchcompany.web.module.pension.controller.dto.QuarterInvestInfo;
+import catchcompany.web.module.common.infra.PageManager;
+import catchcompany.web.module.pension.controller.dto.response.QuarterInvestInfo;
+import catchcompany.web.module.pension.controller.dto.response.QuarterInvestResponse;
+import catchcompany.web.module.pension.controller.dto.response.YearInvestResponse;
 import catchcompany.web.module.pension.service.PensionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,21 +26,21 @@ import lombok.extern.slf4j.Slf4j;
 public class PensionController {
 
 	private final PensionService pensionService;
+	private final PageManager pageManager;
 
 	@GetMapping("/portfolio/{year}")
-	public String pensionYearPortfolio(@PathVariable int year, Model model) {
-		List<InvestInfo> list = pensionService.getInvestInfo(year);
-		model.addAttribute("investInfoList", list);
+	public String pensionYearPortfolio(@PathVariable int year, Model model, Pageable pageable) {
+		YearInvestResponse response = pensionService.findInvestInfoByYear(year, pageable);
+		model.addAttribute("response", response);
 		model.addAttribute("year", year);
 		return "pension/pension_portfolio";
 	}
 
 	@GetMapping("/portfolio/quarter/{currentQuarter}")
-	public String pensionQuarterPortfolio(@PathVariable String currentQuarter, Model model) {
-		log.info("currentQuarter {}", currentQuarter);
-		List<QuarterInvestInfo> quarterInvestInfoList = pensionService.getQuarterInvestInfo(currentQuarter);
-		model.addAttribute("quarterInvestInfoList", quarterInvestInfoList);
-		model.addAttribute("currentQuarter", currentQuarter);
+	public String pensionQuarterPortfolio(@PathVariable String currentQuarter, Model model, Pageable pageable) {
+		QuarterInvestResponse response = pensionService.findQuarterInvestInfoByQuarter(currentQuarter, pageable);
+		model.addAttribute("response", response);
+		model.addAttribute("quarter", currentQuarter);
 		return "pension/pension_portfolio_quart";
 	}
 

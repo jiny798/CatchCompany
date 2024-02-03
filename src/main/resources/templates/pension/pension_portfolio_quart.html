@@ -7,10 +7,9 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Dashboard</title>
-    <link th:href="@{/css/styles.css}" href="css/styles.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script th:src="@{/js/datatables-simple-demo.js}" src="js/datatables-simple-demo.js"></script>
-    <script th:src="@{/js/scripts.js}" src="js/scripts.js"></script>
+    <link th:href="@{/css/company.css}" href="css/company.css" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" href="css/styles.css" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" href="css/styles.css" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -33,7 +32,7 @@
                         <i class="fas fa-table me-1"></i>
                         <select onchange="location = this.value;">
                             <option th:each="quarter : ${quarterList}"
-                                    th:value="'/pension/portfolio/quarter/'+${quarter}"
+                                    th:value="'/pension/portfolio/quarter/'+${quarter}+'?page=0&size=15'"
                                     th:text="${quarter}"
                                     th:selected="${quarter} == ${currentQuarter}">
                             </option>
@@ -52,7 +51,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="investInfo : ${quarterInvestInfoList}">
+                            <tr th:each="investInfo : ${response.investInfoList}">
                                 <td th:text="${investInfo.corporationName}">회사이름</td>
                                 <td>2024-00-00</td>
                                 <td th:text="${investInfo.beforeShareRatio}">전년도 지분</td>
@@ -62,6 +61,27 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <ul class="pagination">
+                        <li>
+                            <a th:href="${response.pageInfo.first} ? '#' : @{ /pension/portfolio/quarter/{quarter}?page={pageNum}&size=15(quarter=${quarter},pageNum=${response.pageInfo.number}-1) }">
+                                이전 </a>
+                        </li>
+                        <li th:each="pageNumber: ${#numbers.sequence(response.pageInfo.startPage-1, response.pageInfo.endPage-1)}">
+                            <a th:if="${pageNumber == response.pageInfo.number}" href="#" th:text="${pageNumber}"
+                               class="active">page number</a>
+                            <a th:unless="${pageNumber == response.pageInfo.number}"
+                               href="#"
+                               th:text="${pageNumber}"
+                               th:href="@{ /pension/portfolio/quarter/{quarter}?page={pageNum}&size=15 (quarter=${quarter}, pageNum=${pageNumber}) }"
+                            >page number</a>
+                        </li>
+                        <li>
+                            <a th:href="${response.pageInfo.last} ? '#' : @{ /pension/portfolio/quarter/{quarter}?page={pageNum}&size=15(quarter=${quarter},pageNum=${response.pageInfo.number}+1) }">
+                                다음 </a>
+                        </li>
+                    </ul>
+
                 </div>
             </div>
         </main>
@@ -75,8 +95,6 @@
     </div>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-
 </body>
 
 </html>

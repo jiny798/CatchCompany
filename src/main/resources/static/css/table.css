@@ -1,0 +1,13 @@
+th, td {
+    border-width: 1px;
+    border-color: #dee2e6;
+    padding: 0.5rem 0.5rem;
+}
+
+.card {
+    font-size: 0.9rem;
+}
+
+#datatablesSimple {
+    width: 100%;
+}

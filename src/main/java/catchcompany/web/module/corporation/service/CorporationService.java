@@ -8,7 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import catchcompany.web.module.corporation.controller.dto.CompanyInfo;
+import catchcompany.web.module.common.dto.PageInfo;
+import catchcompany.web.module.common.infra.PageManager;
+import catchcompany.web.module.corporation.controller.dto.response.CorporationInvestInfo;
+import catchcompany.web.module.corporation.controller.dto.response.InvestInfoResponse;
 import catchcompany.web.module.corporation.domain.Corporation;
 import catchcompany.web.module.corporation.domain.InvestOfCorporation;
 import catchcompany.web.module.corporation.infra.repository.CorporationJpaRepository;
@@ -24,20 +27,25 @@ public class CorporationService {
 
 	private final CorporationJpaRepository corporationRepository;
 	private final InvestOfCorporationJpaRepository investRepository;
+	private final PageManager pageManager;
 
-	public CompanyInfo findCompanyInvestInfo(String name,int pageNum, String type) {
-		Pageable pageable = PageRequest.of(pageNum-1, 10);
-
+	public InvestInfoResponse findCompanyInvestInfo(String name, int pageNum, String type) {
+		Pageable pageable = PageRequest.of(pageNum - 1, 10);
 		List<Corporation> companies = corporationRepository.findByName(name);
 		Corporation corporation = companies.get(0);
-		Page<InvestOfCorporation> page;
-		if(type.equals("상장")) {
-			page = investRepository.findInvestByCompanyAndType(corporation, pageable, type);
-		}else{
-			page = investRepository.findInvestByCompany(corporation, pageable);
+		Page<InvestOfCorporation> investOfCorporationPage;
+		if (type.equals("상장")) {
+			// todo: 동적 쿼리로 변경 필요
+			investOfCorporationPage = investRepository.findInvestByCompanyAndType(corporation, pageable, type);
+		} else {
+			investOfCorporationPage = investRepository.findInvestByCompany(corporation, pageable);
 		}
-		CompanyInfo companyInfo = new CompanyInfo(corporation, page);
+		PageInfo pageInfo = pageManager.generatePageInfo(investOfCorporationPage, pageNum, 10);
+		Page<CorporationInvestInfo> yearInvestInfoPage = investOfCorporationPage.map(investOfCorporation ->
+			new CorporationInvestInfo(investOfCorporation)
+		);
 
-		return companyInfo;
+		InvestInfoResponse investInfoResponse = new InvestInfoResponse(name, type, yearInvestInfoPage, pageInfo);
+		return investInfoResponse;
 	}
 }

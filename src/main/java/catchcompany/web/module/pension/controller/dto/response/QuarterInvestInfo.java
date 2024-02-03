@@ -1,16 +1,17 @@
-package catchcompany.web.module.pension.controller.dto;
+package catchcompany.web.module.pension.controller.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InvestInfo {
+public class QuarterInvestInfo {
 	private String corporationName;
-	private Double beforeShareInAsset;
-	private Double currentShareInAsset;
+	private Double beforeShareRatio;
+	private Double currentShareRatio;
 	private String changeRate;
 }

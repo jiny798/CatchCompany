@@ -8,38 +8,12 @@
     <meta name="author" content=""/>
     <title>catch</title>
 
+    <link th:href="@{/css/company.css}" href="css/company.css" rel="stylesheet"/>
     <link th:href="@{/css/styles.css}" href="css/styles.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css"/>
-    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link th:href="@{/css/table.css}" href="css/styles.css" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-<style>
-    .datatable-top {
-        padding: 0.5rem 1rem;
-        margin-bottom: 0;
-        color: black;
-        background-color: white;
-        border-bottom: solid
-    }
-    .datatable-body {
-        padding: 1rem 1rem;
-        font-size: 0.875rem;
-    }
-    .datatable-body__table {
-        width: 100%;
-    }
-    td, thead {
-        border-style: solid;
-        border-color: #dee2e6;
-        border-width: 1px;
-    }
-    th, td {
-        padding: 0.5rem 0.5rem
-    }
 
-</style>
 <body class="sb-nav-fixed">
 <nav th:replace="~{side/nav :: nav}"></nav>
 
@@ -56,38 +30,61 @@
                         <small> 다음 업데이트 일정 : 2024-08 </small>
                     </div>
                 </div>
-                <div id="datatable" class="card mb-4">
-                    <div class="datatable-top">
-                        <i class="fas fa-table me-1"></i>
-                        <select onchange="location = this.value;">
-                            <option th:each="num : ${yearList}"
-                                    th:value="'/pension/portfolio/'+${num}"
-                                    th:text="${num}"
-                                    th:selected="${num} == ${year}">
-                            </option>
-                        </select>
-                        년 12월 말 기준, 비중 증가 순위
-                    </div>
 
-                    <div class="datatable-body">
-                        <table class="datatable-body__table" id="datatablesSimple">
-                            <thead>
-                            <tr>
-                                <th>회사명</th>
-                                <th>전년도 투자 비중</th>
-                                <th>현재 투자 비중 (투자 비중 합산 100%)</th>
-                                <th>비중 증가률</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="investInfo : ${investInfoList}">
-                                <td th:text="${investInfo.corporationName}">회사이름</td>
-                                <td th:text="${investInfo.beforeShareInAsset}">전년도 투자 비중</td>
-                                <td th:text="${investInfo.currentShareInAsset}">현재 투자 비중</td>
-                                <td th:text="${investInfo.changeRate}">투자 비중 증감율</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="container-fluid px-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            <select onchange="location = this.value;">
+                                <option th:each="num : ${yearList}"
+                                        th:value="'/pension/portfolio/'+${num}+'?page=1&size=10'"
+                                        th:text="${num}"
+                                        th:selected="${num} == ${year}">
+                                </option>
+                            </select>
+                            년 12월 말 기준, 비중 증가 순위
+                        </div>
+
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                <tr>
+                                    <th>회사명</th>
+                                    <th>전년도 투자 비중</th>
+                                    <th>현재 투자 비중 (투자 비중 합산 100%)</th>
+                                    <th>비중 증가률</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="investInfo : ${response.investInfoList}" class="data-row">
+                                    <td th:text="${investInfo.corporationName}">회사이름</td>
+                                    <td th:text="${investInfo.beforeShareInAsset}">전년도 투자 비중</td>
+                                    <td th:text="${investInfo.currentShareInAsset}">현재 투자 비중</td>
+                                    <td th:text="${investInfo.changeRate}">투자 비중 증감율</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <ul class="pagination">
+                            <li>
+                                <a th:href="${response.pageInfo.first} ? '#' : @{ /pension/portfolio/{year}?page={pageNum}&size=10(year=${year},pageNum=${response.pageInfo.number}-1) }">
+                                    이전 </a>
+                            </li>
+                            <li th:each="pageNumber: ${#numbers.sequence(response.pageInfo.startPage-1, response.pageInfo.endPage-1)}">
+                                <a th:if="${pageNumber == response.pageInfo.number}" href="#" th:text="${pageNumber}"
+                                   class="active">page number</a>
+                                <a th:unless="${pageNumber == response.pageInfo.number}"
+                                   href="#"
+                                   th:text="${pageNumber}"
+                                   th:href="@{ /pension/portfolio/{year}?page={pageNum}&size=10 (year=${year}, pageNum=${pageNumber}) }"
+                                >page number</a>
+                            </li>
+                            <li>
+                                <a th:href="${response.pageInfo.last} ? '#' : @{ /pension/portfolio/{year}?page={pageNum}&size=10(year=${year},pageNum=${response.pageInfo.number}+1) }">
+                                    다음 </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -102,7 +99,7 @@
     </div>
 
 </div>
+</body>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
-</body>
 </html>

@@ -1,0 +1,19 @@
+package catchcompany.web.module.pension.controller.dto.response;
+
+import org.springframework.data.domain.Page;
+
+import catchcompany.web.module.common.dto.PageInfo;
+import lombok.Getter;
+
+@Getter
+public class YearInvestResponse {
+
+	private Page<YearInvestInfo> investInfoList;
+	private PageInfo pageInfo;
+
+	public YearInvestResponse(Page<YearInvestInfo> page, PageInfo pageInfo) {
+		this.pageInfo = pageInfo;
+		this.investInfoList = page;
+	}
+
+}

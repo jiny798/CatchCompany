@@ -44,7 +44,7 @@ public class SecurityConfig {
 		http
 			.authorizeHttpRequests((req) -> req
 				.requestMatchers(new MvcRequestMatcher(introSpector, "/admin/**")).permitAll()
-				.requestMatchers(new MvcRequestMatcher(introSpector, "/stock")).authenticated()
+				.requestMatchers(new MvcRequestMatcher(introSpector, "/stock")).permitAll()
 				.anyRequest().permitAll()
 			)
 			.formLogin(login -> login
